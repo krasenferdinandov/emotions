@@ -53,16 +53,6 @@ echo '<tr><th>Id</th>
 <th><a title="Level of Psychological Advantage. Magnification explains how much one emotional choice is exagerated to take advantage toward others making a significant impact in someone`s personal behavior, habits, values, traits or convictions. There is no maximum degree of magnification. Magnification has a additional property to create conductance, resistance or reactance depends on how high or low is its value. If it is high then it is probably to assotiate more scences, strivings, habits or traits in common script and vice versa, to resist and react against the creation of variants and divergence in personal experience probably due to negative investments or lack of emotional interest.">Magnification</a></th>
 </tr>';
 
-/*<th>Script factor</th>
-<th><a title="Affective Management and Self-control">Management</a></th>
-<th>"Ниво #1"</th>
-<th>"Ниво #2"</th>
-<th><a title="The First Emotion in the script">Емоция #1</a></th>
-<th><a title="Произведението от стойностите на силата, честотата и продължителността на емоцията  от водещото семейство (#1) в избора. (Multiplication of intensity, frequency and duration of the first (#1) emotion in the script.)">Плътност #1</a></th>
-<th><a title="The Second Emotion">Емоция 2</a></th>
-<th>"Плътност #2"</th>
-*/
-
 for($k = 0; $k<$count; $k++)
 { 
 	$current_id = $id_array[$k];
@@ -88,9 +78,6 @@ for($k = 0; $k<$count; $k++)
 		$data_mi = $pdo->query("SELECT miniscripts.id, miniscripts.domain1_id, miniscripts.domain2_id, miniscripts.subscript_id, miniscripts.en_name, miniscripts.en_desc FROM miniscripts inner join miniscripts_stat on miniscripts.id = miniscripts_stat.miniscript_id WHERE miniscript_id = $miniscript_id LIMIT 1");
 		while($r = $data_mi->fetch(PDO::FETCH_BOTH)){
 			
-			//Показава и id на минисценария за попълващия:
-			//$miniscript_ttl = '<a title="'.quot($r['en_name']).'">'.$r['bg_name'].'</a>';
-			//$miniscript_ttl = '<a title="'.quot($r['en_name']).', '.$r['bg_name'].'">'.$miniscript_id.'</a>';
 			$miniscript_ttl = '<a title="'.quot($r['en_desc']).'">'.quot($r['en_name']).' </a>';
 					
 					$density_em1 = $r['domain1_id'];
@@ -157,19 +144,7 @@ for($k = 0; $k<$count; $k++)
 		echo '<tr><td><center>'.$current_id.'</td></center>
 		<td>'.$miniscript_ttl.'<br/></td>
 		<td><center>'.$magnification_n.'</center></td>
-		
 		</tr>';
-		
-		/*<td>'.$subscript_name.'</td>
-		<td><center>'.$manag_name.'</center></td>
-		<td><center>'.$string_id_1.'<br/></center></td>
-		<td><center>'.$string_id_2.'<br/></center></td>
-		<td>'.$em1_name.'</td>
-		<td><center>'.$density_em1.'</center></td>
-		<td>'.$em2_name.'</td>
-		<td><center>'.$density_em2.'</center>
-		
-		*/
 		}
 }
 echo '</table>';

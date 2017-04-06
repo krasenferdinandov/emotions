@@ -2,7 +2,6 @@
 require "headerbg.php";
 require "js/blockback.js";
 echo '<form method="POST" action="mininsertbg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
-//Показва съобщение за резултата с текущото ID
 if(!array_key_exists('id', $_GET)){
 	die();
 }
@@ -18,7 +17,6 @@ $nega = '';
 $ambi = '';
 $manag = 0;
 
-//$table_result = '<center><table class="borders"><tr><th colspan="2">'.RESULTS.'</th></tr>';
 $table_result = '<center><table class="borders"><tr><th colspan="2"></th></tr>';
 
 $sum_pos=0;$count_pos=0;
@@ -56,7 +54,6 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 		else if($e_string == 2){
 		$density=(($e_sl*0.8)+$e_tension);
 		}
-		//$density=$e_sl;	
 	
 	$data = $pdo->query("SELECT bg_name, script_id FROM domains WHERE id = $domain_id LIMIT 1");
 	$r = $data->fetch(PDO::FETCH_BOTH);
@@ -68,10 +65,6 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 	$script_name = $r['bg_name'];
 	$script_desc = $r['bg_desc'];
 
-//Показва плътността на избраните състояния
-	//$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($script_name).', '.quot($script_desc).'">'.quot($e_name).'</a></td>';
-	//$table_result .= '<td style="border: 1px solid #c0c0c0;">'.DENSITY.''.$density.'</td></tr>';
-	
 		if($dimension_id == 0){
 			$sum_pos+=$density;
 			$count_pos+=1;
@@ -84,8 +77,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 			$sum_ambi+=$density;
 			$count_ambi+=1;
 		}
-//Показва резултати за Subscripts и Miniscripts
-	$miniscript_condition.=' OR domainX_id='.$domain_id;
+$miniscript_condition.=' OR domainX_id='.$domain_id;
 }
 $table_result.= '<tr><th colspan="2"><p>'.TIP.'</th><tr/>';
 
@@ -110,19 +102,16 @@ while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
 $data = $pdo->query('SELECT id,bg_name, en_name, bg_desc,domain1_id,domain2_id FROM miniscripts WHERE ( '.str_replace('X', '1', $miniscript_condition).' ) AND ( '.str_replace('X', '2', $miniscript_condition).' );');
 while($r = $data->fetch(PDO::FETCH_BOTH)){
 		$m=$r['id'];
-//$table_result .=  $m;//Показва id на всичките възможни miniscripts;
 $table_result .= '<th colspan="2" align="left" style="border: 0px solid #c0c0c0;"><input id="script_'.$m.'" type="radio" name="miniscript'.$m.'" value="1">';
-//$table_result .= '<th colspan="2" align="left" style="border: 0px solid #c0c0c0;"><input id="script_'.$m.'" type="checkbox" name="miniscript'.$m.'" value="1">';
 $table_result .= '<a title="'.quot($r['en_name']).','.quot($r['bg_desc']).'"><label for="script_'.$m.'">'.$r['bg_name'].'</a>
 </label></th></tr>';
 }
 $table_result.= '<tr><th colspan="2"><center><br/><b>'.SECONDARY.'<center/></th><tr/>';
 
-//Показва съотношението между положителните и отрицателните емоции според стойностите от слайдера: "AFFECT MANAGEMENT"
 if($count_pos==0) $count_pos=1;
 if($count_neg==0) $count_neg=1;
 if($count_ambi==0) $count_ambi=1;
-//За премахване на стойностите на слайдера от съотношението между + и - емоции замени "sum_pos/neg..." със "count_pos/neg..."
+
 $table_result.= '<tr><td style="border: 1px solid #c0c0c0;">'.RATIO.'</td>';
 
 $score_neg=scores_level($sum_neg, $count_neg-$count_ambi);
@@ -143,23 +132,7 @@ if ($r){
 $posi = percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi);
 $nega = percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi);
 $ambi = percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi);
-//----------------->Етикет на SOM!
-	/*$som_name = "";
-			if($posi>=68){
-				$som_name = '<a title="Предполагаем научен показател за прекалена самоувереност, импулсивност или недооценка на ролята и значението на отрицателните преживявания.">Прекомерен оптимизъм<a/>';
-			}else if($posi>=56){
-				$som_name = '<a title="Предполагаем научен показател за адекватно справяне с общия житейски стрес.">Добро напасване<a/>';
-			}else if ($posi>=44) {
-				$som_name = '<a title="Предполагаем научен показател за вътрешни конфликти, които могат да надделеят над общата способност за справяне под формата на натрапчиви мисли или леки тревожности.">Вътрешни конфликти<a/>';
-			}else if ($posi>=32) {
-				$som_name = '<a title="Предполагаем научен показател за средно изразени тревожности, раздразнителност или емоционална потиснатост.">Тревожни състояния<a/>';
-			}else{
-				$som_name = '<a title="Предполагаем научен показател за тежки и сериозни сътресения в емоционалния живот. ">Критични състояния<a/>';
-			}*/
 
-
-//$table_result.= '<td style="border: 1px solid #c0c0c0;">* '.$som_name.'<br>- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg).'%</td>';
-//-----------------
 $table_result.= '<td style="border: 1px solid #c0c0c0;">- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.AMBIVALENT.': '.percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi).'%</td>';
 
 
@@ -171,9 +144,7 @@ $table_result.= '<tr><td style="border: 1px solid #c0c0c0;">'.CONTROL.'</td>'.'<
 
 $manag = $id_manag;
 $table_result .= '<input type="hidden" value="'.$manag.'" name="manag"/>';
-//$table_result .= $manag . "\n";
 
-//Показва процентите от "statements"
 $table_result.= '<tr><td colspan="2"><center><br/><b>'.ATTITUDES.'<center/><tr/>';
 $axis_count_total=0;
 $sel_axis = $pdo->query("SELECT id,bg_name,bg_desc FROM axis ORDER BY id");
@@ -195,7 +166,6 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 			$ri = $data->fetch(PDO::FETCH_BOTH);
 			$axis_total_d = $ri['COUNT(stat.id)'];
 						
-//Показва избраните изречения за всеки "axis"
 	$chosen_states = '';
 	foreach($axis_list[$axis_id] as $axis){
 		$chosen_states .= $axis . "\n";

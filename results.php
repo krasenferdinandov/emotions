@@ -182,8 +182,6 @@ $table_result .= '<tr><td colspan="2" align="left" style="border-right: none; bo
 					else if($string_id_2 == 2){
 					$density_em2 = (($e_sl_2*0.8)+$tension_id_2);
 					}	
-		
-	
 	$count_e=0;	
 			$sel_emotions = $pdo->query("Select * FROM emotions_stat WHERE id=$id");
 			while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
@@ -201,7 +199,6 @@ $table_result .= '<tr><td colspan="2" align="left" style="border-right: none; bo
 		}
 $table_result .= '</ul></td></tr>';
 
-//--------------------
 $table_result.= '<tr><th colspan="2"><center><br/><b>'.SECONDARY.'<center/></th><tr/>';
 if($count_pos==0) $count_pos=1;
 if($count_neg==0) $count_neg=1;
@@ -268,7 +265,6 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 	}
 	
 	$table_result.= '<br><a title="'.quot($en_desc).'">* <b/>'.quot($en_name).'<a title="'.$chosen_states.'">, '.$level_axis.'<a title="Shows what is the significance of one personality property compare to other psychological variables from the test."> % significance </a></br></b>'."\n";
-	
 }
 
 $table_result.='</td><tr/>';

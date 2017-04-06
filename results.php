@@ -7,7 +7,6 @@ if(!array_key_exists('id', $_GET)){
 $id = $_GET['id'];
 validateInt($id);
 
-//Показва съобщение за резултата с текущото ID
 echo'<center></br>'.ID.'</br>'.TIP2.'<b>'.$id.'</b><center/>';
 
 $table_result = '<center><table class="borders"><tr><th colspan="2">'.RESULTS.'</th></tr>';
@@ -78,7 +77,6 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 		else if($e_string == 2){
 		$density=(($e_sl*0.8)+$e_tension);
 		}
-		//$density=$e_sl;
 	
 	$data = $pdo->query("SELECT en_name, script_id FROM domains WHERE id = $domain_id LIMIT 1");
 	$r = $data->fetch(PDO::FETCH_BOTH);
@@ -90,7 +88,6 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 	$script_name = $r['en_name'];
 	$script_desc = $r['en_desc'];
 
-//Показва плътността на избраните състояния
 	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($script_name).', '.quot($script_desc).'">* '.quot($en_name).'</a></td>';
 	$table_result .= '<td style="border: 1px solid #c0c0c0;">'.DENSITY.''.$density.'</td></tr>';
 
@@ -126,15 +123,12 @@ while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$axis_stat_count += 1;
 }
 
-
-//Показва резултати за Miniscripts
 $table_result.= '<tr><th colspan="2"><center><br/><b>'.CONFIRMED.'<center/></th><tr/>';
 
 $data_s = $pdo->query('SELECT miniscripts.id,miniscripts.en_name, miniscripts.domain1_id, miniscripts.domain2_id, miniscripts.en_name,miniscripts.en_desc FROM miniscripts inner join miniscripts_stat on miniscripts.id = miniscripts_stat.miniscript_id WHERE miniscripts_stat.id='.$id.'');
 	
 while($r = $data_s->fetch(PDO::FETCH_BOTH)){
-//Показва id на потвърдените miniscripts;
-			//$table_result .= '<a title="'.quot($r['en_desc']).'">'.$r['id'].$r['en_name'].'</a>'; 
+
 $table_result .= '<tr><td colspan="2" align="left" style="border-right: none; border: 1px solid #c0c0c0;">* <b><a title="'.quot($r['en_desc']).'">'.$r['en_name'].'</a></b>, ';
 			
 			$magnification_m = "?";
@@ -209,11 +203,10 @@ $table_result .= '</ul></td></tr>';
 
 //--------------------
 $table_result.= '<tr><th colspan="2"><center><br/><b>'.SECONDARY.'<center/></th><tr/>';
-// Показва съотношението между положителните и отрицателните емоции според стойностите от слайдера: "AFFECT MANAGEMENT"
 if($count_pos==0) $count_pos=1;
 if($count_neg==0) $count_neg=1;
 if($count_ambi==0) $count_ambi=1;
-//За премахване на стойностите на слайдера от съотношението между + и - емоции замени "sum_pos/neg..." със "count_pos/neg..."
+
 $table_result.= '<tr><td style="border: 1px solid #c0c0c0;">'.RATIO.'</td>';
 
 $score_neg=scores_level($sum_neg, $count_neg-$count_ambi);
@@ -233,25 +226,10 @@ $posi = percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi);
 $nega = percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi);
 $ambi = percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi);
 
-	$som_name = "";
-			if($posi>=68){
-				$som_name = '<a title="Hypothetic scientific sign of overconfidence, impulsiveness and neglected negative experiences.">Excessive Optimism<a/>';
-			}else if($posi>=56){
-				$som_name = '<a title="Hypothetic scientific sign of good coping">Optimal Adjustment<a/>';
-			}else if ($posi>=44) {
-				$som_name = '<a title="Hypothetic scientific sign of mild anxiety or obsessive mindset.">Internal Conflicts<a/>';
-			}else if ($posi>=32) {
-				$som_name = '<a title="Hypothetic scientific sign of noderate anxiety or depression.">Problematic Coping<a/>';
-			}else{
-				$som_name = '<a title="Hypothetic scientific sign of severe disturbances.">Critical Maladjustment<a/>';
-			}
-			
-//$table_result.= '<td style="border: 1px solid #c0c0c0;">* '.$som_name.'<br>- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg).'%</td>';
 $table_result.= '<td style="border: 1px solid #c0c0c0;">- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.AMBIVALENT.': '.percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi).'%</td>';
 
 $table_result.= '<tr><td style="border-right: none; border: 1px solid #c0c0c0;">'.CONTROL.'</td>'.'<td style="border-right: none; border: 1px solid #c0c0c0;"><a title="'.quot($en_desc).'">* '.quot($en_name).'</a></br></td><tr/>';
 
-//Показва процентите от "statements"
 $table_result.= '<tr><td colspan="2"><center><br/><b>'.ATTITUDES.'<center/><tr/>';
 $axis_count_total=0;
 $sel_axis = $pdo->query("SELECT id,en_name,en_desc FROM axis ORDER BY id");
@@ -272,7 +250,6 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 			$r = $data->fetch(PDO::FETCH_BOTH);
 			$axis_total_d = $r['COUNT(stat.id)'];
 			
-//Показва избраните изречения за всеки "axis"
 	$chosen_states = '';
 	foreach($axis_list[$axis_id] as $axis){
 		$chosen_states .= $axis . "\n";

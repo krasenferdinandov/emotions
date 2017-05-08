@@ -43,18 +43,27 @@ for($k = 0; $k<$count; $k++)
 	{
 		$state_row_array[] = 0;
 	}
+$data = $pdo->query("SELECT * FROM states_stat WHERE id = $current_id LIMIT 1");
+$r = $data->fetch(PDO::FETCH_BOTH);
+$id = $r['id'];
+if(!isset($id)) continue;
+
+if(!isset($id)) {
+				continue;
+			}else{
+			$data = $pdo->query("SELECT state_id FROM states_stat WHERE id = $current_id");
+			while($r = $data->fetch(PDO::FETCH_BOTH)) {
+				$s_id = $r['state_id'];
+				if($s_id!=-1) $state_row_array[$s_id] = 1;
+			}
+			echo '<tr><td><center>'.$current_id.'</center></td>';
+			for($i=0;$i<STATES_NUMBER;$i++)
+				if($state_row_array[$i] != 1)
+					echo '<td><center>0</center></td>';
+				else echo '<td><center><b>1<b/></center></td>';			
+			}	
 	
-	$data = $pdo->query("SELECT state_id FROM states_stat WHERE id = $current_id");
-	while($r = $data->fetch(PDO::FETCH_BOTH)) {
-		$s_id = $r['state_id'];
-		if($s_id!=-1) $state_row_array[$s_id] = 1;
-	}
-	echo '<tr><td><center>'.$current_id.'</center></td>';
-	for($i=0;$i<STATES_NUMBER;$i++)
-		if($state_row_array[$i] != 1)
-			echo '<td><center>0</center></td>';
-		else echo '<td><center><b>1<b/></center></td>';
-		
+	
 	echo '</tr>';
 	}
 echo '</table>';

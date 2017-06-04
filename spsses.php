@@ -16,7 +16,8 @@ for($i=0;$i<STATES_NUMBER;$i++){
 		$name = $r["label"];
 	}
 
-	echo '<td>'.$i.$name.'</td>';
+	//echo '<td>'.$i.$name.'</td>';
+	echo '<td>'.$name.'</td>';
 }
 
 echo '</tr>';

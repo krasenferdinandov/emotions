@@ -8,7 +8,7 @@ require "header.php";
 	echo CHOOSE_EMOTIONS.'<br/>';
 			echo '<input type="hidden" value="0" name="choice"/>';
 		echo '<form id="the_form" style="height: 0vh;overflow:auto" method="POST" action="density.php" enctype="multipart/form-data">';
-		echo'<input type="hidden" name="timeStarted" value="'.$dt->format("Y-m-d H:i").'">';
+		echo'<input type="hidden" name="timeStarted" value="'.$dt->format("Y-m-d H:i:s").'">';
 		//echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
 			$data = $pdo->query("SELECT id, bg_name, en_name, domain_id FROM emotions ORDER BY id ASC");
 			require "star.html";

@@ -13,6 +13,7 @@ echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data
 	$count=0;
 	for($i = 0; $i<EMOTIONS_NUMBER; $i++)
 	{
+		//if(!isset($_POST['emotion_'.$i])) continue;
 		$data2 = $pdo->query("SELECT domain_id FROM emotions WHERE id=$i");
 		$result2 = $data2 -> fetch(PDO::FETCH_BOTH);
 		$domain = $result2['domain_id'];
@@ -34,6 +35,11 @@ echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data
 		$table .= '<td>'.SLOWEST.'</td>';
 		$table .= '</tr>';
 	}
+	/*$table .= '<tr><td colspan="5"><p align="center"><input type="submit" value="'.NEXT.'"/></td></tr></table></p>';
+	echo $table;
+	echo '</form>';
+	require_once('js/numbers.js');*/
+	
 	//if($count>=2 && $count<=6) {
 	if($count>=2) {
 		$table .= '<tr><td colspan="5"><p align="center"><input type="submit" value="'.NEXT.'"/></td></tr></table></p>';

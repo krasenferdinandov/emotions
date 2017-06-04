@@ -47,10 +47,22 @@ while($r = $count_data->fetch(PDO::FETCH_BOTH))
 	}
 }
 echo '<table class="borders">';
+
 echo '<tr><th>№</th>
 <th>Емоционални сценарии</th>
 <th><a title="Увеличението показва колко допълнителна емоционална важност е придадена  към значението на един житейски избор, така че да придобие предимството пред другите избори в рамките на групата от емоционални очаквания, за да поддържа впечатление, личното или у другите, че тази специфика е водеща и определя обащата линия на намеренията, поведението, предпочитанията или навиците. Степента на увеличение може да надхвърли 100. Стойността на увеличение има свойството да се превръща и в сила на съпротивление, да се противопоставя на нарастване и взаимно свързване между емоции навици, черти. Колкото по-висока е стойността, толкова повече сцени могат да бъдат свързани в обобщаващ сценарий и да осигурят по-голямо предимство и обратно - колкото по-малка е стойността, толкова по-голямо ше е емоционалното противопоставяне да бъдат свързвани сцени, пориви, навици и намерения по между им.">Предимство</a></th>
+
 </tr>';
+
+/*<th>Вид клише</th>
+<th><a title="Affective Management and Self-control">Самоконтрол</a></th>
+<th>"Ниво #1"</th>
+<th>"Ниво #2"</th>
+<th><a title="The First Emotion in the script">Емоция #1</a></th>
+<th><a title="Произведението от стойностите на силата, честотата и продължителността на емоцията  от водещото семейство (#1) в избора. (Multiplication of intensity, frequency and duration of the first (#1) emotion in the script.)">Плътност #1</a></th>
+<th><a title="The Second Emotion">Емоция 2</a></th>
+<th>"Плътност #2"</th>
+*/
 
 for($k = 0; $k<$count; $k++)
 { 
@@ -78,7 +90,10 @@ for($k = 0; $k<$count; $k++)
 		miniscripts.bg_name,miniscripts.bg_desc FROM miniscripts inner join miniscripts_stat 
 		on miniscripts.id = miniscripts_stat.miniscript_id WHERE miniscript_id = $miniscript_id LIMIT 1");
 		while($r = $data_mi->fetch(PDO::FETCH_BOTH)){
-		
+			
+			//Показава и id на минисценария за попълващия:
+			//$miniscript_ttl = '<a title="'.quot($r['en_name']).'">'.$r['bg_name'].'</a>';
+			//$miniscript_ttl = '<a title="'.quot($r['en_name']).', '.$r['bg_name'].'">'.$miniscript_id.'</a>';
 			$miniscript_ttl = '<a title="'.quot($r['bg_desc']).'"> '.$r['bg_name'].'</a>';
 					
 					$density_em1 = $r['domain1_id'];
@@ -146,7 +161,17 @@ for($k = 0; $k<$count; $k++)
 		<td><center>'.$magnification_n.'</center></td>
 		
 		</tr>';
-	}
+		
+		/*<td>'.$subscript_name.'</td>
+		<td><center>'.$manag_name.'</center></td>
+		<td><center>'.$string_id_1.'<br/></center></td>
+		<td><center>'.$string_id_2.'<br/></center></td>
+		<td>'.$em1_name.'</td>
+		<td><center>'.$density_em1.'</center></td>
+		<td>'.$em2_name.'</td>
+		<td><center>'.$density_em2.'</center>
+		*/
+		}
 }
 echo '</table>';
 require "end.php";

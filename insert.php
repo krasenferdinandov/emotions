@@ -21,7 +21,7 @@ for($a = 0; $a<STATES_NUMBER; $a++){
 	}
 }
 	$timeStarted = mysql_escape_string($_POST['timeStarted']);
-	$pdo->exec("INSERT INTO choice_stat VALUES ($id, '$timeStarted', NOW());");
+	$pdo->exec("INSERT INTO choice_stat VALUES ($id, '$timeStarted', NOW() );");
 	
 echo '<meta http-equiv="Refresh" content="0;show.php?id='.$id.'" />';
 require "end.php";

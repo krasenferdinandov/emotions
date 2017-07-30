@@ -92,6 +92,11 @@ $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 if(!isset($id)) continue;*/
 
+$data = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id LIMIT 1");
+$r = $data->fetch(PDO::FETCH_BOTH);
+$id = $r['id'];
+if($id>102){
+
 	for($i = 0; $i<EMOTIONS_NUMBER; $i++)
 	{
 		$emotion_row_array[] = 0;
@@ -207,6 +212,7 @@ if(!isset($id)) continue;*/
 			
 	echo '</tr>';
 	}
+}
 echo '</table>';
 require "end.php";
 ?>

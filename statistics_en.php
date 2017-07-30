@@ -20,7 +20,7 @@ echo '<tr>
 <th><a title="Share of positive states">Positive states</a></th>
 <th><a title="Share of negative states">Negative states</a></th>
 <th><a title="Share of ambivalent states">Ambivalent states</a></th>
-<th><a title="Time spended at the test">time</a></th>
+<th><a title="Time spended at the test">Time</a></th>
 <th><a title="Level of Affective Management">Self-control</a></th>
 </tr>';
 /*

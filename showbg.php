@@ -212,7 +212,7 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 		$label_axis = 'Високa';
 	}
 	
-	$table_result.= '<br><a title="'.quot($bg_desc).'">* <b/>'.quot($bg_name).'<a title="'.$chosen_states.'">, '.$level_axis.'% <a title="Показва колко предпочитан е дадения показател от избрания тест пред другите. Под 30% е ниска, от 30% до 60% - средна; над 60 % - висока."> Обща изразеност</a></br></b>'."\n";
+	$table_result.= '<br><a title="'.quot($bg_desc).'">* <b/>'.quot($bg_name).'<a title="'.$chosen_states.'">, '.$level_axis.'% <a title="Значението, представено с приблизителност в проценти, показва колко предпочитан e даденият тип емоционално натоварени сцени."> Обща изразеност</a></br></b>'."\n";
 	
 }
 

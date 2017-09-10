@@ -111,6 +111,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 $sel_states = $pdo->query("SELECT * FROM states_stat WHERE id=$id");
 while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$state_id = $r['state_id'];
+	$s_slider = $r['s_slider'];
 	$data = $pdo->query("SELECT en_name, axis_id FROM statements WHERE id = $state_id LIMIT 1");
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$en_name = $r['en_name'];
@@ -214,7 +215,7 @@ if($count_pos==0) $count_pos=1;
 if($count_neg==0) $count_neg=1;
 if($count_ambi==0) $count_ambi=1;
 //За премахване на стойностите на слайдера от съотношението между + и - емоции замени "sum_pos/neg..." със "count_pos/neg..."
-$table_result.= '<tr><td style="border: 1px solid #c0c0c0;">'.RATIO.'</td>';
+$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>'.RATIO.'<b/></td>';
 
 $score_neg=scores_level($sum_neg, $count_neg-$count_ambi);
 $score_pos=scores_level($sum_pos, $count_pos-$count_ambi);
@@ -249,7 +250,7 @@ $ambi = percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi);
 //$table_result.= '<td style="border: 1px solid #c0c0c0;">* '.$som_name.'<br>- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg).'%</td>';
 $table_result.= '<td style="border: 1px solid #c0c0c0;">- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.AMBIVALENT.': '.percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi).'%</td>';
 
-$table_result.= '<tr><td style="border-right: none; border: 1px solid #c0c0c0;">'.CONTROL.'</td>'.'<td style="border-right: none; border: 1px solid #c0c0c0;"><a title="'.quot($en_desc).'">* '.quot($en_name).'</a></br></td><tr/>';
+$table_result.= '<tr><td style="border-right: none; border: 1px solid #c0c0c0;">'.CONTROL.'</td>'.'<td style="border-right: none; border: 1px solid #c0c0c0;"><a title="'.quot($en_desc).'"><b>* '.quot($en_name).'<b/></a></br></td><tr/>';
 
 //Показва процентите от "statements"
 $table_result.= '<tr><td colspan="2"><center><br/><b>'.ATTITUDES.'<center/><tr/>';
@@ -271,33 +272,40 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 	 $data = $pdo->query("SELECT COUNT(stat.id) FROM states_stat stat join statements s on stat.state_id = s.id where s.axis_id = $axis_id and stat.id = " . $id . "");
 			$r = $data->fetch(PDO::FETCH_BOTH);
 			$axis_total_d = $r['COUNT(stat.id)'];
-			
+				
 //Показва избраните изречения за всеки "axis"
 	$chosen_states = '';
 	foreach($axis_list[$axis_id] as $axis){
-		$chosen_states .= $axis . "\n";
-	}
+		$chosen_states  .= $axis . "\n" . $s_slider;
+		}
 		
 	$level_axis = percent(sizeof($axis_list[$axis_id]), $axis_total);
-	$label_axis = "";
-	if ($level_axis < 30){
-		$label_axis = 'Low';
-	}
-	if ($level_axis >= 30 && $level_axis < 60){
-		$label_axis = 'Moderate';
-	}
-	if ($level_axis >= 60){
-		$label_axis = 'High';
-	}
 	
-	$table_result.= '<br><a title="'.quot($en_desc).'">* <b/>'.quot($en_name).'<a title="'.$chosen_states.'">, '.$level_axis.'<a title="Shows what is the significance of one personality property compare to other psychological variables from the test."> % significance </a></br></b>'."\n";
-	
+	$table_result .= '<br><a title="'.quot($en_desc).'">* <b/>'.quot($en_name).'<a title="'.$chosen_states.'">, '.$level_axis.'<a title="Shows what is the significance of types of emotion related scenes."></b>% significance</a></br>'."\n";
 }
-
+$table_result .= "<br/><center><b>List of selected themes:<center/>";
+$sel_states = $pdo->query("SELECT * FROM states_stat WHERE id=$id");
+while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
+	$s_id=$r['state_id'];
+	$s_sl=$r['s_slider'];
+	
+	$data = $pdo->query("SELECT en_name, bg_name, axis_id FROM statements WHERE id = $s_id LIMIT 1");
+	$r = $data->fetch(PDO::FETCH_BOTH);
+	$axis_id = intval($r['axis_id']);
+	$en_name = $r['en_name'];
+	
+	$data = $pdo->query("SELECT en_name, en_desc FROM axis WHERE id=$axis_id");
+	$r = $data->fetch(PDO::FETCH_BOTH);
+	$axis_name = $r['en_name'];
+	$axis_desc = $r['en_desc'];
+	
+	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>- '.quot($en_name).'<b/></a></td>';
+	$table_result .= '<td style="border: 1px solid #c0c0c0;">'.SIGNIFICANCE.'<b>'.$s_sl.'<b/></td></tr>';
+}
 $table_result.='</td><tr/>';
 $table_result .= '<center/></table>';
 echo $table_result;
-echo '</br>Download and read the full description:</br><form action="http://testrain.info/download/Full_Description_en.pdf" target="_blank" method="get"><input type="submit" value="Full Description"></form><br/>';
+//echo '</br>Download and read the full description:</br><form action="http://testrain.info/download/Full_Description_en.pdf" target="_blank" method="get"><input type="submit" value="Full Description"></form><br/>';
 echo '</br>'.CONTRIBUTION.'</br>';
 require "end.php";
 ?>

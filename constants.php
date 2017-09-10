@@ -5,11 +5,15 @@
 	define ("NEXT", 'Go Forward');
 	define ("NOT_ENOUGH", '<center><a title="It means that you have not chosen any of choices. Please, go back and choose at least 1 of the three versions to proceed "> Choose at least 1 choice.<center/></a>');
 	define ("NOT_ENOUGH_OR_TOO_MANY", '<center><a title="It means that you have not chosen the exact number of states. Please, go back and choose at least 2.">Choose at least 2 emotional state.</center></a>');	
-	define ("HOW_FAST", '<a title="It is about enduring of your own feelings or emotional conditions?">How long these chosen states are lasting and passing by?</a>');
+	define ("HOW_FAST", '<a title="It is about enduring of your own feelings or emotional conditions?">How long these chosen states are passing by?</a>');
 	define ("FASTEST", '<a title="It means that your condition is very easy to overcome and lasts very short time.">Very Quickly</a>');
 	define ("SLOWEST", '<a title="It means that your condition is difficult to overcome and lasts long time.">Very Slowly</a>');
-	define ("CHOOSE_STATES", '<b><a title="These statements will test your sound opinion about what is your actual emotional behavior.">Choose Only These statements which describe actual emotional behavior the Most Accurately.</b></a>');
-	define ("CONFIRMED", '<a title="You just have confirmed that all of your results are valid.">Confirmed distribution and choosen scripts:</a>');	
+	define ("CHOOSE_STATES", '<b><a title="These words reflect what are the properties of celebratory, ambivalent and harmatic emotion related types of scenes.">Choose only these words, that relate<br/> MOST PRECISELY to selected emotions.</b></a>');
+	define ("HOW_LONG", '<a title="It is about enduring of your own feelings or emotional conditions?">How meaningful are these words for you?</a>');
+	define ("VERY", '<a title="Focus or Strength of will is at stake.">A lot of meaning</a>');
+	define ("LITTLE", '<a title="No focus or strength of will is at stake.">Meaningless</a>');
+	define ("SIGNIFICANCE", '<a title="Quality of meaning of selected themes depends on evaluation of its significance. Theme is a term defined as a abstract word or phrase for emotional scene with at least one emotion and and evoking event.: 1-3 is weak; 4-6 moderate; 7-10 strong.">Quale:</a>');
+	define ("CONFIRMED", '<a title="You just have confirmed that all of your results are valid.">Confirmed distribution and choosen scripts:</a>');
 	define ("RESULTS", '<a title=" Qualities And Properties Of Some Scientific Categories: The percent, shown below means different aspects of personal emotional style, e.g. basic affective scripts, proportion in personal sentimentality and expectations, emotional amplification and magnification of personal life choices and habits: what is the role of emotions and proportion in and their influence over your decision-making everyday not only about very important life issues, but also about insignificant at first glance behavioral and interpersonal matters, enlightened by different psychological dimensions."><b>Primary Results:<b/></a>');		
 	define ("DENSITY", '<a title="Maximum density points are 10. Density points of an emotion means how long one emotion would sustain over time without any backing-up and would frame our own mental album and those of the others by emotional expressions in a great deal or by the manner with which one affective state is experienced every-time when it is appeared again and again in a similar circumstances. The probability to sustain with firmness or to happen once again depends on the way one social scene or life situation is set up. If probability if high this rigid state may influence the affective ambiance to be delayed and distributed over time. This is the core meaning of density - to influence significantly interpersonal impact when the emotions are communicated when the same scene is appeared or set up again."> Density: </a>');
 	define ("POSITIVE", '<a title="Belongs to a dimension of a rewarding emotional responses, which are primary oriented to experience pleasure and satisfaction states, the general biological feedback of a well-being.">Rewarding states</a>');	
@@ -18,7 +22,7 @@
 	define ("RATIO", '<a title="The general proportion between negative and positive emotional experience that shape your level of awareness.">Emotional pay-off:</a>');		
 	define ("CONTROL", '<a title="Control over proportion between negative and positive emotional experience and emotional contemplation about overall state and perspectives.">Affective management:</a>');
 	define ("SECONDARY", '<a title=" Shows your performance in percentage concerning some of your emotional attitudes and levels of affective management."><b>Secondary properties:</b></a>');	
-	define ("ATTITUDES", '<a title="This topic consist brief description of related psychological concepts that reflect your choices of tests statements."><b>Personality Dimensions:</b></a>');
+	define ("ATTITUDES", '<a title="Preference significance to certain types of  emotion related scenes that reflect your profit, risks and costs."><b>Types of emotion related scenes:</b></a>');
 	define ("MEANING", 'The botton "BACK" is inactive here <br/>to prevent damage on database.');
 	define ("CONTRIBUTION", '<a title="All members of programming team have right to change the code in order to improve or contribute to further development of testing model only with agreement of the author."><b>PHP & JS programming: Hristo Venev, Hristo Minkov,</br>Anton Denev, Valyo Yolovski and Kristian Cuklev.<br/>Created by Krasen Ferdinandov, psychologist.</br></a>');	
 	define ("ID", 'Thank you for the confirmation and your participation!');
@@ -27,7 +31,8 @@
 	define ("CHOICE_NUMBER", 4);
 	define ("EMOTIONS_NUMBER", 90);
 	define ("DOMAINS_NUMBER", 10);
-	define ("STATES_NUMBER", 60);
+	define ("STATES_NUMBER", 24);
+	define ("STATIS_NUMBER", 60);
 	define ("MINISCRIPTS_NUMBER", 45);
 	define ("TRAITS_NUMBER", 106);
 		

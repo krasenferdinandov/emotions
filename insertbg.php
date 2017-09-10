@@ -17,7 +17,9 @@ for($i = 0; $i<EMOTIONS_NUMBER; $i++){
 
 for($a = 0; $a<STATES_NUMBER; $a++){
 	if(isset($_POST['state_'.$a])){
-		$pdo->exec("INSERT INTO states_stat VALUES ($id,$a);");
+	$s_slider = intval($_POST['s_slider_'.$a]);
+	validateInt($s_slider);
+		$pdo->exec("INSERT INTO states_stat VALUES ($id,$a,$s_slider);");
 	}
 }
 	$timeStarted = mysql_escape_string($_POST['timeStarted']);

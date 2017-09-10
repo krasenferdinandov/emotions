@@ -1,6 +1,6 @@
 <?php
 require "headerbg.php";
-echo '<center>Раздел: "Eмоционален стил"<center/>';
+echo '<center>"Типове емоционални събития"<center/>';
 $count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
 $count = 0;
 $last = -1;
@@ -18,70 +18,35 @@ while($r = $count_data->fetch(PDO::FETCH_BOTH))
 echo '<table class="borders">';
 echo '<tr>
 <th><a title=Id>№</a></th>
-<th>Измерения</th>
-<th>Проценти</th>
+<th>Вид сцена</th>
+<th>Важност</th>
 </tr>';
-
-/*<th><a title=" (S) Брой свързани с емоции изречения за психологически показатели: (J) Брой избрани твърдения за леви или десни убеждения: (D) Сума от плътностите на емоциите, свързани с изречения за психологически показатели.">Покaзатели</a></th>
-<th><a title="Type of Magnification">Тип увеличаване<a/></th>
-*/
 
 for($k = 0; $k<$count; $k++)
 { 
 	$current_id = $id_array[$k];
-		
-	$axis_stat=array();
-	$axis_stat_count=0;
-	$axis_list=array();
-		
 	$sel_states = $pdo->query("SELECT * FROM states_stat WHERE id=$current_id");
-	while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
-		$state_id = $r['state_id'];
-		$data = $pdo->query("SELECT bg_name, axis_id FROM statements WHERE id = $state_id LIMIT 1");
-		$r = $data->fetch(PDO::FETCH_BOTH);
+	while($rs = $sel_states->fetch(PDO::FETCH_BOTH)){
+	$s_id=$rs['state_id'];
+	$s_sl=$rs['s_slider'];
+	
+		$data = $pdo->query("SELECT bg_name, axis_id FROM statements WHERE id = $s_id LIMIT 1");
+		while($r = $data->fetch(PDO::FETCH_BOTH)) {
+		$axis_id = intval($r['axis_id']);
 		$bg_name = $r['bg_name'];
-		$axis = $r['axis_id'];
 		
-		if(!isset($axis_stat[$axis])){
-			$axis_stat[$axis] = 0;
-			$axis_list[$axis] = array();
+		$data1 = $pdo->query("SELECT bg_name, bg_desc FROM axis WHERE id=$axis_id");
+		$re = $data1->fetch(PDO::FETCH_BOTH);
+		$axis_name = $re['bg_name'];
+		$axis_desc = $re['bg_desc'];
 		}
-
-		
-		$axis_stat[$axis] += 1;
-		$axis_list[$axis][] = $bg_name;
-		$axis_stat_count += 1;
+	echo '<tr>
+	<td>'.$current_id.'</td>
+	<td><a title="'.quot($axis_name).', '.quot($axis_desc).'">'.quot($bg_name).'</a></td>
+	<td><center>'.$s_sl.'0%<center/></td>
+	</tr>';	
 	}
-	
-	$axis_bg_name = "";
-	$axis_count_total=0;
-	
-	$all_axis = $pdo->query("SELECT id,bg_name,bg_desc FROM axis ORDER BY id");
-				
-		while($r = $all_axis->fetch(PDO::FETCH_BOTH)) {
-			$axis_id = $r['id'];
-			$name = $r['bg_name'];
-			$desc = $r['bg_desc'];
-						
-			if(!isset($axis_stat[$axis_id])) {
-				continue;
-			}else{
-				$axis_bg_name = '<a title="'.quot($desc).'">'.quot($name).'</a>';
-			}
-						
-			$axis_list[$axis_id]=array_unique($axis_list[$axis_id]);
-			$data = $pdo->query("SELECT COUNT(stat.id) FROM states_stat stat join statements s on stat.state_id = s.id where s.axis_id = $axis_id and stat.id = $current_id");
-			$r = $data->fetch(PDO::FETCH_BOTH);
-			$axis_total = $r['COUNT(stat.id)'];
-			
-			
-			echo '<tr>
-			<td>'.$current_id.'</td>
-			<td>'.$axis_bg_name.'<td>
-			'.$axis_total.'0%
-			</tr>';	
-		}
-	}
+}
 echo '</table>';
 require "end.php";
 ?>

@@ -113,6 +113,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 $sel_states = $pdo->query("SELECT * FROM states_stat WHERE id=$id");
 while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$state_id = $r['state_id'];
+	$s_slider = $r['s_slider'];
 	$data = $pdo->query("SELECT bg_name, axis_id FROM statements WHERE id = $state_id LIMIT 1");
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$bg_name = $r['bg_name'];
@@ -219,7 +220,7 @@ if($count_pos==0) $count_pos=1;
 if($count_neg==0) $count_neg=1;
 if($count_ambi==0) $count_ambi=1;
 //За премахване на стойностите на слайдера от съотношението между + и - емоции замени "sum_pos/neg..." със "count_pos/neg..."
-$table_result.= '<tr><td style="border: 1px solid #c0c0c0;">'.RATIO.'</td>';
+$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>'.RATIO.'<b/></td>';
 
 $score_neg=scores_level($sum_neg, $count_neg-$count_ambi);
 $score_pos=scores_level($sum_pos, $count_pos-$count_ambi);
@@ -254,7 +255,7 @@ $ambi = percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi);
 //$table_result.= '<td style="border: 1px solid #c0c0c0;">* '.$som_name.'<br>- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg).'%</td>';
 $table_result.= '<td style="border: 1px solid #c0c0c0;">- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.AMBIVALENT.': '.percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi).'%</td>';
 
-$table_result.= '<tr><td style="border-right: none; border: 1px solid #c0c0c0;">'.CONTROL.'</td>'.'<td style="border-right: none; border: 1px solid #c0c0c0;"><a title="'.quot($bg_desc).'">* '.quot($bg_name).'</a></br></td><tr/>';
+$table_result.= '<tr><td style="border-right: none; border: 1px solid #c0c0c0;">'.CONTROL.'</td>'.'<td style="border-right: none; border: 1px solid #c0c0c0;"><a title="'.quot($bg_desc).'"><b>* '.quot($bg_name).'<b/></a></br></td><tr/>';
 
 $table_result .= '</td><tr/>';
 
@@ -281,26 +282,33 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 	foreach($axis_list[$axis_id] as $axis){
 		$chosen_states .= $axis . "\n";
 	}
-	
 	$level_axis = percent(sizeof($axis_list[$axis_id]), $axis_total);
-	$label_axis = "";
-	if ($level_axis < 30){
-		$label_axis = 'Ниска';
-	}
-	if ($level_axis >= 30 && $level_axis < 60){
-		$label_axis = 'Среднa';
-	}
-	if ($level_axis >= 60){
-		$label_axis = 'Високa';
-	}
 	
-	$table_result.= '<br><a title="'.quot($bg_desc).'">* <b/>'.quot($bg_name).'<a title="'.$chosen_states.'">, '.$level_axis.'<a title="Значението, представено с приблизителност в проценти, показва колко предпочитан е дадения показател от избрания тест.">% Обща изразеност</a></br></b>'."\n";
+	$table_result.= '<br><a title="'.quot($bg_desc).'">* <b/>'.quot($bg_name).'<a title="'.$chosen_states.'">, '.$level_axis.'<a title="Значението, представено с приблизителност в проценти, показва колко предпочитан e даденият тип емоционално натоварени сцени.">% Обща изразеност</a></br></b>'."\n";
 	}
+$table_result .= "<br/><center><b>Списък с избрани теми:<center/>";
+$sel_states = $pdo->query("SELECT * FROM states_stat WHERE id=$id");
+while($r3 = $sel_states->fetch(PDO::FETCH_BOTH)){
+	$s_id=$r3['state_id'];
+	$s_sl=$r3['s_slider'];
 	
+	$data_s = $pdo->query("SELECT en_name, bg_name, axis_id FROM statements WHERE id = $s_id LIMIT 1");
+	$rs = $data_s->fetch(PDO::FETCH_BOTH);
+	$axis_id = intval($rs['axis_id']);
+	$bg_name = $rs['bg_name'];
+	
+	$data_sc = $pdo->query("SELECT bg_name, bg_desc FROM axis WHERE id=$axis_id");
+	$rsc = $data_sc->fetch(PDO::FETCH_BOTH);
+	$axis_name = $rsc['bg_name'];
+	$axis_desc = $rsc['bg_desc'];
+	
+	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>- '.quot($bg_name).'</a></td>';
+	$table_result .= '<td style="border: 1px solid #c0c0c0;">'.SIGNIFICANCE.'<b>'.$s_sl.'<b/></td></tr>';
+}	
 $table_result.='</td><tr/>';
 $table_result .= '<center/></table>';
 echo $table_result;
-echo '</br><b>ПРОЧЕТИ ПОВЕЧЕ ЗА ПОКАЗАТЕЛИТЕ ТУК:<form action="http://testrain.info/download/Full_Description_bg.pdf" target="_blank" method="get"><input type="submit" value="Пълно описание"></form><b/><br/>';
+//echo '</br><b>ПРОЧЕТИ ПОВЕЧЕ ЗА ПОКАЗАТЕЛИТЕ ТУК:<form action="http://testrain.info/download/Full_Description_bg.pdf" target="_blank" method="get"><input type="submit" value="Пълно описание"></form><b/><br/>';
 echo '</br>'.CONTRIBUTION.'</br>';
 require "end.php";
 ?>

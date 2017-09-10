@@ -211,7 +211,7 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 		$label_axis = 'High';
 	}
 	
-	$table_result.= '<br><a title="'.quot($en_desc).'">* <b/>'.quot($en_name).'<a title="'.$chosen_states.'">, '.$level_axis.'%<a title="Shows what is the significance of one personality property compare to other psychological variables from the test."> General significance </a></br></b>'."\n";
+	$table_result.= '<br><a title="'.quot($en_desc).'">* <b/>'.quot($en_name).'<a title="'.$chosen_states.'">, '.$level_axis.'%<a title="Shows what is the significance of types of emotion related scenes."> General significance </a></br></b>'."\n";
 	
 }
 $table_result .= '<center/></table>';

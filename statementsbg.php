@@ -1,6 +1,6 @@
 <?php
 require "headerbg.php";
-echo '<form method="POST" action="insertbg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+echo '<form method="POST" action="valuebg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
 //echo 'Начало: '.$_POST['timeStarted'];
 $table = '';
@@ -8,7 +8,7 @@ $table .= '<table>';
 echo '<center><table class="borders"><tr>';
 $table .= '</tr>';
 
-	if($_POST['choice'] == '1') {
+if($_POST['choice'] == '1') {
 		echo '<input type="hidden" value="1" name="choice"/>';
 		echo '<p>'.CHOOSE_STATES . '<br/>';
 	}

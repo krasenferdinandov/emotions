@@ -5,9 +5,9 @@ echo '<table class="borders">';
 echo '<tr><th>Id</th>';
 
 
-for($i=0;$i<STATES_NUMBER;$i++){
-	$states_data = $pdo->query("select d.label from statements di 
-		join axis d on di.axis_id=d.id
+for($i=0;$i<STATIS_NUMBER;$i++){
+	$states_data = $pdo->query("select d.label from statiments di 
+		join axes d on di.axis_id=d.id
 		where di.id = ". $i . "");
 		
 	$name = "WRONG";
@@ -40,11 +40,11 @@ for($k = 0; $k<$count; $k++)
 	$current_id = $id_array[$k];
 	$state_row_array = array();
 
-	for($i = 0; $i<STATES_NUMBER; $i++)
+	for($i = 0; $i<STATIS_NUMBER; $i++)
 	{
 		$state_row_array[] = 0;
 	}
-$data = $pdo->query("SELECT * FROM states_stat WHERE id = $current_id LIMIT 1");
+$data = $pdo->query("SELECT * FROM statis_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 if(!isset($id)) continue;
@@ -52,13 +52,13 @@ if(!isset($id)) continue;
 if(!isset($id)) {
 				continue;
 			}else{
-			$data = $pdo->query("SELECT state_id FROM states_stat WHERE id = $current_id");
+			$data = $pdo->query("SELECT state_id FROM statis_stat WHERE id = $current_id");
 			while($r = $data->fetch(PDO::FETCH_BOTH)) {
 				$s_id = $r['state_id'];
 				if($s_id!=-1) $state_row_array[$s_id] = 1;
 			}
 			echo '<tr><td><center>'.$current_id.'</center></td>';
-			for($i=0;$i<STATES_NUMBER;$i++)
+			for($i=0;$i<STATIS_NUMBER;$i++)
 				if($state_row_array[$i] != 1)
 					echo '<td><center>0</center></td>';
 				else echo '<td><center><b>1<b/></center></td>';			

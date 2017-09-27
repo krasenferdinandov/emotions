@@ -1,0 +1,36 @@
+<script>
+console.log(window.size);
+
+function place_words() {
+	var center_x = window.innerWidth / 2 - 40;
+	var center_y = window.innerHeight / 2;
+	if (center_y < 460) center_y = 460;
+	
+	var angles = [-30, 20, 50, 90, 118, 145, 180, 210, 235, 270, 300]; 
+	//[-30 happiness, 20 love, 50 exitement, 90 pride, 118 fear, 145 anger, 180 sadness, 210 boredom, 235 contempt, 270 shame, 300 cordiality, ]; 
+	for(i=0; i<11; ++i) 
+	angles[i] *= Math.PI/180;
+	
+	for(domain=0; domain<11; ++domain)
+		for(r=0; r<9; ++r)
+		{
+			id = domain * 9 + r;
+			word = document.getElementById(id);
+			word.style.position = "absolute";
+			word.style.left = Math.floor(center_x + Math.cos(angles[domain]) * (30 * r + 150)) + "px";
+			// <през какво разстояние да са думите>*r + <колко от центъра> по оста X
+			word.style.top = Math.floor(center_y - Math.sin(angles[domain]) * (30 * r + 150)) + "px";
+			// <през какво разстояние да са думите>*r + <колко от центъра> по оста Y
+		}
+	button = document.getElementById("-1");
+	button.style.position = "absolute";
+	button.style.left = center_x + "px";
+	button.style.top = center_y + "px";
+	//button.style.text_align = "center"; за изравняване в центъра
+}
+djurkSpeed = 12; // колко бързо джурка
+djurkAngleSpeed = 5;//колко да е ъгловата скорост на джуркане
+angles=[];
+a_accel=[];
+elements_moving = document.getElementsByClassName("moving");
+</script>

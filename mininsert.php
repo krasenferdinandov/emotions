@@ -14,7 +14,8 @@ $m = $row['id'];
 
 for($i = 0; $i<MINISCRIPTS_NUMBER; $i++){
 	if(isset($_POST['miniscript'.$i])) {
-		$pdo->exec("INSERT INTO miniscripts_stat VALUES ($id,$i, NOW())");
+		$timing = $_POST['time-miniscript' . $i];
+		$pdo->exec("INSERT INTO miniscripts_stat VALUES ($id,$i,'$timing')");
 	}
 }
 if(isset($_POST['manag']) && isset($_POST['posi']) && isset($_POST['nega']) && isset($_POST['ambi'])){

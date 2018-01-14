@@ -1,12 +1,8 @@
 <?php
 require "headerbg.php";
-require "js/blockback.js";
 require "js/toggle.js";
-echo '<form method="POST" action="mininsertbg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+echo '<form id="the_form" method="POST" action="mininsertbg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 //Показва съобщение за резултата с текущото ID
-if(!array_key_exists('id', $_GET)){
-	die();
-}
 $id = $_GET['id'];
 validateInt($id);
 
@@ -28,6 +24,9 @@ $sum_ambi=0;$count_ambi=0;
 $axis_stat=array();
 $axis_stat_count=0;
 $axis_list=array();
+$axes_stat=array();
+$axes_stat_count=0;
+$axes_list=array();
 $miniscript_condition='domainX_id=-1';
 
 $sel_emotions = $pdo->query("SELECT * FROM emotions_stat WHERE id=$id");
@@ -90,6 +89,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 }
 $table_result.= '<tr><th colspan="2"><p>'.TIP.'</th><tr/>';
 
+//Demorest
 $sel_states = $pdo->query("SELECT * FROM states_stat WHERE id=$id");
 while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$state_id = $r['state_id'];
@@ -107,12 +107,30 @@ while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$axis_list[$axis][] = $bg_name;
 	$axis_stat_count += 1;
 }
+//RJD
+$sel_statis = $pdo->query("SELECT * FROM statis_stat WHERE id=$id");
+while($r = $sel_statis->fetch(PDO::FETCH_BOTH)){
+	$stati_id = $r['stati_id'];
+	$data_st = $pdo->query("SELECT bg_name, axes_id FROM statiments WHERE id = $stati_id LIMIT 1");
+	$r = $data_st->fetch(PDO::FETCH_BOTH);
+	$bg_name = $r['bg_name'];
+	$axes = $r['axes_id'];
+	
+	if(!isset($axes_stat[$axes])){
+		$axes_stat[$axes] = 0;
+		$axes_list[$axes] = array();
+	}
+	
+	$axes_stat[$axes] += 1;
+	$axes_list[$axes][] = $bg_name;
+	$axes_stat_count += 1;
+}
 
 $data = $pdo->query('SELECT id,bg_name,bg_desc,domain1_id,domain2_id FROM miniscripts WHERE ( '.str_replace('X', '1', $miniscript_condition).' ) AND ( '.str_replace('X', '2', $miniscript_condition).' );');
 while($r = $data->fetch(PDO::FETCH_BOTH)){
 		$m=$r['id'];
 
-$table_result .= '<th colspan="1" align="left" style="border: 0px solid #c0c0c0;"><input id="script_'.$m.'" type="checkbox" name="miniscript'.$m.'" value="1">';
+$table_result .= '<th colspan="1" align="left" style="border: 0px solid #c0c0c0;"><input class="timed" id="script_'.$m.'" type="checkbox" name="miniscript'.$m.'" value="1">';
 $table_result .= '<label for="script_'.$m.'">'.$r['bg_name'].'<p id='.$m.' class="desc-res" style="display:none" align="right">'.quot($r['bg_desc']).'</p> <td><button type="button" onclick="myFunction('.$m.')">Значение</button></td></label></th></tr>';
 }
 $table_result.= '<tr><th colspan="2"><center><br/><b>'.SECONDARY.'<center/></th><tr/>';
@@ -215,10 +233,53 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 	$table_result.= '<br><a title="'.quot($bg_desc).'">* <b/>'.quot($bg_name).'<a title="'.$chosen_states.'">, '.$level_axis.'% <a title="Значението, представено с приблизителност в проценти, показва колко предпочитан e даденият тип емоционално натоварени сцени."> Обща изразеност</a></br></b>'."\n";
 	
 }
+//RJD Показва процентите от "statiments"
+$table_result.= '<tr><td colspan="2"><center><br/><b>'.STYLE.'<center/><tr/>';
+$axes_count_total=0;
+$sel_axes = $pdo->query("SELECT id,bg_name,bg_desc FROM axes ORDER BY id");
+$table_result.='<tr><td style="border: 1px solid #c0c0c0;" colspan="2">';
+while($r = $sel_axes->fetch(PDO::FETCH_BOTH)) {
+	$axes_id = $r['id'];
+	$bg_name = $r['bg_name'];
+	$bg_desc = $r['bg_desc'];
+	
+	if(!isset($axes_stat[$axes_id])) {
+		continue;
+	}
+	$axes_list[$axes_id]=array_unique($axes_list[$axes_id]);
+	$data = $pdo->query("SELECT COUNT(id) FROM statiments WHERE axes_id=$axes_id");
+	$r = $data->fetch(PDO::FETCH_BOTH);
+	$axes_total = $r['COUNT(id)'];
+	$data = $pdo->query("SELECT COUNT(stet.id) FROM statis_stat stet join statiments s on stet.stati_id = s.id where s.axes_id = $axes_id and stet.id = " . $id . "");
+			$r = $data->fetch(PDO::FETCH_BOTH);
+			$axes_total_d = $r['COUNT(stet.id)'];
 
+//Показва избраните изречения за всеки "axis"
+	$chosen_statis = '';
+	foreach($axes_list[$axes_id] as $axes){
+		$chosen_statis .= $axes . "\n";
+	}
+
+	$level_axes = percent(sizeof($axes_list[$axes_id]), $axes_total);
+	$label_axes = "";
+	if ($level_axes < 30){
+		$label_axes = 'Low';
+	}
+	if ($level_axes >= 30 && $level_axes < 60){
+		$label_axes = 'Moderate';
+	}
+	if ($level_axes >= 60){
+		$label_axes = 'High';
+	}
+	
+	$table_result.= '<br><a title="'.quot($bg_desc).'">* <b/>'.quot($bg_name).'<a title="'.$chosen_statis.'">, '.$level_axes.'%<a title="Shows what is the significance of one personality property compare to other psychological variables from the test."> General significance </a></br></b>'."\n";
+}
 $table_result .= '<center/></table>';
 echo $table_result;
 echo '</br><a title="">Потвърди резултатите и направените избори: </a><input type="submit" value="Потвърждение"/><br/>';
 echo '<br>'.CONTRIBUTION.'</br>';
+echo '<script src="js/collectTiming.js"></script>';
+echo '<script src="js/refreshBack.js"></script>';
+echo '<script>refreshBack("emotionsbg.php")</script>';
 require "end.php";
 ?>

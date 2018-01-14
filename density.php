@@ -1,17 +1,30 @@
 <?php
-require "header.php"; 
-//echo 'Started at: '.$_POST['timeStarted'];
-echo '<form method="POST" action="statements.php" enctype="multipart/form-data">';
-	echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
+	require "header.php"; 
+	//echo 'Started at: '.$_POST['timeStarted'];
+	echo '<form method="POST" action="statements.php" enctype="multipart/form-data">';
+	if (array_key_exists('timeStarted', $_POST))
+	{
+		echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
+	} 
+	else
+	{
+		redirect ('http://testrain.info/emotions.php');
+	}
 	$table = '<center>';
 	$table .= '<table>';
 	$table .= '<tr>';
-	$table .= '<th colspan="5"><p><center>'.HOW_FAST.'<center/></th>';
-	//$table .= '<th>'.EMOTION.'</th>';
+	$table .= '<th colspan="5">'.HOW_FAST.'</th>';
 	echo '<input type="hidden" value="1" name="choice"/>';
-	
 	$table .= '</tr>';
-
+	
+	for($i = 0; $i<DOMAINS_NUMBER; $i++)
+	{
+		if(!isset($_POST['time-' . $i])) continue;
+		$timing = $_POST['time-' . $i];
+		//echo $i . ' -> ' . $timing . '<br/>';
+		echo '<input type="hidden" value="'.$timing.'" name="domaintiming_'.$i.'"/>';
+		
+	}
 	$count=0;
 	for($i = 0; $i<EMOTIONS_NUMBER; $i++)
 	{
@@ -36,11 +49,6 @@ echo '<form method="POST" action="statements.php" enctype="multipart/form-data">
 		$table .= '<td>'.SLOWEST.'</td>';
 		$table .= '</tr>';	
 	}
-	/*$table .= '<tr><td colspan="5"><p align="center"><input type="submit" value="'.NEXT.'"/></td></tr></table></p>';
-	echo $table;
-	echo '</form>';
-	require_once('js/numbers.js');*/
-	
 	//if($count>=2 && $count<=6) {
 	if($count>=2) {
 		$table .= '<tr><td colspan="5"><p align="center"><input type="submit" value="'.NEXT.'"/></td></tr></table></p>';
@@ -48,7 +56,9 @@ echo '<form method="POST" action="statements.php" enctype="multipart/form-data">
 	}else{
 		echo NOT_ENOUGH_OR_TOO_MANY;
 	}
-	echo '</form>';	
+	echo '</form>';
 require_once('js/numbers.js');
+echo '<script src="js/refreshBack.js"></script>';
+echo '<script>refreshBack("emotionsbg.php")</script>';
 require "end.php";
 ?>

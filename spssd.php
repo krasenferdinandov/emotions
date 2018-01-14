@@ -210,10 +210,12 @@ if(!isset($id)) continue;
 	//Показва вместо "1/0" предимството и плътността за даденото емоционално семейство.
 		else{
 			$mas = "";
+			$e_slider = "";
 			$sel_emotions = $pdo->query("SELECT * FROM emotions_stat e join emotions em on em.id = e.emotion_id WHERE e.id = " . $current_id . "");
 			$emo_count = 0;
 			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 					$mas = $r1['emotion_id'];
+					$e_slider = $r1['e_slider'];
 					if(floor($mas/9) != $i)continue;
 					$string_id = $string[$mas];
 					$tension_id = $tension[$mas];
@@ -229,7 +231,8 @@ if(!isset($id)) continue;
 						}
 						
 			}
-			echo '<td><center><b>'.round(($e_sl),0).'<b/></center></td>';
+			//echo '<td><center><b>'.round(($e_sl),0).'<b/></center></td>';
+			echo '<td><center><b>'.$e_slider.'<b/></center></td>';
 		}
 	echo '<td><center>'.$manag.'</center></td>';
 
@@ -328,7 +331,8 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 			while($r = $sel_scripts->fetch(PDO::FETCH_BOTH)){
 				$count_s+=1;
 			}
-		$magnification_n = round(($count_e * ($density_em1  + $density_em2))/($count_s), 0) ; 
+		//$magnification_n = round(($count_e * ($density_em1  + $density_em2))/($count_s), 0) ;
+		$magnification_n = round(($count_e * ($e_sl_1  + $e_sl_2))/($count_s), 0) ;		
 		}
 			}
 			echo '<td><center><b>'.$magnification_n.'<b/></center></td>';

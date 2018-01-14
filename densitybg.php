@@ -1,8 +1,15 @@
 <?php
-require "headerbg.php"; 
-//echo 'Started at: '.$_POST['timeStarted'];
-echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data">';
-	echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
+	require "headerbg.php"; 
+	//echo 'Started at: '.$_POST['timeStarted'];
+	echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data">';
+	if (array_key_exists('timeStarted', $_POST))
+	{
+		echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
+	} 
+	else
+	{
+		redirect ('http://testrain.info/emotions.php');
+	}
 	$table = '<center>';
 	$table .= '<table>';
 	$table .= '<tr>';
@@ -10,6 +17,14 @@ echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data
 	echo '<input type="hidden" value="1" name="choice"/>';
 	$table .= '</tr>';
 
+	for($i = 0; $i<DOMAINS_NUMBER; $i++)
+	{
+		if(!isset($_POST['time-' . $i])) continue;
+		$timing = $_POST['time-' . $i];
+		//echo $i . ' -> ' . $timing . '<br/>';
+		echo '<input type="hidden" value="'.$timing.'" name="domaintiming_'.$i.'"/>';
+		
+	}
 	$count=0;
 	for($i = 0; $i<EMOTIONS_NUMBER; $i++)
 	{
@@ -20,7 +35,6 @@ echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data
 		
 		if(!isset($_POST[$domain])) continue;
 		if($_POST[$domain] != $i) continue;
-		
 		$count+=1;
 		$data = $pdo->query("SELECT bg_name, en_name FROM emotions WHERE id=$i");
 		$result=$data->fetch(PDO::FETCH_BOTH);
@@ -35,11 +49,6 @@ echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data
 		$table .= '<td>'.SLOWEST.'</td>';
 		$table .= '</tr>';
 	}
-	/*$table .= '<tr><td colspan="5"><p align="center"><input type="submit" value="'.NEXT.'"/></td></tr></table></p>';
-	echo $table;
-	echo '</form>';
-	require_once('js/numbers.js');*/
-	
 	//if($count>=2 && $count<=6) {
 	if($count>=2) {
 		$table .= '<tr><td colspan="5"><p align="center"><input type="submit" value="'.NEXT.'"/></td></tr></table></p>';
@@ -48,6 +57,8 @@ echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data
 		echo NOT_ENOUGH_OR_TOO_MANY;
 	}
 	echo '</form>';	
-	require_once('js/numbers.js');
+require_once('js/numbers.js');
+echo '<script src="js/refreshBack.js"></script>';
+echo '<script>refreshBack("emotionsbg.php")</script>';
 require "end.php";
 ?>

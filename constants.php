@@ -9,6 +9,7 @@
 	define ("FASTEST", '<a title="It means that your condition is very easy to overcome and lasts very short time.">Very Quickly</a>');
 	define ("SLOWEST", '<a title="It means that your condition is difficult to overcome and lasts long time.">Very Slowly</a>');
 	define ("CHOOSE_STATES", '<b><a title="These words reflect what are the properties of celebratory, ambivalent and harmatic emotion related types of scenes.">Choose only these words, that relate<br/> MOST PRECISELY to selected emotions.</b></a>');
+	define ("CHOOSE_STATIS", '<b><a title="These statements will test your sound opinion about what is your actual emotional behavior.">Choose Only These statements which describe actual emotional behavior the Most Accurately.</b></a>');
 	define ("HOW_LONG", '<a title="It is about enduring of your own feelings or emotional conditions?">How meaningful are these words for you?</a>');
 	define ("VERY", '<a title="Focus or Strength of will is at stake.">A lot of meaning</a>');
 	define ("LITTLE", '<a title="No focus or strength of will is at stake.">Meaningless</a>');
@@ -23,6 +24,7 @@
 	define ("CONTROL", '<a title="Control over proportion between negative and positive emotional experience and emotional contemplation about overall state and perspectives.">Affective management:</a>');
 	define ("SECONDARY", '<a title=" Shows your performance in percentage concerning some of your emotional attitudes and levels of affective management."><b>Secondary properties:</b></a>');	
 	define ("ATTITUDES", '<a title="Preference significance to certain types of  emotion related scenes that reflect your profit, risks and costs."><b>Types of emotion related scenes:</b></a>');
+	define ("STYLE", '<a title="This topic consist brief description of related psychological concepts that reflect your choices of tests statements."><b>Emotional Style Properties:</b></a>');
 	define ("MEANING", 'The botton "BACK" is inactive here <br/>to prevent damage on database.');
 	define ("CONTRIBUTION", '<a title="All members of programming team have right to change the code in order to improve or contribute to further development of testing model only with agreement of the author."><b>PHP & JS programming: Hristo Venev, Hristo Minkov,</br>Anton Denev, Valyo Yolovski and Kristian Cuklev.<br/>Created by Krasen Ferdinandov, psychologist.</br></a>');	
 	define ("ID", 'Thank you for the confirmation and your participation!');
@@ -35,7 +37,14 @@
 	define ("STATIS_NUMBER", 60);
 	define ("MINISCRIPTS_NUMBER", 45);
 	define ("TRAITS_NUMBER", 106);
-		
+	function redirect($url){
+		if (headers_sent()){
+			die('<script type="text/javascript">window.location.href="' . $url . '";</script>');
+		}else{
+			header('Location: ' . $url);
+			die();
+		}    
+	} // to headers!!!!!	
 	function validateInt($a){
 		if(!is_numeric($a)){
 			header("HTTP/1.1 400 Bad Request");

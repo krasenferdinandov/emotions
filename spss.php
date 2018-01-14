@@ -44,6 +44,7 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 		$bg_name = $r["bg_name"];
 	}
 	echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+	//echo '<td><center>D'.$i.', '.$bg_name.'</center></td>';
 }
 //------------------>
 echo '<td><center><b>Affective Management, Осъзнатост</b></center></td>';
@@ -71,6 +72,7 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	}
 
 	echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+	//echo '<td><center>S'.$i.', '.$bg_name.'</center></td>';
 }
 
 echo '</tr>';
@@ -107,7 +109,8 @@ if(!isset($id)) continue;*/
 $data = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
-if($id>102){
+//if($id>102){
+if(!isset($id)) continue;
 
 	for($i = 0; $i<EMOTIONS_NUMBER; $i++)
 	{
@@ -243,7 +246,7 @@ if($id>102){
 	
 				
 	echo '</tr>';
-	}
+	//}
 }
 echo '</table>';
 require "end.php";

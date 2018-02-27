@@ -1,20 +1,19 @@
 <?php
 require "headerbg.php";
-echo '<form method="POST" action="statimentsbg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
-if (array_key_exists('timeStarted', $_POST))
+echo '<form method="POST" action="indb2bg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+if (array_key_exists('id', $_POST))
 	{
-		echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
+		echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
+		//echo '<br>ID: ' . $_POST['id'];
 	} 
 	else
 	{
-		redirect ('http://testrain.info/emotions.php');
+		redirect ('photoesbg.php');
 	}
-echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
-//echo 'Started at: '.$_POST['timeStarted'];
 	$table = '<center>';
 	$table .= '<table>';
 	$table .= '<tr>';
-	$table .= '<th colspan="5"><p><center>'.HOW_LONG.'<center/></th>';
+	$table .= '<th colspan="5"><p><center><b>ПЕТА СТЪПКА:</b><br/>'.HOW_LONG.'<center/></th>';
 	echo '<input type="hidden" value="1" name="choice"/>';
 	$table .= '</tr>';
 
@@ -56,6 +55,6 @@ echo $table;
 echo '</form>';	
 require_once('js/numbers.js');
 echo '<script src="js/refreshBack.js"></script>';
-echo '<script>refreshBack("emotionsbg.php")</script>';
+echo '<script>refreshBack("photoesbg.php")</script>';
 require "end.php";
 ?>

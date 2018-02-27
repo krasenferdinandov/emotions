@@ -12,33 +12,44 @@ for($i = 0; $i<EMOTIONS_NUMBER; $i++){
 	if(!isset($_POST['emotion_'.$i])) continue;
 	$e_slider = intval($_POST['e_slider_'.$i]);
 	validateInt($e_slider);
-	$data = $pdo->query("SELECT domain_id FROM emotions WHERE id=$i");
-	$row = $data->fetch(PDO::FETCH_BOTH);
-	$timing = $_POST['domaintiming_'.$row['domain_id']];
-	//echo $i . ' -> ' . $timing . '<br/>';
-	$pdo->exec("INSERT INTO emotions_stat VALUES ($id,$i,$e_slider,'$timing');");
-}
-
-for($a = 0; $a<STATES_NUMBER; $a++){
-	if(isset($_POST['state_'.$a])){
-		$s_slider = intval($_POST['s_slider_'.$a]);
-		validateInt($s_slider);
-		$timing = $_POST['statestiming_' . $a];
-		//echo $a . ' -> ' . $timing . '<br/>';
-		$pdo->exec("INSERT INTO states_stat VALUES ($id,$a,$s_slider,'$timing');");
-	}
-}
-for($o = 0; $o<STATIS_NUMBER; $o++){
-	if(isset($_POST['stati_'.$o])){
-		$timing = $_POST['time-stati_' . $o];
-		//echo $o . ' -> ' . $timing . '<br/>';
-		$pdo->exec("INSERT INTO statis_stat VALUES ($id,$o,'$timing');");
-	}
-}
+	$pdo->exec("INSERT INTO emotions_stat VALUES ($id,$i,$e_slider);");
+}	
 
 $timeStarted = mysql_escape_string($_POST['timeStarted']);
-$pdo->exec("INSERT INTO choice_stat VALUES ($id, '$timeStarted', NOW() );");
-	
-echo '<meta http-equiv="Refresh" content="0;show.php?id='.$id.'" />';
+	if($_POST['choice']== '0') {
+		$pdo->exec("INSERT INTO choice_stat VALUES ($id,'0', '$timeStarted', NOW(), NOW() );");
+		for($a = 0; $a<STATES_NUMBER; $a++){
+			if(isset($_POST['state_'.$a])){
+				$pdo->exec("INSERT INTO statis_stat VALUES ($id,$a);");
+			}
+		}
+	echo '<meta http-equiv="Refresh" content="0;showi.php?id='.$id.'" />';
+	}
+	if($_POST['choice']== '1') {
+		$pdo->exec("INSERT INTO choice_stat VALUES ($id,'1','$timeStarted', NOW(), NOW() );");
+		for($a = 0; $a<STATES_NUMBER_1; $a++){
+			if(isset($_POST['state_'.$a])){
+				$pdo->exec("INSERT INTO states_stat VALUES ($id,$a);");
+			}
+		}
+	echo '<meta http-equiv="Refresh" content="0;show.php?id='.$id.'" />';
+	}
+	if($_POST['choice']== '2') {
+		$pdo->exec("INSERT INTO choice_stat VALUES ($id,'2','$timeStarted', NOW(), NOW() );");
+		for($a = 0; $a<STATES_NUMBER_2; $a++){
+			if(isset($_POST['state_'.$a])){
+				$pdo->exec("INSERT INTO statys_stat VALUES ($id,$a);");
+			}
+		}
+	echo '<meta http-equiv="Refresh" content="0;showy.php?id='.$id.'" />';
+	}
+	if($_POST['choice']== '3') {
+		$pdo->exec("INSERT INTO choice_stat VALUES ($id,'3','$timeStarted', NOW(), NOW() );");
+		for($t = 0; $t<TRAITS_NUMBER; $t++){
+			if(!isset($_POST['trait_'.$t])) continue;
+			$pdo->exec("INSERT INTO traits_stat VALUES ($id,$t);");
+		}
+	echo '<meta http-equiv="Refresh" content="0;showu.php?id='.$id.'" />';
+	}
 require "end.php";
 ?>

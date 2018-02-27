@@ -1,16 +1,15 @@
 <?php
 require "header.php"; 
-echo '<form method="POST" action="statiments.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
-if (array_key_exists('timeStarted', $_POST))
+echo '<form method="POST" action="indb2.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+if (array_key_exists('id', $_POST))
 	{
-		echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
+		echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
+		//echo '<br>ID: ' . $_POST['id'];
 	} 
 	else
 	{
-		redirect ('http://testrain.info/emotions.php');
+		redirect ('photoes.php');
 	}
-echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
-//echo 'Started at: '.$_POST['timeStarted'];
 	$table = '<center>';
 	$table .= '<table>';
 	$table .= '<tr>';
@@ -56,6 +55,6 @@ echo $table;
 echo '</form>';	
 require_once('js/numbers.js');
 echo '<script src="js/refreshBack.js"></script>';
-echo '<script>refreshBack("emotionsbg.php")</script>';
+echo '<script>refreshBack("photoes.php")</script>';
 require "end.php";
 ?>

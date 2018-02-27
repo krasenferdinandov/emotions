@@ -63,6 +63,6 @@ $timeStarted = mysql_escape_string($_POST['timeStarted']);
 	}
 $c = $_POST['choice'];
 echo '<input type="hidden" name="choice" value="'.$c.'"/>';
-echo '<meta http-equiv="Refresh" content="0;resultsbg.php?id='.$id.'&choice=' . $c . '"/>';
+echo '<meta http-equiv="Refresh" content="0;finalbg.php?id='.$id.'&choice=' . $c . '"/>';
 require "end.php";
 ?>

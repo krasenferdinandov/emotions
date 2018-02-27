@@ -32,12 +32,12 @@
 		width:150px;
 		text-align: justify;
 		text-justify: inter-word;
-		font-size:14px;
+		font-size:18px;
 		font-style: normal;
 		font-weight: normal;
 	}
 	.desc-res2{
-		width:250px;
+		width:300px;
 		text-align: justify;
 		text-justify: inter-word;
 		font-size:14px;
@@ -51,6 +51,25 @@
 		font-size:16px;
 		font-style: normal;
 		font-weight: normal;
+	}
+	.desc-res4{
+		width:350px;
+		text-align: justify;
+		text-justify: inter-word;
+		font-size:15px;
+		font-style: normal;
+		font-weight: normal;
+	}
+	.desc-res5{
+		width:300px;
+		text-align: justify;
+		text-justify: inter-word;
+		font-size:14px;
+		font-style: normal;
+		font-weight: normal;
+	}
+	.top {
+		vertical-align: top;
 	}
 	</style>
 </head>

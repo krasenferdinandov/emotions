@@ -1,25 +1,21 @@
 <?php
 require "header.php";
 echo '<form id="the_form" method="POST" action="value.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
-if (array_key_exists('timeStarted', $_POST))
+if (array_key_exists('id', $_POST))
 	{
-		echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
+		echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
+		//echo '<br>ID: ' . $_POST['id'];
 	} 
 	else
 	{
-		redirect ('http://testrain.info/emotions.php');
+		redirect ('photoes.php');
 	}
-echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
-//echo 'Начало: '.$_POST['timeStarted'];
 $table = '';
 $table .= '<table>';
 echo '<center><table class="borders"><tr>';
 $table .= '</tr>';
+echo '<p><b>FOURTH STEP:</b><br/>'.CHOOSE_STATES . '<br/>';
 
-if($_POST['choice'] == '1') {
-		echo '<input type="hidden" value="1" name="choice"/>';
-		echo '<p>'.CHOOSE_STATES . '<br/>';
-	}
 for($i = 0; $i<DOMAINS_NUMBER; $i++)
 	{
 		if(!isset($_POST['domaintiming_'.$i])) continue;
@@ -52,6 +48,6 @@ $table .= '<tr><td><p><input type="submit" value="'.NEXT.'"/></td></tr></table>'
 echo $table;
 echo '<script src="js/collectTiming.js"></script>';
 echo '<script src="js/refreshBack.js"></script>';
-echo '<script>refreshBack("emotionsbg.php")</script>';
+echo '<script>refreshBack("photoes.php")</script>';
 require "end.php";	
 ?>

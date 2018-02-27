@@ -23,7 +23,7 @@ $data = $pdo->query("SELECT * FROM tests_stat WHERE id=$id");
 $all_completed = array();
 while($r = $data->fetch(PDO::FETCH_BOTH)){
 $choice = $r['choice'];
-//echo 'Вече избрани тестове:'. $choice;
+echo 'Вече избрани тестове:'. $choice;
 		if (isset ($choice)) {			
 					$all_completed[] = $choice;
 		}
@@ -64,7 +64,7 @@ $table .= '<p align="center"><input type="submit" value="'.NEXT.'"/></p>';
 echo '<input type="hidden" name="id" value="'.$id.'">';
 $table .= '</tr>';
 echo $table;
-echo '<script src="js/refreshBack.js"></script>';
-echo '<script>refreshBack("exit.php?id='.$id.'")</script>';
+//echo '<script src="js/refreshBack.js"></script>';
+//echo '<script>refreshBack("exit.php?id='.$id.'")</script>';
 require "end.php";
 ?>

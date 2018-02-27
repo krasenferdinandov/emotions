@@ -23,7 +23,7 @@ $data = $pdo->query("SELECT * FROM tests_stat WHERE id=$id");
 $all_completed = array();
 while($r = $data->fetch(PDO::FETCH_BOTH)){
 $choice = $r['choice'];
-echo 'Вече избрани тестове:'. $choice;
+//echo 'Вече избрани тестове:'. $choice;
 		if (isset ($choice)) {			
 					$all_completed[] = $choice;
 		}

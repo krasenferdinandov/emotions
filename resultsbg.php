@@ -7,9 +7,9 @@ $id = $_GET['id'];
 validateInt($id);
 
 //Показва съобщение за резултата с текущото ID
-echo'<center></br>'.ID.'</br>'.TIP2.'<b>'.$id.'</b><center/>';
-
-$table_result = '<center><table class="borders"><tr><th colspan="2">'.RESULTS.'</th></tr>';
+echo'<center></br>'.ID.'</br>'.TIP2.'<b>'.$id.'</b><center/><br>';
+echo '<center><b>'.RESULTS.'</b></center>';
+$table_result = '<center><table>';
 $sum_pos=0;$count_pos=0;
 $sum_neg=0;$count_neg=0;
 $sum_ambi=0;$count_ambi=0;

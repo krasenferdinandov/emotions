@@ -1,7 +1,7 @@
 <?php
 require "headerbg.php";
 require "js/toggle.js";
-echo '<form id="the_form" method="POST" action="sindbbg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+echo '<form id="the_form" method="POST" action="indb3bg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 if (array_key_exists('id', $_GET))
 	{
 		$id = $_GET['id'];
@@ -78,7 +78,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 //Показва резултати за Miniscripts
 	$miniscript_condition.=' OR domainX_id='.$domain_id;
 }
-$table_result.= '<tr><th colspan="2"><p><center>ПОСЛЕДНА СТЪПКА: <br><center/>'.TIP.'</th><tr/>';
+$table_result.= '<tr><th colspan="2"><p><center>ШЕСТА СТЪПКА: <br><center/>'.TIP.'</th><tr/>';
 
 $data = $pdo->query('SELECT id,bg_name,bg_desc,domain1_id,domain2_id FROM miniscripts WHERE ( '.str_replace('X', '1', $miniscript_condition).' ) AND ( '.str_replace('X', '2', $miniscript_condition).' );');
 while($r = $data->fetch(PDO::FETCH_BOTH)){

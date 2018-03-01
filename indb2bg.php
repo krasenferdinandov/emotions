@@ -16,7 +16,7 @@ for($i = 0; $i<EMOTIONS_NUMBER; $i++){
 	//echo $i . ' -> ' . $timing . '<br/>';
 	$pdo->exec("INSERT INTO emotions_stat VALUES ($id,$i,$e_slider,'$timing');");
 }
-for($a = 0; $a<STATES_NUMBER; $a++){
+for($a = 0; $a<THEMES_NUMBER; $a++){
 	if(isset($_POST['state_'.$a])){
 		$s_slider = intval($_POST['s_slider_'.$a]);
 		validateInt($s_slider);

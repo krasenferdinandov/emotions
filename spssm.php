@@ -57,7 +57,7 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 //------------------>
 echo '<td><center><b>Affective Management, Осъзнатост</b></center></td>';
 //------------------>
-for($i=0;$i<STATES_NUMBER;$i++){
+for($i=0;$i<THEMES_NUMBER;$i++){
 	$script_data = $pdo->query("select en_name, bg_name from statements where id = ". $i . "");
 		
 	$name = "WTF";
@@ -126,7 +126,7 @@ if(!isset($id)) continue;
 	{
 		$domain_row_array[] = 0;
 	}
-	for($i = 0; $i<STATES_NUMBER; $i++)
+	for($i = 0; $i<THEMES_NUMBER; $i++)
 	{
 		$scripts_row_array[] = 0;
 	}
@@ -233,7 +233,7 @@ if(!isset($id)) continue;
 		}
 	echo '<td><center>'.$manag.'</center></td>';
 
-for($i=0;$i<STATES_NUMBER;$i++)
+for($i=0;$i<THEMES_NUMBER;$i++)
 		if($scripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
 		else {

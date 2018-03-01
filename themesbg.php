@@ -1,30 +1,38 @@
 <?php
 require "headerbg.php";
-echo '<form id="the_form" method="POST" action="evaluebg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+echo '<form id="the_form" method="POST" action="valuebg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 if (array_key_exists('id', $_POST))
 	{
-	echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
-	//echo '<br>ID: ' . $_POST['id'];
-	$id = $_POST['id'];
-	}
-else if (array_key_exists('id', $_GET))
-	{
-	echo '<input type="hidden" name="id" value="'.$_GET['id'].'">';
-	//echo '<br>ID: ' . $_POST['id'];
-	$id = $_GET['id'];
+		echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
+		//echo '<br>ID: ' . $_POST['id'];
 	} 
-	/*else
+	else
 	{
 		redirect ('photoesbg.php');
-	}*/
+	}
 $table = '';
 $table .= '<table>';
 echo '<center><table class="borders"><tr>';
 $table .= '</tr>';
-echo '<p><b>СЕДМА СТЪПКА:</b><br/><b>Избери тези изречения, които най-точно съответстват на поведението ти.</b><br/>';
+echo '<p><b>ЧЕТВЪРТА СТЪПКА:</b><br/>'.CHOOSE_STATES . '<br/>';
+
+for($i = 0; $i<DOMAINS_NUMBER; $i++)
+	{
+		if(!isset($_POST['domaintiming_'.$i])) continue;
+		$timing = $_POST['domaintiming_'.$i];
+		//echo $i . ' -> ' . $timing . '<br/>';
+		echo '<input type="hidden" value="'.$timing.'" name="domaintiming_'.$i.'"/>';
+	}
+	
+for($i = 0; $i<EMOTIONS_NUMBER; $i++){
+	if(!isset($_POST['emotion_'.$i])) continue;
+	$e_slider=$_POST['e_slider_'.$i];
+	echo '<input type="hidden" value="1" name="emotion_'.$i.'"/>';
+	echo '<input type="hidden" value="'.$e_slider.'" name="e_slider_'.$i.'"/>';
+	}
 
 echo '<table class="borders">';
-$data = $pdo->query("SELECT * FROM gros");
+$data = $pdo->query("SELECT * FROM statements");
 while($row = $data->fetch(PDO::FETCH_BOTH)){
 	$id=$row["id"];
 	$bg_name=$row["bg_name"];
@@ -39,7 +47,7 @@ while($row = $data->fetch(PDO::FETCH_BOTH)){
 $table .= '<tr><td><p><input type="submit" value="'.NEXT.'"/></td></tr></table>';
 echo $table;
 echo '<script src="js/collectTiming.js"></script>';
-//echo '<script src="js/refreshBack.js"></script>';
-//echo '<script>refreshBack("photoesbg.php")</script>';
+echo '<script src="js/refreshBack.js"></script>';
+echo '<script>refreshBack("photoesbg.php")</script>';
 require "end.php";	
 ?>

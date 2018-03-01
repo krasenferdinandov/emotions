@@ -1,6 +1,6 @@
 <?php
 require "headerbg.php"; 
-echo '<form method="POST" action="statementsbg.php" enctype="multipart/form-data">';
+echo '<form method="POST" action="themesbg.php" enctype="multipart/form-data">';
 	if (array_key_exists('id', $_POST))
 	{
 		echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';

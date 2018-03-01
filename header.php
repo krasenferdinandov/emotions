@@ -45,7 +45,7 @@
 		font-weight: normal;
 	}
 	.desc-res3{
-		width:400px;
+		width:450px;
 		text-align: justify;
 		text-justify: inter-word;
 		font-size:16px;
@@ -53,7 +53,7 @@
 		font-weight: normal;
 	}
 	.desc-res4{
-		width:350px;
+		width:370px;
 		text-align: justify;
 		text-justify: inter-word;
 		font-size:15px;

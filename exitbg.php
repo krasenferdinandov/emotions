@@ -18,6 +18,10 @@ $sum_ambi=0;$count_ambi=0;
 $string = array();
 $tension = array();
 $sel_emotions = array();
+$axis_stat=array();
+$axis_stat_count=0;
+$axis_list=array();
+
 $statement = $pdo->query("SELECT id, string_id, tension_id FROM emotions");
 while($row = $statement->fetch(PDO::FETCH_BOTH))
 {
@@ -245,10 +249,63 @@ while($r3 = $sel_states->fetch(PDO::FETCH_BOTH)){
 	
 	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>* '.quot($bg_name).'</a></td>';
 	$table_result .= '<td style="border: 1px solid #c0c0c0;">'.SIGNIFICANCE.'<b> '.$s_sl.'</b></td></tr>';
+}
+//GROS
+$sel_states = $pdo->query("SELECT * FROM gros_stat WHERE id=$id");
+		while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
+			$state_id = $r['state_id'];
+			$data = $pdo->query("SELECT bg_name, axis_id FROM gros WHERE id = $state_id LIMIT 1");
+			$r = $data->fetch(PDO::FETCH_BOTH);
+			$bg_name = $r['bg_name'];
+			$axis = $r['axis_id'];
+
+			if(!isset($axis_stat[$axis])){
+				$axis_stat[$axis] = 0;
+				$axis_list[$axis] = array();
+				$axis_subaxis[$axis] = array();
+			}
+			$axis_stat[$axis] += 1;
+			$axis_list[$axis][] = $bg_name;
+			$axis_stat_count += 1;
+}
+//Показва процентите от Теста за саморегулация
+	$table_result.= '<tr><td colspan="2"><center><br/><b>Кратък тест за емоционална настройка:<center/><tr/>';
+	//Показва процентите
+	$axis_count_total=0;
+	$sel_axis = $pdo->query("SELECT id,bg_name,bg_desc FROM axis ORDER BY id");
+
+	while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
+		$axis_id = $r['id'];
+		$bg_name = $r['bg_name'];
+		$bg_desc = $r['bg_desc'];
+		
+		if(!isset($axis_stat[$axis_id])) {
+			continue;
+		}
+	
+	$axis_list[$axis_id]=array_unique($axis_list[$axis_id]);
+	$data = $pdo->query("SELECT COUNT(id) FROM gros WHERE axis_id=$axis_id");
+	$r = $data->fetch(PDO::FETCH_BOTH);
+	$axis_total = $r['COUNT(id)'];
+
+//Показва избраните изречения за всеки "axisa"
+		$chosen_states = '';
+		$substates = array ();
+		foreach($axis_list[$axis_id] as $axis){
+			$chosen_states .= $axis . "\n";
+			$substates[] = $axis;
+		}
+		
+		$level_axis = percent(count($axis_list[$axis_id]), $axis_total);
+			
+		$count_axis = count($axis_list[$axis_id]);
+		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">'.$count_axis.' от '. $axis_total.' твърдения ('.$level_axis.'% предпочитание);</a></td>'."</tr>";
+		$table_result.='<tr><td colspan="2" style="border: 0px solid #c0c0c0;"><label class="desc-res3" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
 }	
 $table_result.='</td><tr/>';
 $table_result .= '<center/></table>';
 echo $table_result;
 echo '</br>'.CONTRIBUTION.'</br>';
+require ("js/showText.js");
 require "end.php";
 ?>

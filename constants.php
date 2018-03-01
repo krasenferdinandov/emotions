@@ -43,7 +43,9 @@
 	define ("EMOTIONS_NUMBER", 90);
 	define ("DOMAINS_NUMBER", 10);
 	define ("PHOTOES_NUMBER", 5);
-	define ("STATES_NUMBER", 80);
+	define ("THEMES_NUMBER", 24);
+	define ("STATES_NUMBER", 10);
+	define ("STATES_NUMBER_0", 80);
 	define ("STATES_NUMBER_1", 60);
 	define ("STATES_NUMBER_2", 64);
 	define ("STATES_NUMBER_3", 106);

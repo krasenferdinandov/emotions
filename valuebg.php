@@ -32,7 +32,7 @@ for($i = 0; $i<EMOTIONS_NUMBER; $i++){
 	echo '<input type="hidden" value="'.$e_slider.'" name="e_slider_'.$i.'"/>';
 }
 $count=0;
-for($a = 0; $a<STATES_NUMBER; $a++){
+for($a = 0; $a<THEMES_NUMBER; $a++){
 	if(!isset($_POST['state_'.$a])) continue;
 		$data = $pdo->query("SELECT bg_name, en_name FROM statements WHERE id=$a");
 		$result=$data->fetch(PDO::FETCH_BOTH);

@@ -88,7 +88,7 @@
 			
 		$count_axis = count($axis_list[$axis_id]);
 		$table_result.= '<tr><td><a title="'.$chosen_states.'"><b> #'.quot($bg_name).'</b></a>; '.$count_axis.' from '. $axis_total.' sentances ('.$level_axis.'%);</a><br></td><td class="top"><input type="button" data-id="axis' . $axis_id . '" class="show" value="read"></td>'."</tr>";
-		$table_result.='<tr><td colspan="2" style="border: 1px solid #c0c0c0;"><label class="desc-res2" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
+		$table_result.='<tr><td colspan="2" style="border: 1px solid #c0c0c0;"><label class="desc-res4" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
 			
 		$index = 0;
 		//Показва избраните изречения за дадения показател
@@ -109,7 +109,7 @@
 				}
 				
 				$table_result.='"> *'.quot($bg_name).'</a>; '.$count.' от '. $subaxis_total.' sentances;</a><br></td>'.'<td class="top"><input type="button" data-id="subaxis' . $subaxis . '" class="show" value="read"></td>'."</tr>";
-				$table_result.='<tr><td colspan="2"><label class="desc-res2" style="display: none;" id="subaxis' . $subaxis . '">'. $bg_desc .'</label></td></tr>';
+				$table_result.='<tr><td colspan="2"><label class="desc-res4" style="display: none;" id="subaxis' . $subaxis . '">'. $bg_desc .'</label></td></tr>';
 			}
 		}
 	}

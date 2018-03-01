@@ -1,6 +1,6 @@
 <?php
 require "header.php"; 
-echo '<form method="POST" action="statements.php" enctype="multipart/form-data">';
+echo '<form method="POST" action="themes.php" enctype="multipart/form-data">';
 	if (array_key_exists('id', $_POST))
 	{
 		echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';

@@ -1,7 +1,7 @@
 <?php
 require "header.php";
 require "js/toggle.js";
-echo '<form id="the_form" method="POST" action="sindb.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+echo '<form id="the_form" method="POST" action="indb3.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 if (array_key_exists('id', $_GET))
 	{
 		$id = $_GET['id'];
@@ -81,7 +81,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 //Показва резултати за Miniscripts
 	$miniscript_condition.=' OR domainX_id='.$domain_id;
 }
-$table_result.= '<tr><th colspan="2"><p><center>LAST STEP: <br><center/>'.TIP.'</th><tr/>';
+$table_result.= '<tr><th colspan="2"><p><center>SIXTH STEP: <br><center/>'.TIP.'</th><tr/>';
 
 $data = $pdo->query('SELECT id,en_name,en_desc,domain1_id,domain2_id FROM miniscripts WHERE ( '.str_replace('X', '1', $miniscript_condition).' ) AND ( '.str_replace('X', '2', $miniscript_condition).' );');
 while($r = $data->fetch(PDO::FETCH_BOTH)){

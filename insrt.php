@@ -16,7 +16,7 @@ $timeStarted = mysql_escape_string($_POST['timeStarted']);
 		echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
 		//echo 'Начало: '.$_POST['timeStarted'];
 		$pdo->exec("INSERT INTO tests_stat VALUES ($id,'1','$timeStarted', NOW());");
-		for($a = 0; $a<STATES_NUMBER; $a++){
+		for($a = 0; $a<STATES_NUMBER_0; $a++){
 			if(isset($_POST['stato_'.$a])){
 				$timing = $_POST['time-stato_' . $a];
 				//echo $a. ' -> ' . $timing . '<br/>';

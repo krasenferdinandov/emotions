@@ -12,7 +12,7 @@
 	}
 	echo'<center><b>'.ID.'</b>'.TIP4.'<b>'.$id.'</b><center/><br>';
 	echo '<center><b>ПЪЛНИ ПОКАЗАТЕЛИ ОТ ТЕСТОВЕТЕ:</b></center>';
-	$table_result = '<center><table>';
+	$table_result = '<center><table style="border: 1px solid #c0c0c0;">';
 	$axis_stat=array();
 	$axis_stat_count=0;
 	$axis_list=array();
@@ -139,7 +139,7 @@
 		
 		$count_axis = count($axis_list[$axis_id]);
 		$table_result.= '<tr><td><a title="'.$chosen_states.'"><b> #'.quot($bg_name).'</b></a>; Избра '.$count_axis.' от '. $axis_total.' твърдения ('.$level_axis.'%);</a><br></td><td class="top"><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"></td>'."</tr>";
-		$table_result.='<tr><td colspan="2"><label class="desc-res2" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
+		$table_result.='<tr><td style="border: 1px solid #c0c0c0;" colspan="2"><label class="desc-res2" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
 		
 		$index = 0;
 		//Показва избраните изречения за дадения показател

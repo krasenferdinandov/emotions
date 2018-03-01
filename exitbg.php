@@ -243,7 +243,7 @@ while($r3 = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$axis_name = $rsc['bg_name'];
 	$axis_desc = $rsc['bg_desc'];
 	
-	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>- '.quot($bg_name).'</a></td>';
+	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>* '.quot($bg_name).'</a></td>';
 	$table_result .= '<td style="border: 1px solid #c0c0c0;">'.SIGNIFICANCE.'<b> '.$s_sl.'</b></td></tr>';
 }	
 $table_result.='</td><tr/>';

@@ -5,7 +5,13 @@ if (array_key_exists('id', $_POST))
 	{
 	echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
 	$id = $_POST['id'];
-	} 
+	}
+else if (array_key_exists('id', $_GET))
+	{
+	echo '<input type="hidden" name="id" value="'.$_GET['id'].'">';
+	//echo '<br>ID: ' . $_POST['id'];
+	$id = $_GET['id'];
+	}
 echo '<input type="hidden" name="id" value="'.$id.'">';
 echo '<input type="hidden" name="timeStarted" value="'.$_POST['timeStarted'].'">';
 //echo 'Начало: '.$_POST['timeStarted'];

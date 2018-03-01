@@ -1,6 +1,5 @@
 <?php
-	require "headerbg.php";
-	require "js/blockback.js";
+	require "header.php";
 	if(array_key_exists('id', $_GET)){
 		
 		//echo '<br>ID: ' . $_GET['id'];
@@ -8,7 +7,7 @@
 	}
 	else
 	{
-		redirect ('photoesbg.php');
+		redirect ('photoes.php');
 	}
 	echo'<center><b>'.ID.'</b>'.TIP4.'<b>'.$id.'</b><center/><br>';
 	echo '<center><b>ALL TESTS RESULTS:</b></center>';
@@ -16,6 +15,7 @@
 	$axis_stat=array();
 	$axis_stat_count=0;
 	$axis_list=array();
+	$axis_list_subaxis=array();
 
 	$sel_states = $pdo->query("SELECT * FROM statos_stat WHERE id=$id");
 	while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
@@ -30,10 +30,16 @@
 			$axis_stat[$axis] = 0;
 			$axis_list[$axis] = array();
 			$axis_subaxis[$axis] = array();
+			$axis_list_subaxis[$axis] = array();
 		}
-	
+		
 		$axis_stat[$axis] += 1;
 		$axis_list[$axis][] = $bg_name;
+		if(!isset ($axis_list_subaxis[$axis][$subaxis]))
+		{
+			$axis_list_subaxis[$axis][$subaxis] = array ();
+		}
+		$axis_list_subaxis[$axis][$subaxis][] = $bg_name;
 		if($subaxis!=-1){
 			if(!isset($axis_subaxis[$axis][$subaxis])){
 				$axis_subaxis[$axis][$subaxis]=0;
@@ -82,24 +88,37 @@
 	$sel_states = $pdo->query("SELECT * FROM status_stat WHERE id=$id");
 	while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
 		$state_id = $r['state_id'];
-		$data = $pdo->query("SELECT en_name, axis_id FROM statusments WHERE id = $state_id LIMIT 1");
+		$data = $pdo->query("SELECT en_name, axis_id, subaxis_id FROM statusments WHERE id = $state_id LIMIT 1");
 		$r = $data->fetch(PDO::FETCH_BOTH);
 		$bg_name = $r['en_name'];
 		$axis = $r['axis_id'];
+		$subaxis = $r['subaxis_id'];
 
 		if(!isset($axis_stat[$axis])){
 			$axis_stat[$axis] = 0;
 			$axis_list[$axis] = array();
 			$axis_subaxis[$axis] = array();
+			$axis_list_subaxis[$axis] = array();
 		}
+		
 		$axis_stat[$axis] += 1;
 		$axis_list[$axis][] = $bg_name;
+		if(!isset ($axis_list_subaxis[$axis][$subaxis]))
+		{
+			$axis_list_subaxis[$axis][$subaxis] = array ();
+		}
+		$axis_list_subaxis[$axis][$subaxis][] = $bg_name;
+		if($subaxis!=-1){
+			if(!isset($axis_subaxis[$axis][$subaxis])){
+				$axis_subaxis[$axis][$subaxis]=0;
+			}
+			$axis_subaxis[$axis][$subaxis]+=1;
+		}
 		$axis_stat_count += 1;
 	}
 	//Показва процентите
 	$axis_count_total=0;
 	$sel_axis = $pdo->query("SELECT id, en_name, en_desc FROM axis ORDER BY id");
-	//$table_result.='<tr><td style="border-right: none; border: 0px solid #c0c0c0;" colspan="1">';
 	while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 		$axis_id = $r['id'];
 		$bg_name = $r['en_name'];
@@ -155,8 +174,7 @@
 			$table_result.= '<tr><td><a title="';
 			
 			for ($i = 0 ; $i < $count ; $i ++) {
-				$table_result .= $substates [$index] . "\n";
-				$index ++;
+					$table_result .= $axis_list_subaxis[$axis_id][$subaxis][$i] . "\n";
 			}
 			
 			$table_result.='"> *'.quot($bg_name).'</a>; '.$count.' от '. $subaxis_total.' sentances;</a><br></td>'.'<td class="top"><input type="button" data-id="subaxis' . $subaxis . '" class="show" value="read"></td>'."</tr>";
@@ -167,7 +185,7 @@
 	echo $table_result;
 	echo '</br>'.CONTRIBUTION.'</br>';
 	require ("js/showText.js");
-	echo '<script src="js/refreshBack.js"></script>';
-	echo '<script>refreshBack("photoes.php")</script>';
+	//echo '<script src="js/refreshBack.js"></script>';
+	//echo '<script>refreshBack("photoes.php")</script>';
 	require "end.php";
 ?>

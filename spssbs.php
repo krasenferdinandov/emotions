@@ -3,8 +3,8 @@ require "header.php";
 
 echo '<table class="borders">';
 echo '<tr><th>Id</th>';
-/*for($i=0;$i<STATES_NUMBER_1;$i++){
-	$statis_data = $pdo->query("select d.label from statiments di 
+/*for($i=0;$i<STATES_NUMBER_0;$i++){
+	$statis_data = $pdo->query("select d.label from statyments di 
 		join axis d on di.axis_id=d.id
 		where di.id = ". $i . "");
 		
@@ -17,9 +17,8 @@ echo '<tr><th>Id</th>';
 	//echo '<td>'.$i.$name.'</td>';
 	echo '<td>'.$name.'</td>';
 }*/
-
-for($i=0;$i<STATES_NUMBER_1;$i++){
-	$statis_data = $pdo->query("select id, bg_name, axis_id from statiments where id = ". $i . "");
+for($i=0;$i<STATES_NUMBER_2;$i++){
+	$statis_data = $pdo->query("select id, bg_name, axis_id from statyments where id = ". $i . "");
 	while($r = $statis_data->fetch(PDO::FETCH_BOTH))
 	{
 		$ids = $r["id"];
@@ -51,11 +50,11 @@ for($k = 0; $k<$count; $k++)
 	$current_id = $id_array[$k];
 	$stati_row_array = array();
 
-	for($i = 0; $i<STATES_NUMBER_1; $i++)
+	for($i = 0; $i<STATES_NUMBER_2; $i++)
 	{
 		$stati_row_array[] = 0;
 	}
-$data = $pdo->query("SELECT * FROM statis_stat WHERE id = $current_id LIMIT 1");
+$data = $pdo->query("SELECT * FROM statys_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 if(!isset($id)) continue;
@@ -63,13 +62,13 @@ if(!isset($id)) continue;
 if(!isset($id)) {
 				continue;
 			}else{
-			$data = $pdo->query("SELECT state_id FROM statis_stat WHERE id = $current_id");
+			$data = $pdo->query("SELECT state_id FROM statys_stat WHERE id = $current_id");
 			while($r = $data->fetch(PDO::FETCH_BOTH)) {
 				$s_id = $r['state_id'];
 				if($s_id!=-1) $stati_row_array[$s_id] = 1;
 			}
 			echo '<tr><td><center>'.$current_id.'</center></td>';
-			for($i=0;$i<STATES_NUMBER_1;$i++)
+			for($i=0;$i<STATES_NUMBER_2;$i++)
 				if($stati_row_array[$i] != 1)
 					echo '<td><center>0</center></td>';
 				else echo '<td><center><b>1<b/></center></td>';			

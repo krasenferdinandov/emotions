@@ -2,7 +2,8 @@
 require "header.php";
 
 echo '<table class="borders">';
-echo '<tr><th>Id</th>';
+echo '<th>Id</th>';
+//echo '<tr><td><center>Time</center></td>';
 
 
 function isInDomain($emotion_search){
@@ -85,9 +86,9 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 echo '</tr>';
 
 //..................> Печати само потвърдените
-$count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
+//$count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
 //..................> Печати всички
-//$count_data = $pdo->query("SELECT id FROM choice_stat ORDER BY id");
+$count_data = $pdo->query("SELECT id FROM choice_stat ORDER BY id");
 $count = 0;
 $last = -1;
 $id_array = array();
@@ -196,7 +197,30 @@ if(!isset($id)) continue;
 	}
 	else {$cmpl_label = '0';}
 	
+$sel_emotions = $pdo->query("SELECT * FROM choice_stat WHERE id=$current_id LIMIT 1");
+while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
+	$start=$r['start'];
+	$stress=$r['end'];
+	
+$data = $pdo->query("SELECT time FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
+	$r = $data->fetch(PDO::FETCH_BOTH);
+	$end = $r['time'];
+}
+
+$datetime1 = new DateTime($start);
+$datetime2 = new DateTime($stress);
+$datetime3 = new DateTime($end);
+
+if(isset($id)) {
+	$interval = $datetime1->diff($datetime3);
+}
+else {
+	$interval = $datetime1->diff($datetime2);
+}
+	
 	echo '<tr><td><center>'.$current_id.'</center></td>';
+	//echo '<tr><td>'.$interval->format('%H:%i:%s').'</center></td>';	
+
 	//echo '<td><center>'.$cmpl_label.'</center></td>';
 	//echo '<td><center>'.$count_em.'</center></td>';
 	//echo '<td><center>'.$count_sc.'</center></td>';

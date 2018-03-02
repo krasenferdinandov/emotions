@@ -1,6 +1,5 @@
 <?php
 require "header.php";
-
 echo '<table class="borders">';
 echo '<tr><td>№</td>';
 

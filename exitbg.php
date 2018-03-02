@@ -248,7 +248,7 @@ while($r3 = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$axis_desc = $rsc['bg_desc'];
 	
 	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>* '.quot($bg_name).'</a></td>';
-	$table_result .= '<td style="border: 1px solid #c0c0c0;">'.SIGNIFICANCE.'<b> '.$s_sl.'</b></td></tr>';
+	$table_result .= '<td style="border: 1px solid #c0c0c0;">Предпочитание:<b> '.$s_sl.'</b></td></tr>';
 }
 //GROS
 $sel_states = $pdo->query("SELECT * FROM gros_stat WHERE id=$id");
@@ -266,7 +266,7 @@ $sel_states = $pdo->query("SELECT * FROM gros_stat WHERE id=$id");
 			}
 			$axis_stat[$axis] += 1;
 			$axis_list[$axis][] = $bg_name;
-			$axis_stat_count += 1;
+			$axis_stat_count += 1;		
 }
 //Показва процентите от Теста за саморегулация
 	$table_result.= '<tr><td colspan="2"><center><br/><b>Кратък тест за емоционална настройка:<center/><tr/>';
@@ -297,9 +297,10 @@ $sel_states = $pdo->query("SELECT * FROM gros_stat WHERE id=$id");
 		}
 		
 		$level_axis = percent(count($axis_list[$axis_id]), $axis_total);
+		
 			
 		$count_axis = count($axis_list[$axis_id]);
-		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">'.$count_axis.' от '. $axis_total.' твърдения ('.$level_axis.'% предпочитание);</a></td>'."</tr>";
+		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">'.$count_axis.' от '. $axis_total.' твърдения ('.$level_axis.'%)</a></td>'."</tr>";
 		$table_result.='<tr><td colspan="2" style="border: 0px solid #c0c0c0;"><label class="desc-res3" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
 }	
 $table_result.='</td><tr/>';

@@ -6,7 +6,7 @@
 		require_once "db_pass.php";
 	?>
 	<style>
-	table.borders{
+		table.borders{
 		border-collapse: collapse;
 		text-align: justify;
 	}
@@ -45,7 +45,7 @@
 		font-weight: normal;
 	}
 	.desc-res3{
-		width:450px;
+		width:440px;
 		text-align: justify;
 		text-justify: inter-word;
 		font-size:16px;
@@ -70,6 +70,9 @@
 	}
 	.top {
 		vertical-align: top;
+	}
+	.primary_hidden {
+		display: none;
 	}
 	</style>
 </head>

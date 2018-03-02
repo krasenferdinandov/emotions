@@ -109,7 +109,7 @@
 				}
 				
 				$table_result.='"> *'.quot($bg_name).'</a>; '.$count.' от '. $subaxis_total.' твърдения;</a><br></td>'.'<td class="top"><input type="button" data-id="subaxis' . $subaxis . '" class="show" value="прочети"></td>'."</tr>";
-				$table_result.='<tr><td colspan="2"><label class="desc-res2" style="display: none;" id="subaxis' . $subaxis . '">'. $bg_desc .'</label></td></tr>';
+				$table_result.='<tr><td colspan="2"><label class="desc-res2 slider_text" style="display: none;" id="subaxis' . $subaxis . '">'. $bg_desc .'</label></td></tr>';
 			}
 		}
 	}

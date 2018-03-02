@@ -20,7 +20,7 @@ for($a = 0; $a<THEMES_NUMBER; $a++){
 	if(isset($_POST['state_'.$a])){
 		$s_slider = intval($_POST['s_slider_'.$a]);
 		validateInt($s_slider);
-		$timing = $_POST['statestiming_' . $a];
+		$timing = $_POST['time-state_' . $a];
 		//echo $a . ' -> ' . $timing . '<br/>';
 		$pdo->exec("INSERT INTO states_stat VALUES ($id,$a,$s_slider,'$timing');");
 	}

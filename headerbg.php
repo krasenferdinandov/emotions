@@ -71,6 +71,9 @@
 	.top {
 		vertical-align: top;
 	}
+	.primary_hidden {
+		display: none;
+	}
 	</style>
 </head>
 <body>

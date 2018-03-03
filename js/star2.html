@@ -1,0 +1,66 @@
+<script>
+console.log(window.size);
+
+function place_words() {
+	var center_x = window.innerWidth / 2 - 40;
+	var center_y = window.innerHeight / 2;
+	if (center_y < 460) center_y = 400;
+	
+	var angles = [-20, 20, 54, 90, 125, 160, 200, 230, 270, 310]; 
+	// вариант за ъгъла на домейните (през 36 градуса: -23, 20, 48, 90, 126, 152, 200, 234, 270, 315
+	for(i=0; i<10; ++i) // ->превръщане на ъгъла на домейните от емоции в радиани radians
+		angles[i] *= Math.PI/180; //angles[(-18 + i*36) * Math.PI/180];
+
+	for(domain=0; domain<10; ++domain)
+		for(r=0; r<4; ++r)
+		{
+			id = domain * 4 + r;
+			word = document.getElementById(id);
+			word.style.position = "absolute";
+			word.style.left = Math.floor(center_x + Math.cos(angles[domain]) * (60 * r + 140)) + "px";
+			// <през какво разстояние да са думите>*r + <колко от центъра> по оста X
+			word.style.top = Math.floor(center_y - Math.sin(angles[domain]) * (60 * r + 100)) + "px";
+			// <през какво разстояние да са думите>*r + <колко от центъра> по оста Y
+		}
+	button = document.getElementById("-1");
+	button.style.position = "absolute";
+	button.style.left = center_x + "px";
+	button.style.top = center_y + "px";
+	//button.style.text_align = "center"; за изравняване в центъра
+}
+djurkSpeed = 12; // колко бързо джурка
+djurkAngleSpeed = 5;//колко да е ъгловата скорост на джуркане
+angles=[];
+a_accel=[];
+elements_moving = document.getElementsByClassName("moving");
+function start_moving() {
+	for(i=0; i<elements_moving.length; ++i) {
+		elements_moving[i].style.position = "absolute";
+		elements_moving[i].style.left = window.innerWidth/2;//Math.floor(Math.random() * window.innerWidth/2 + window.innerWidth/4) + "px";
+		elements_moving[i].style.top = window.innerHeight/2;//Math.floor(Math.random() * window.innerHeight/2 + window.innerHeight/4) + "px";
+		angles[i] = Math.random() * Math.PI * 2;
+		a_accel[i] = 0;
+}
+	int_id = setInterval(move_moving, 20);
+	setTimeout(function() {
+		clearInterval(int_id);
+		place_words();
+	}, 2000); // колко дълго джурка
+}
+function move_moving() {
+	for(i=0; i<elements_moving.length; ++i) {
+		a_accel[i] += (Math.random() * Math.PI * 2 -  Math.PI) * djurkAngleSpeed
+		angles[i] += a_accel[i];
+		angle = angles[i];
+		
+		dx = Math.trunc(djurkSpeed * Math.cos(angle));
+		dy = Math.trunc(djurkSpeed * Math.sin(angle));
+		
+		elements_moving[i].style.left = (parseInt(elements_moving[i].style.left) + dx) + "px";
+		elements_moving[i].style.top = (parseInt(elements_moving[i].style.top) + dy) + "px";
+	}
+}
+//setTimeout(start_moving, 0); // кога да започне джуркането
+//setTimeout(place_words, 500); // преминаване в кръг без джуркане
+
+</script>

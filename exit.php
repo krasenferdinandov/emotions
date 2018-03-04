@@ -200,7 +200,7 @@ $recognition=0;
 $photoes = $pdo->query("Select SUM(label) FROM photoes_stat WHERE id=$id");
 $r = $photoes->fetch(PDO::FETCH_BOTH);
 $recognition= $r['SUM(label)'];
-$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>Guessing: </b></td><td style="border: 1px solid #c0c0c0;"><p class="desc-res2" align="right">Successfully guessed: <b>'.$recognition.' from 5 pictures</b></p></td><tr/>';
+$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>#Guessing: </b></td><td style="border: 1px solid #c0c0c0;"><p class="desc-res2" align="right">Successfully guessed: <b>'.$recognition.' from 5 pictures</b></p></td><tr/>';
 //------------>
 
 //------------>Показва съотношението между положителните и отрицателните емоции според стойностите от слайдера: "AFFECT MANAGEMENT"
@@ -208,7 +208,7 @@ if($count_pos==0) $count_pos=1;
 if($count_neg==0) $count_neg=1;
 if($count_ambi==0) $count_ambi=1;
 //За премахване на стойностите на слайдера от съотношението между + и - емоции замени "sum_pos/neg..." със "count_pos/neg..."
-$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>'.RATIO.'</b></td>';
+$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>#'.RATIO.'</b></td>';
 
 $score_neg=scores_level($sum_neg, $count_neg-$count_ambi);
 $score_pos=scores_level($sum_pos, $count_pos-$count_ambi);

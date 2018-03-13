@@ -5,15 +5,16 @@ echo '<th>Id</th>';
 //echo '<tr><td><center>Time</center></td>';
 
 for($i=0;$i<EMOTIONS_NUMBER;$i++){
-	$emotions_data = $pdo->query("select bg_name, domain_id from emotions where id = ". $i . "");
+	$emotions_data = $pdo->query("select en_name, domain_id from emotions where id = ". $i . "");
 	$name = "WRONG";
 	while($r = $emotions_data->fetch(PDO::FETCH_BOTH))
 	{
-		$name = $r["bg_name"];
+		$name = $r["en_name"];
 		$domain = $r["domain_id"];
 		
 	}
-	echo '<td>D'.$domain.',E'.$i.','.$name.'</td>';
+	//echo '<td>D'.$domain.',E'.$i.','.$name.'</td>';
+	echo '<td>'.$domain.''.$name.'</td>';
 }
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	$miniscript_data = $pdo->query("select bg_name from miniscripts where id = ". $i . "");
@@ -24,6 +25,7 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 		$name = $r["bg_name"];
 	}
 
+	echo '<td>S'.$i.','.$name.'</td>';
 	echo '<td>S'.$i.','.$name.'</td>';
 }
 echo '</tr>';

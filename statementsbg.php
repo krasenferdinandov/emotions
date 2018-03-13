@@ -21,7 +21,7 @@ $table = '';
 $table .= '<table>';
 echo '<center><table class="borders"><tr>';
 $table .= '</tr>';
-echo '<p><b>ПЕТА СТЪПКА:</b><br/><b>Избери тези изречения, които най-точно съответстват на поведението ти.</b><br/>';
+echo '<p><b>ЧЕРТВЪРТА СТЪПКА:</b><br/><b>Избери тези изречения, които най-точно съответстват на поведението ти.</b><br/>';
 
 echo '<table class="borders">';
 $data = $pdo->query("SELECT * FROM gros");

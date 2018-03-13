@@ -81,7 +81,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 //Показва резултати за Miniscripts
 	$miniscript_condition.=' OR domainX_id='.$domain_id;
 }
-$table_result.= '<tr><th colspan="2"><p><center>SIXTH STEP: <br><center/>'.TIP.'</th><tr/>';
+$table_result.= '<tr><th colspan="2"><p><center>FOURTH STEP: <br><center/>'.TIP.'</th><tr/>';
 
 $data = $pdo->query('SELECT id,en_name,en_desc,domain1_id,domain2_id FROM miniscripts WHERE ( '.str_replace('X', '1', $miniscript_condition).' ) AND ( '.str_replace('X', '2', $miniscript_condition).' );');
 while($r = $data->fetch(PDO::FETCH_BOTH)){

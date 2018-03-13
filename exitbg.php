@@ -10,7 +10,7 @@ echo '<form id="the_form" method="POST" action="testsbg.php" enctype="multipart/
 echo '<input type="hidden" name="id" value="'.$id.'">';
 //Показва съобщение за резултата с текущото ID
 echo'<center><b>'.ID.'</b>'.TIP2.'<b>'.$id.'</b><center/>';
-echo '</br><input type="submit" value="Други тестове"/><br/>';
+echo '</br><input type="submit" value="Други тестеове"/><br/>';
 $table_result = '<table class="borders"><tr><th colspan="2"><center>'.RESULTS.'<center/></th><center/><br/></tr>';
 $sum_pos=0;$count_pos=0;
 $sum_neg=0;$count_neg=0;
@@ -188,9 +188,7 @@ $table_result .= '<tr><td colspan="2" align="left" style="border-right: none; bo
 	$table_result .= '<a title="Увеличението показва колко допълнителна емоционална важност е придадена  към значението на един житейски избор, така че да придобие предимството пред другите избори в рамките на групата от емоционални очаквания, за да поддържа впечатление, личното или у другите, че тази специфика е водеща и определя обащата линия на намеренията, поведението, предпочитанията или навиците. Степента на увеличение може да надхвърли 100. Стойността на увеличение има свойството да се превръща и в сила на съпротивление, да се противопоставя на нарастване и взаимно свързване между емоции, емоционални навици и емоционални черти. Колкото по-висока е стойността, толкова повече сцени на емоции могат да бъдат свързани в обобщаващ сценарий и да осигурят по-голямо предимство и обратно - колкото по-малка е стойността, толкова по-голямо ще е емоционалното противопоставяне между сценарии които да обединяват сцени, пориви, навици в единно  намерение.">Предимство:</a> '. $magnification_m. '</a></li></br>';
 		}
 	$table_result .= '</ul></td></tr>';
-
-$table_result.= '<tr><th colspan="2"><center><br/><b>СЪЗДАЙ СВОЯ "КАРТА НА ЧУВСТВАТА"!<center/><form action="http://testrain.info/download/Flowscape.pdf" target="_blank" method="get"><input type="submit" value="Виж как става"></form></b><center/></th><tr/>';
-
+	$table_result .= '<tr><th colspan="2"><center></br>СЪЗДАЙ СВОЯ "КАРТА НА ЧУВСТВАТА"!</br><a href="http://testrain.info/download/Flowscape.pdf" target="_blank" method="get"><input type="button" value="Виж как"/></a><center/><br/></th><tr/>';
 //-------------------->
 
 $table_result.= '<tr><th colspan="2"><center><br/><b>'.SECONDARY.'</b><center/></th><tr/>';
@@ -200,7 +198,7 @@ $recognition=0;
 $photoes = $pdo->query("Select SUM(label) FROM photoes_stat WHERE id=$id");
 $r = $photoes->fetch(PDO::FETCH_BOTH);
 $recognition= $r['SUM(label)'];
-$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>#Разпознаване: </b></td><td style="border: 1px solid #c0c0c0;"><p class="desc-res2" align="right">Разпознати са успешно: <b>'.$recognition.' от 5 снимки</b></p></td><tr/>';
+$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>Разпознаване: </b></td><td style="border: 1px solid #c0c0c0;"><p class="desc-res2" align="right">Разпознати са успешно: <b>'.$recognition.' от 5 снимки</b></p></td><tr/>';
 //------------>
 
 //------------>Показва съотношението между положителните и отрицателните емоции според стойностите от слайдера: "AFFECT MANAGEMENT"
@@ -208,7 +206,7 @@ if($count_pos==0) $count_pos=1;
 if($count_neg==0) $count_neg=1;
 if($count_ambi==0) $count_ambi=1;
 //За премахване на стойностите на слайдера от съотношението между + и - емоции замени "sum_pos/neg..." със "count_pos/neg..."
-$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>#'.RATIO.'</b></td>';
+$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>'.RATIO.'</b></td>';
 
 $score_neg=scores_level($sum_neg, $count_neg-$count_ambi);
 $score_pos=scores_level($sum_pos, $count_pos-$count_ambi);

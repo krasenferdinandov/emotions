@@ -109,11 +109,11 @@ while($r = $sel_states->fetch(PDO::FETCH_BOTH)){
 //RJD
 $sel_statis = $pdo->query("SELECT * FROM statis_stat WHERE id=$id");
 while($r = $sel_statis->fetch(PDO::FETCH_BOTH)){
-	$stati_id = $r['stati_id'];
-	$data_st = $pdo->query("SELECT en_name, axes_id FROM statiments WHERE id = $stati_id LIMIT 1");
+	$stati_id = $r['state_id'];
+	$data_st = $pdo->query("SELECT en_name, axis_id FROM statiments WHERE id = $stati_id LIMIT 1");
 	$r = $data_st->fetch(PDO::FETCH_BOTH);
 	$en_name = $r['en_name'];
-	$axes = $r['axes_id'];
+	$axes = $r['axis_id'];
 	
 	if(!isset($axes_stat[$axes])){
 		$axes_stat[$axes] = 0;
@@ -234,7 +234,7 @@ while($r = $sel_axis->fetch(PDO::FETCH_BOTH)) {
 //RJD Показва процентите от "statiments"
 $table_result.= '<tr><td colspan="2"><center><br/><b>'.STYLE.'<center/><tr/>';
 $axes_count_total=0;
-$sel_axes = $pdo->query("SELECT id,en_name,en_desc FROM axes ORDER BY id");
+$sel_axes = $pdo->query("SELECT id,en_name,en_desc FROM axis ORDER BY id");
 $table_result.='<tr><td style="border: 1px solid #c0c0c0;" colspan="2">';
 while($r = $sel_axes->fetch(PDO::FETCH_BOTH)) {
 	$axes_id = $r['id'];
@@ -245,10 +245,10 @@ while($r = $sel_axes->fetch(PDO::FETCH_BOTH)) {
 		continue;
 	}
 	$axes_list[$axes_id]=array_unique($axes_list[$axes_id]);
-	$data = $pdo->query("SELECT COUNT(id) FROM statiments WHERE axes_id=$axes_id");
+	$data = $pdo->query("SELECT COUNT(id) FROM statiments WHERE axis_id=$axes_id");
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$axes_total = $r['COUNT(id)'];
-	$data = $pdo->query("SELECT COUNT(stet.id) FROM statis_stat stet join statiments s on stet.stati_id = s.id where s.axes_id = $axes_id and stet.id = " . $id . "");
+	$data = $pdo->query("SELECT COUNT(stet.id) FROM statis_stat stet join statiments s on stet.state_id = s.id where s.axis_id = $axes_id and stet.id = " . $id . "");
 			$r = $data->fetch(PDO::FETCH_BOTH);
 			$axes_total_d = $r['COUNT(stet.id)'];
 

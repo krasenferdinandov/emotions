@@ -7,29 +7,61 @@ if (array_key_exists('id', $_GET))
 		validateInt($id);
 		//echo '<br>ID: ' . $id;
 	} 
-	else
-	{
-		redirect ('photoes.php');
-	}
-
 echo SELECT_EMOTIONS.'<br/>';
-echo '<form id="the_form" style="height: 0vh;overflow:auto" method="POST" action="slide.php" enctype="multipart/form-data">';
+echo '<form id="the_form" style="height: 0vh;overflow:auto" method="POST" action="themes.php" enctype="multipart/form-data">';
 $data = $pdo->query("SELECT id, bg_name, en_name, domain_id FROM emotions ORDER BY id ASC");
 require "js/star.html";
-//require "js/star2.html";
+echo '<div id="star">';
+echo '<input type="hidden" name="id" value="'.$id.'">';
 while($row = $data->fetch(PDO::FETCH_BOTH)){
-	echo '<input type="hidden" name="id" value="'.$id.'">';
 	echo '<label id="'.$row['id'].'" class="moving" title="'.$row['bg_name'].'">';
-	echo '<input class="timed" type="radio" name="'. $row['domain_id'] . '" value="'. $row['id'] .'">'.$row['en_name'];
+	echo '<input onclick="show_slider (' . $row['id'] . ')" class="timed" type="radio" name="'. $row['domain_id'] . '" value="'. $row['id'] .'" id="input'. $row['id'] .'">'.$row['en_name'];
 	echo '</label><br/>';
 }
-echo '<input id="-1" class="moving" type="submit" value="'.NEXT.'"></form>';
-	//Джурка емоциите в началото
-	//echo '<script>start_moving ()</script>';
-	//Подрежда емоциите в началото
+echo "</div>";
+echo '<input disabled id="-1" class="moving" type="submit" value="Selection" data-value="'.NEXT.'">';
+echo '</form>';
+//Подрежда емоциите в началото
+echo '<style>
+#slider {
+	height: 100%;
+	width: 100%;
+	/*background-color:rgba(192,192,192,0.7);*/
+	background-color:rgba(255,255,255,1);
+	/*position: absolute;
+	top: 0%; 
+	left: 0%; 
+	*/
+	
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:20em;
+    height:7em;
+    margin-top: -2em; /*set to a negative number 1/2 of your height*/
+    margin-left: -10em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    /*background-color: #f3f3f3;*/
+}
+#slider > * {
+	top: 45%;
+	width: 100%;
+}
+#slider tr {
+	width: 100%;
+	text-align: center;
+	align-items : center;
+}
+td.slider_text {
+	min-width: 20px;
+	text-align: right;
+}
+</style>';
+echo '<div style="display:none;" id="slider">';
+echo '</div>';
 echo '<script>place_words()</script>';
+require_once('js/numbers.js');
+echo '<script src="js/combine-slider_en.js"></script>';
 echo '<script src="js/collectTiming.js"></script>';
-echo '<script src="js/refreshBack.js"></script>';
-echo '<script>refreshBack("photoes.php")</script>';
 require "end.php";
 ?>

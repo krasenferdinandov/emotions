@@ -14,6 +14,7 @@ for($i = 0; $i<EMOTIONS_NUMBER; $i++){
 	$row = $data->fetch(PDO::FETCH_BOTH);
 	$timing = $_POST['domaintiming_'.$row['domain_id']];
 	//echo $i . ' -> ' . $timing . '<br/>';
+	//echo $i . ' -> ' . $e_slider . '<br/>';
 	$pdo->exec("INSERT INTO emotions_stat VALUES ($id,$i,$e_slider,'$timing');");
 }
 for($a = 0; $a<THEMES_NUMBER; $a++){

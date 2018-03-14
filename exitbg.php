@@ -246,7 +246,7 @@ while($r3 = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$axis_desc = $rsc['bg_desc'];
 	
 	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>* '.quot($bg_name).'</a></td>';
-	$table_result .= '<td style="border: 1px solid #c0c0c0;">Предпочитание:<b> '.$s_sl.'</b></td></tr>';
+	$table_result .= '<td style="border: 1px solid #c0c0c0;">Съответствие:<b> '.$s_sl.'</b></td></tr>';
 }
 //GROS
 $sel_states = $pdo->query("SELECT * FROM gros_stat WHERE id=$id");
@@ -280,25 +280,33 @@ $sel_states = $pdo->query("SELECT * FROM gros_stat WHERE id=$id");
 		if(!isset($axis_stat[$axis_id])) {
 			continue;
 		}
-	
 	$axis_list[$axis_id]=array_unique($axis_list[$axis_id]);
 	$data = $pdo->query("SELECT COUNT(id) FROM gros WHERE axis_id=$axis_id");
+	$data2 = $pdo->query("SELECT SUM(gros_stat.g_slider), COUNT(gros_stat.id) FROM gros_stat join gros on gros_stat.state_id=gros.id WHERE gros_stat.id=$id AND gros.axis_id=$axis_id");
 	$r = $data->fetch(PDO::FETCH_BOTH);
+	$r2 = $data2->fetch(PDO::FETCH_BOTH);
 	$axis_total = $r['COUNT(id)'];
+	$axis_score_total = $r2['SUM(gros_stat.g_slider)'];
+	$axis_count = $r2['COUNT(gros_stat.id)'];
 
-//Показва избраните изречения за всеки "axisa"
+//Показва избраните изречения за саморегулацията
 		$chosen_states = '';
 		$substates = array ();
 		foreach($axis_list[$axis_id] as $axis){
 			$chosen_states .= $axis . "\n";
 			$substates[] = $axis;
 		}
-		
+//Брояч на изреченията:
+		/*$level_axis = percent(count($axis_list[$axis_id]), $axis_total);
+		$count_axis = count($axis_list[$axis_id]);*/
+		//Брояч на точките:
 		$level_axis = percent(count($axis_list[$axis_id]), $axis_total);
-		
-			
+		$level_score_axis = percent($axis_score_total, $axis_total * 7);
 		$count_axis = count($axis_list[$axis_id]);
-		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">'.$count_axis.' от '. $axis_total.' твърдения ('.$level_axis.'%)</a></td>'."</tr>";
+//Печата броя на изреченията:
+		//$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">'.$count_axis.' от '. $axis_total.' твърдения ('.$level_axis.'%)</a></td>'."</tr>";
+		//Печата броя на точките за изреченията:
+		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">' . $axis_score_total .' от ' . ($axis_total*7) .' точки ('.$level_score_axis.'%)</a></td>'."</tr>";
 		$table_result.='<tr><td colspan="2" style="border: 0px solid #c0c0c0;"><label class="desc-res3" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
 }	
 $table_result.='</td><tr/>';

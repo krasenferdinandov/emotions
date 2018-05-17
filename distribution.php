@@ -46,9 +46,8 @@ echo '<tr><th><a title=Id>№</a></th>
 <th>Емоция</th>
 <th>Емоционално семейство</th>
 <th><a title="Произведението от стойностите на силата, честотата и продължителността на избраната емоция.">Плътност</a></th>
-<th>Валентност</th>
 </tr>';
-
+//<th>Валентност</th>
 for($k = 0; $k<$count; $k++)
 { 
 	$current_id = $id_array[$k];
@@ -150,8 +149,8 @@ for($k = 0; $k<$count; $k++)
 				<td>'.$mas.'</td>
 				<td>'.$domain_name.'</td>
 				<td><center>'.round (($e_sl),1).'</center></td>
-				<td><center>'.$dimension_name.'</center></td>
 				</tr>';
+				//<td><center>'.$dimension_name.'</center></td>
 		}
 }
 echo '</table>';

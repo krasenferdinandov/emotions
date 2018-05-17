@@ -1,7 +1,7 @@
 ﻿<?php
 	$a=5;
 	define ("NOTE", '<b>NOTE!</b> If you want to read the meaning of any following </br>instruction, word or translation of sentence, take the cursor<br/>of the mouse at any of them and additional title will appear.');
-	define ("CHOOSE_EMOTIONS", '<b><center><a title="Most common feelings means that you have to choose the most frequent feelings which happen again and again despite the circumstances. You can select them from all 90 words grouped in 10 categories.">Choose AT LEAST 2 THE MOST COMMON expirienced feelings (e.g. for the last month) from all 10 groups shown below.</b><center/><br/></a>');
+	define ("CHOOSE_EMOTIONS", '<b><center><a title="Most common feelings means that you have to choose the most frequent feelings which happen again and again despite the circumstances. You can select them from all 90 words grouped in 10 categories.">Choose AT LEAST 2 THE MOST COMMONLY expirienced emotions (e.g. for the last month).</b><center/><br/></a>');
 	define ("SELECT_EMOTIONS", '<b><center><a title="Most common feelings means that you have to choose the most frequent feelings which happen again and again despite the circumstances. You can select them from all 90 words grouped in 10 categories.">SECOND STEP:<br>Choose minimum 2 the most common expirienced feelings (e.g. for the last month).</b><center/><br/></a>');
 	define ("NEXT", 'Go Forward');
 	define ("NOT_ENOUGH", '<center><a title="It means that you have not chosen any of choices. Please, go back and choose at least 1 of the three versions to proceed "> Choose at least 1 choice.<center/></a>');

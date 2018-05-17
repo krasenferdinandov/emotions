@@ -308,7 +308,10 @@ $sel_states = $pdo->query("SELECT * FROM gros_stat WHERE id=$id");
 //Печата броя на изреченията:
 		//$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">'.$count_axis.' от '. $axis_total.' твърдения ('.$level_axis.'%)</a></td>'."</tr>";
 		//Печата броя на точките за изреченията:
-		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">' . $axis_score_total .' от ' . ($axis_total*7) .' точки ('.$level_score_axis.'%)</a></td>'."</tr>";
+		//$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="read"><br></td><td style="border: 1px solid #c0c0c0;"class="top">' . $axis_score_total .' от ' . ($axis_total*7) .' scores ('.$level_score_axis.'%)</a></td>'."</tr>";
+		
+		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="read"><br></td><td style="border: 1px solid #c0c0c0;"class="top"><a title="*Mean for `Suppression` is 4,6 for both sexes. *Mean norm for `Reappraisal` is 3,64 for men, 3.14 for women.">' . $axis_score_total .' от ' . ($axis_total*7) .' scores, '.round(($axis_score_total/$axis_total), 1).'</a></td>'."</tr>";
+		
 		$table_result.='<tr><td colspan="2" style="border: 0px solid #c0c0c0;"><label class="desc-res3" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
 }	
 $table_result.='</td><tr/>';

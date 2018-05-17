@@ -21,7 +21,7 @@ $table = '';
 $table .= '<table>';
 echo '<center><table class="borders"><tr>';
 $table .= '</tr>';
-echo '<p><b>FOURTH STEP:</b><br/><b>Choose only these sentences, which most accuratly describe your behavior.</b><br/>';
+echo '<p><b>FIFTH STEP:</b><br/><b>Choose only these sentences, which most accuratly describe your behavior.</b><br/>';
 
 echo '<table class="borders">';
 $data = $pdo->query("SELECT * FROM gros");

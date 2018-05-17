@@ -48,6 +48,18 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 //------------------>
 echo '<td><center><b>Affective Management, Осъзнатост</b></center></td>';
 //------------------>
+for($i=0;$i<THEMES_NUMBER;$i++){
+	$script_data = $pdo->query("select en_name, bg_name from statements where id = ". $i . "");
+		
+	$name = "WTF";
+	while($r = $script_data->fetch(PDO::FETCH_BOTH))
+	{
+		$en_name = $r["en_name"];
+		$bg_name = $r["bg_name"];
+	}
+
+	echo '<td><center>T'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+}
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	$miniscript_data = $pdo->query("select en_name, bg_name from miniscripts where id = ". $i . "");
 		
@@ -86,6 +98,8 @@ for($k = 0; $k<$count; $k++)
 	$emotion_row_array = array();
 	$domain_row_array = array();
 	$miniscripts_row_array = array();
+	$scripts_row_array = array();
+	
 /*$data = $pdo->query("SELECT * FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
@@ -104,6 +118,10 @@ if(!isset($id)) continue;
 	for($i = 0; $i<DOMAINS_NUMBER; $i++)
 	{
 		$domain_row_array[] = 0;
+	}
+	for($i = 0; $i<THEMES_NUMBER; $i++)
+	{
+		$scripts_row_array[] = 0;
 	}
 	for($i = 0; $i<MINISCRIPTS_NUMBER; $i++)
 	{
@@ -143,6 +161,23 @@ if(!isset($id)) continue;
 		}
 		
 	}
+
+	$count_s=0;	
+	$data_s = $pdo->query("SELECT state_id FROM states_stat WHERE id = $current_id");
+	while($r = $data_s->fetch(PDO::FETCH_BOTH)) {
+		$si_id = $r['state_id'];
+		if($si_id!=-1) $scripts_row_array[$si_id] = 1;
+		
+		$count_s+=1;
+		if($count_s>=6){
+				$count_sc = '1';
+		}
+		else{ 
+		$count_sc = '0';
+		}
+		
+	}
+	
 	$am_label = "";
 	$data_ma = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id");
 	while($r = $data_ma->fetch(PDO::FETCH_BOTH)){
@@ -178,7 +213,7 @@ if(!isset($id)) continue;
 				$am_label = '1';
 				}
 			}
-	if (($count_e >=6) && ($count_m >=6)){
+	if (($count_e >=6) && ($count_s >=6)){
 		$cmpl_label = '1';
 	}
 	else {$cmpl_label = '0';}
@@ -196,6 +231,12 @@ if(!isset($id)) continue;
 		else echo '<td><center><b>1<b/></center></td>';
 	
 	echo '<td><center>'.$manag.'</center></td>';
+	
+	for($i=0;$i<THEMES_NUMBER;$i++)
+		if($scripts_row_array[$i] != 1)
+			echo '<td><center>0</center></td>';
+		else echo '<td><center><b>1<b/></center></td>';
+		
 	for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		if($miniscripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';

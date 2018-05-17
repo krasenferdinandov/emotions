@@ -10,7 +10,7 @@ echo '<form id="the_form" method="POST" action="testsbg.php" enctype="multipart/
 echo '<input type="hidden" name="id" value="'.$id.'">';
 //Показва съобщение за резултата с текущото ID
 echo'<center><b>'.ID.'</b>'.TIP2.'<b>'.$id.'</b><center/>';
-echo '</br><input type="submit" value="Други тестеове"/><br/>';
+echo '</br><input type="submit" value="Други тестове"/><br/>';
 $table_result = '<table class="borders"><tr><th colspan="2"><center>'.RESULTS.'<center/></th><center/><br/></tr>';
 $sum_pos=0;$count_pos=0;
 $sum_neg=0;$count_neg=0;
@@ -239,13 +239,14 @@ while($r3 = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$rs = $data_s->fetch(PDO::FETCH_BOTH);
 	$axis_id = intval($rs['axis_id']);
 	$bg_name = $rs['bg_name'];
+	$en_name = $rs['en_name'];
 	
 	$data_sc = $pdo->query("SELECT bg_name, bg_desc FROM axis WHERE id=$axis_id");
 	$rsc = $data_sc->fetch(PDO::FETCH_BOTH);
 	$axis_name = $rsc['bg_name'];
 	$axis_desc = $rsc['bg_desc'];
 	
-	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>* '.quot($bg_name).'</a></td>';
+	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($e_name).'"><b>* '.quot($bg_name).'</td>';
 	$table_result .= '<td style="border: 1px solid #c0c0c0;">Съответствие:<b> '.$s_sl.'</b></td></tr>';
 }
 //GROS
@@ -305,10 +306,13 @@ $sel_states = $pdo->query("SELECT * FROM gros_stat WHERE id=$id");
 		$count_axis = count($axis_list[$axis_id]);
 //Печата броя на изреченията:
 		//$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">'.$count_axis.' от '. $axis_total.' твърдения ('.$level_axis.'%)</a></td>'."</tr>";
-		//Печата броя на точките за изреченията:
-		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">' . $axis_score_total .' от ' . ($axis_total*7) .' точки ('.$level_score_axis.'%)</a></td>'."</tr>";
+//Печата броя на точките за изреченията с проценти:
+		//$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top">' . $axis_score_total .' от ' . ($axis_total*7) .' точки ('.$level_score_axis.'%, '.$axis_score_total/$axis_total.')</a></td>'."</tr>";
+//Печата броя на точките за изреченията без процентите:<a title="'.quot($axis_name).', '.quot($axis_desc).'"><b>* '.quot($bg_name).'</a>
+		$table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.$chosen_states.'"><b> #'.quot($bg_name).' </b></a><input type="button" data-id="axis' . $axis_id . '" class="show" value="прочети"><br></td><td style="border: 1px solid #c0c0c0;"class="top"><a title="*Средно очакване за позакателя `Потискане` е 4,6 за двата пола. *Средно очакване за показателя `Преоценка` 3,64 за мъже, 3.14 за жени.">' . $axis_score_total .' от ' . ($axis_total*7) .' точки, '.round(($axis_score_total/$axis_total), 1).'</a></td>'."</tr>";
+		
 		$table_result.='<tr><td colspan="2" style="border: 0px solid #c0c0c0;"><label class="desc-res3" style="display: none;" id="axis' . $axis_id . '">'. $bg_desc .'</br></label></td></tr>';
-}	
+}
 $table_result.='</td><tr/>';
 $table_result .= '<center/></table>';
 echo $table_result;

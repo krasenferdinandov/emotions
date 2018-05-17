@@ -21,9 +21,9 @@ echo '<tr>
 <th><a title="Share of negative states">Negative states</a></th>
 <th><a title="Share of ambivalent states">Ambivalent states</a></th>
 <th><a title="Time spended at the test">Time</a></th>
-<th><a title="Level of Affective Management">Self-control</a></th>
 </tr>';
 /*
+<th><a title="Level of Affective Management">Self-control</a></th>
 <th><a title="Numbers of selected emotions. If number exceed 5 emotions and 5 scripts, it is probably a sign of complex emotional self-attribution.">Number of emotions</a></th>
 <th><a title="Numbers of selected scripts. If number exceed 5 emotions and 5 scripts, it is probably a sign of complex emotional self-attribution.">Number of scripts</a></th><th><a title="Ниво на адаптация">State of Mind</a></th>
 <th><a title="0 отговаря за тестиращи теста; 1 отговаря за тестиращи себе си; 2 отговаря за малолетни или непълнолетни тестиращи; 3 отговаря за временно изпробвана кратка версия. 0 is AI identifier; 1 is Actual Self identifier; 2 is indergraduate identifier; 3 is for temporary available brief testing identifiers.">Test choice</a></th>
@@ -93,9 +93,9 @@ else {
 		<td><center>'.$nega.'%</center></td>
 		<td><center>'.$ambi.'%</center></td>
 		<td>'.$interval->format('%H:%i:%s').'</td>
-		<td>'.$manag_name.'</td>
 		</tr>';
 		/*
+		<td>'.$manag_name.'</td>
 		<td><center>'.$count_e.'</center></td>
 		<td><center>'.$count_s.'</center></td>
 		<td><center>'.$choice.'</center></td><td><center>'.$manag_name.'</center></td>*/

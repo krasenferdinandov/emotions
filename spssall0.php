@@ -2,6 +2,8 @@
 require "header.php";
 echo '<table class="borders">';
 echo '<tr><th>Id</th>';
+
+
 function isInDomain($emotion_search){
 	if($emotion_search >= 0 && $emotion_search <= 8)return 0;
 	if($emotion_search >= 9 && $emotion_search <= 17)return 1;
@@ -48,12 +50,24 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
 	}
-	//echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	echo '<td><center>D'.$i.'_'.$en_name.'</center></td>';
+	echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+	//echo '<td><center>D'.$i.', '.$bg_name.'</center></td>';
 }
 //------------------>
-echo '<td><center><b>Management</b></center></td>';
+echo '<td><center><b>Affective Management, Осъзнатост</b></center></td>';
 //------------------>
+for($i=0;$i<THEMES_NUMBER;$i++){
+	$script_data = $pdo->query("select en_name, bg_name from statements where id = ". $i . "");
+		
+	$name = "WTF";
+	while($r = $script_data->fetch(PDO::FETCH_BOTH))
+	{
+		$en_name = $r["en_name"];
+		$bg_name = $r["bg_name"];
+	}
+
+	echo '<td><center>T'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+}
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	$miniscript_data = $pdo->query("select en_name, bg_name from miniscripts where id = ". $i . "");
 		
@@ -64,12 +78,9 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 		$bg_name = $r["bg_name"];
 	}
 
-	//echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	echo '<td><center>S'.$i.'_'.$en_name.'</center></td>';
+	echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+	//echo '<td><center>S'.$i.', '.$bg_name.'</center></td>';
 }
-//echo '<td><center><b>Emotions</b></center></td>';
-//echo '<td><center><b>Scripts</b></center></td>';
-echo '<td><center><b>Time</b></center></td>';
 echo '</tr>';
 
 //..................> Печати само потвърдените
@@ -114,27 +125,64 @@ if(!isset($id)) continue;
 	{
 		$domain_row_array[] = 0;
 	}
+	for($i = 0; $i<THEMES_NUMBER; $i++)
+	{
+		$scripts_row_array[] = 0;
+	}
 	for($i = 0; $i<MINISCRIPTS_NUMBER; $i++)
 	{
 		$miniscripts_row_array[] = 0;
 	}
 
 	$cmpl_label = "";
-	$count_em=0;	
+	$count_e=0;	
 	$data = $pdo->query("SELECT emotion_id FROM emotions_stat WHERE id = $current_id");
-	while($r = $data->fetch(PDO::FETCH_BOTH)) {	
+	while($r = $data->fetch(PDO::FETCH_BOTH)) {
+			
 		$e_id = $r['emotion_id'];
-		//if($e_id!=-1) $emotion_row_array[$e_id] = 1;
-		if($e_id!=-1) $emotion_row_array[$domain[$e_id]] = 1;
-		if($e_id != -1)$domain_row_array[$domain[$e_id]] = 1;	
-		$count_em+=1;
+		if($e_id!=-1) $emotion_row_array[$e_id] = 1;
+		if($e_id != -1)$domain_row_array[$domain[$e_id]] = 1;
+		
+		$count_e+=1;
+		if($count_e>=6){
+				$count_em = '1';
+		}
+		else{ 
+		$count_em = '0';
+		}
 	}
+	
+	$count_s=0;	
+	$data_s = $pdo->query("SELECT * FROM states_stat WHERE id = $current_id");
+	while($r = $data_s->fetch(PDO::FETCH_BOTH)) {
+		$si_id = $r['state_id'];
+				
+		if($si_id!=-1) $scripts_row_array[$si_id] = 1;
+		
+		$count_s+=1;
+		if($count_s>=6){
+				$count_sc = '1';
+		}
+		else{ 
+		$count_sc = '0';
+		}
+		
+	}
+	
 	$count_m=0;	
 	$data = $pdo->query("SELECT miniscript_id FROM miniscripts_stat WHERE id = $current_id");
 	while($r = $data->fetch(PDO::FETCH_BOTH)) {
 		$mi_id = $r['miniscript_id'];
 		if($mi_id!=-1) $miniscripts_row_array[$mi_id] = 1;
-		$count_m+=1;	
+		
+		$count_m+=1;
+		if($count_m>=6){
+				$count_mi = '1';
+		}
+		else{ 
+		$count_mi = '0';
+		}
+		
 	}
 	
 	$am_label = "";
@@ -142,11 +190,17 @@ if(!isset($id)) continue;
 	while($r = $data_ma->fetch(PDO::FETCH_BOTH)){
 				$manag = $r['manag'];
 			}
+	if (($count_e >=6) && ($count_s >=6)){
+		$cmpl_label = '1';
+	}
+	else {$cmpl_label = '0';}
 	
 	echo '<tr><td><center>'.$current_id.'</center></td>';
 	//echo '<td><center>'.$cmpl_label.'</center></td>';
 	//echo '<td><center>'.$count_em.'</center></td>';
 	//echo '<td><center>'.$count_sc.'</center></td>';
+	//echo '<td><center>'.$count_e.'</center></td>';
+	//echo '<td><center>'.$count_s.'</center></td>';
 	
 	for($i=0;$i<DOMAINS_NUMBER;$i++)
 		if($domain_row_array[$i] != 1)
@@ -177,6 +231,21 @@ if(!isset($id)) continue;
 			echo '<td><center><b>'.round(($e_sl),0).'<b/></center></td>';
 		}
 	echo '<td><center>'.$manag.'</center></td>';
+
+for($i=0;$i<THEMES_NUMBER;$i++)
+		if($scripts_row_array[$i] != 1)
+			echo '<td><center>0</center></td>';
+		else {
+			$data_t = $pdo->query("SELECT * FROM states_stat WHERE id = " . $current_id . "");
+			while($rs = $data_t->fetch(PDO::FETCH_BOTH)) {
+			$s_id = $rs['state_id'];
+			if($s_id!=$i)continue;
+			$s_sl = $rs['s_slider'];
+			}
+			echo '<td><center><b>'.$s_sl.'<b/></center></td>';
+		}			
+		//else echo '<td><center><b>1<b/></center></td>';*/
+			
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		if($miniscripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
@@ -263,29 +332,7 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 			}
 			echo '<td><center><b>'.$magnification_n.'<b/></center></td>';
 		}
-$sel_emotions = $pdo->query("SELECT * FROM choice_stat WHERE id=$current_id LIMIT 1");
-while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
-	$start=$r['start'];
-	$stress=$r['end'];
 	
-	$data = $pdo->query("SELECT time FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
-	$r = $data->fetch(PDO::FETCH_BOTH);
-	$end = $r['time'];
-}
-
-$datetime1 = new DateTime($start);
-$datetime2 = new DateTime($stress);
-$datetime3 = new DateTime($end);
-
-if(isset($id)) {
-	$interval = $datetime1->diff($datetime3);
-}
-else {
-	$interval = $datetime1->diff($datetime2);
-}
-		//echo '<td><center>'.$count_em.'</center></td>';
-		//echo '<td><center>'.$count_s.'</center></td>';
-		echo '<td>'.$interval->format('%H:%i:%s').'</td>';	
 	echo '</tr>';
 	//}
 }

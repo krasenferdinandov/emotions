@@ -45,9 +45,8 @@ echo '<tr><th>Id</th>
 <th>Selected Emotions</th>
 <th>Affective domain</th>
 <th><a title="Multiplication of Intensity, Frequency and Duration of The Emotion.">Density</a></th>
-<th>Valence</th>
 </tr>';
-
+//<th>Valence</th>
 for($k = 0; $k<$count; $k++)
 { 
 	$current_id = $id_array[$k];
@@ -147,8 +146,8 @@ for($k = 0; $k<$count; $k++)
 				<td>'.$mas.'</td>
 				<td>'.$domain_name.'</td>
 				<td><center>'.round (($e_sl),1).'</center></td>
-				<td><center>'.$dimension_name.'</center></td>
 				</tr>';
+				//<td><center>'.$dimension_name.'</center></td>
 		}
 }
 

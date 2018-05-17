@@ -3,32 +3,20 @@ require "header.php";
 
 echo '<table class="borders">';
 echo '<tr><th>Id</th>';
-/*for($i=0;$i<STATES_NUMBER_3;$i++){
-	$statis_data = $pdo->query("select d.label from statusments di 
-		join axis d on di.axis_id=d.id
-		where di.id = ". $i . "");
-		
-	$name = "WRONG";
-	while($r = $statis_data->fetch(PDO::FETCH_BOTH))
-	{
-		$name = $r["label"];
-	}
-
-	//echo '<td>'.$i.$name.'</td>';
-	echo '<td>'.$name.'</td>';
-}*/
-
 for($i=0;$i<STATES_NUMBER_3;$i++){
-	$statis_data = $pdo->query("select id, bg_name, axis_id from statusments where id = ". $i . "");
+	$statis_data = $pdo->query("select id, bg_name, axis_id, subaxis_id from statusments where id = ". $i . "");
 	while($r = $statis_data->fetch(PDO::FETCH_BOTH))
 	{
 		$ids = $r["id"];
 		$axis = $r["axis_id"];
+		$subaxis = $r["subaxis_id"];
 		$bg_name = $r["bg_name"];
 	}
 
 	//echo '<td>'.$i.$name.'</td>';
-	echo '<td>i'.$ids.'_a'.$axis.', '.$bg_name.'</td>';
+	echo '<td>i'.$ids.'_a'.$axis.'</td>';
+    //echo '<td>i'.$ids.'_a'.$axis.', '.$bg_name.'</td>';
+	//echo '<td>a'.$axis.'_s'.$subaxis.'</td>';
 }
 
 echo '</tr>';

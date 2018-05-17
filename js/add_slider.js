@@ -19,7 +19,7 @@ function toggle_slider (id) {
 		}
 	}
 	if (td.innerHTML == '') {
-		td.innerHTML = '<input onchange="showNums();" type="range" name="s_slider_'+ id +'" class="timed s_slider" value="1" min="1" max="10" step="1"/>';
+		td.innerHTML = '<input onchange="showNums();" type="range" name="s_slider_'+ id +'" class="timed s_slider" value="1" min="1" max="7" step="1"/>';
 		value.innerHTML = "1";
 	}
 	else {

@@ -28,7 +28,9 @@
 			'-' + pad(this.getDate()) +
 			' ' + pad(this.getHours()) +
 			':' + pad(this.getMinutes()) +
-			':' + pad(this.getSeconds()) /*+
+			':' + pad(this.getSeconds())
+			//+ ':' + pad(this.getMilliseconds())
+			/*+
 			dif + pad(tzo / 60) +
 			':' + pad(tzo % 60)*/;
 		}

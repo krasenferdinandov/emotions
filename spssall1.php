@@ -51,7 +51,7 @@ for($k = 0; $k<$count; $k++)
 	$emotion_row_array = array();
 	$miniscripts_row_array = array();
 
-$data = $pdo->query("SELECT * FROM emotions_stat WHERE id = $current_id LIMIT 1");
+$data = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 //if($id>102){

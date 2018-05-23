@@ -59,10 +59,10 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 }
 echo '</tr>';
 //..................> Печати всички
-$count_data = $pdo->query("SELECT id FROM choice_stat ORDER BY id");
+//$count_data = $pdo->query("SELECT id FROM choice_stat ORDER BY id");
 //$count_data = $pdo->query("SELECT id FROM emotions_stat ORDER BY id");
 //..................> Печати само потвърдените
-//$count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
+$count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
 $count = 0;
 $last = -1;
 $id_array = array();

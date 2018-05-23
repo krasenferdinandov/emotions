@@ -76,9 +76,9 @@
 	function scores_level($scores, $n){
 		if($n==0) return 0;
 		$scores/=$n;
-		if($scores>6.9) return 2;
-		if($scores>3.3 && $scores<=6.9) return 1;
-		if($scores<=3.3) return 0;
+		if($scores>6.5) return 2;
+		if($scores>3.5 && $scores<=6.5) return 1;
+		if($scores<=3.5) return 0;
 	}
 	function quot($text){
 		return htmlspecialchars($text);

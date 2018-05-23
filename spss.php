@@ -42,8 +42,8 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
 	}
-	echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	//echo '<td><center>D'.$i.', '.$bg_name.'</center></td>';
+	//echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+	echo '<td><center>D'.$i.''.$bg_name.'</center></td>';
 }
 //------------------>
 echo '<td><center><b>Affective Management, Осъзнатост</b></center></td>';
@@ -58,8 +58,8 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 		$bg_name = $r["bg_name"];
 	}
 
-	echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	//echo '<td><center>S'.$i.', '.$bg_name.'</center></td>';
+	//echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+	echo '<td><center>S'.$i.''.$bg_name.'</center></td>';
 }
 
 echo '</tr>';

@@ -64,9 +64,9 @@ for($k = 0; $k<$count; $k++)
 		}
 	for($i=0;$i<PHOTOES_NUMBER;$i++)
 		if($photoes_row_array[$i] != "0")
-			echo '<td><center><b>'.$photoes_row_array[$i].'<b/></center></td>';
-		else {
 			echo '<td><center>0</center></td>';
+		else {
+			echo '<td><center><b>1<b/></center></td>';
 		}
 	echo '</tr>';
 }

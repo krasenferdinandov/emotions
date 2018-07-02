@@ -1,14 +1,8 @@
 <?php
-require "header.php";
+require "headerbg.php";
 echo '<table class="borders">';
 echo '<tr><td>№</td>';
-
-/*<td><b>Self Complexity</b></td>
-<td><b>Balance Defusion</b></td>*/
-
-function isInDomain($emotion_search){
-	return (floor($emotion_search));
-}
+/**/
 $string = array();
 $domain = array();
 $emotions = array();
@@ -42,12 +36,9 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
 	}
-	//echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	echo '<td><center>D'.$i.''.$bg_name.'</center></td>';
+	echo '<td><center>D'.$i.''.$bg_name.'_'.$en_name.'</center></td>';
+	//echo '<td><center>D'.$i.''.$bg_name.'</center></td>';
 }
-//------------------>
-echo '<td><center><b>Affective Management, Осъзнатост</b></center></td>';
-//------------------>
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	$miniscript_data = $pdo->query("select en_name, bg_name from miniscripts where id = ". $i . "");
 		
@@ -58,10 +49,18 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 		$bg_name = $r["bg_name"];
 	}
 
-	//echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	echo '<td><center>S'.$i.''.$bg_name.'</center></td>';
+	echo '<td><center>S'.$i.''.$bg_name.'_'.$en_name.'</center></td>';
+	//echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
+	//echo '<td><center>S'.$i.''.$bg_name.'</center></td>';
 }
-
+//------------------>
+echo '<td><b>Count allFamilies</b></td>';
+echo '<td><b>Count posFamilies</b></td>';
+echo '<td><b>Count negFamilies</b></td>';
+echo '<td><b>Count Scripts</b></td>';
+echo '<td><center><b>Affective Management</b></center></td>';
+echo '<td><center><b>Time</b></center></td>';
+//------------------>
 echo '</tr>';
 //..................> Печати само потвърдените
 $count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
@@ -85,6 +84,7 @@ for($k = 0; $k<$count; $k++)
 	$current_id = $id_array[$k];
 	$emotion_row_array = array();
 	$domain_row_array = array();
+	$domains_category_array = array();
 	$miniscripts_row_array = array();
 /*$data = $pdo->query("SELECT * FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
@@ -101,108 +101,85 @@ if(!isset($id)) continue;
 	{
 		$emotion_row_array[] = 0;
 	}
+	$domains_category_array ['pos'] = array();
+	$domains_category_array ['neg'] = array();
 	for($i = 0; $i<DOMAINS_NUMBER; $i++)
 	{
 		$domain_row_array[] = 0;
+		$domains_category_array ['pos'][] = 0;
+		$domains_category_array ['neg'][] = 0;
 	}
 	for($i = 0; $i<MINISCRIPTS_NUMBER; $i++)
 	{
 		$miniscripts_row_array[] = 0;
 	}
-	
-	$cmpl_label = "";
-	$count_e=0;	
+	$count_em=0;	
 	$data = $pdo->query("SELECT emotion_id FROM emotions_stat WHERE id = $current_id");
 	while($r = $data->fetch(PDO::FETCH_BOTH)) {
 			
 		$e_id = $r['emotion_id'];
 		if($e_id!=-1) $emotion_row_array[$e_id] = 1;
 		if($e_id != -1)$domain_row_array[$domain[$e_id]] = 1;
+		$count_em+=1;
 		
-		$count_e+=1;
-		if($count_e>=6){
-				$count_em = '1';
-		}
-		else{ 
-		$count_em = '0';
+		{
+			$emotion = $pdo->query("SELECT * FROM emotions WHERE id = $e_id")->fetch(PDO::FETCH_BOTH);
+			if ($emotion['valence_id'] == 0)
+				$domains_category_array ['pos'][$domain[$e_id]] = 1;
+			else
+				$domains_category_array ['neg'][$domain[$e_id]] = 1;
 		}
 	}
-	
-	$count_m=0;	
+	//var_dump($domain_row_array); echo "<br>";
+	//echo "number of selected domains: " . array_sum($domain_row_array) . "<br>";
+	$count_sc=0;	
 	$data = $pdo->query("SELECT miniscript_id FROM miniscripts_stat WHERE id = $current_id");
 	while($r = $data->fetch(PDO::FETCH_BOTH)) {
 		$mi_id = $r['miniscript_id'];
 		if($mi_id!=-1) $miniscripts_row_array[$mi_id] = 1;
 		
-		$count_m+=1;
-		if($count_m>=6){
-				$count_mi = '1';
-		}
-		else{ 
-		$count_mi = '0';
-		}
-		
+		$count_sc+=1;
 	}
-	$am_label = "";
 	$data_ma = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id");
 	while($r = $data_ma->fetch(PDO::FETCH_BOTH)){
 				$manag = $r['manag'];
-				$posi = $r['posi']/100;
-				$som_name = "";
-				if($posi>=0.68){
-					$som=4;
-					$som_name = '<center>0<center/>';
-				}else if($posi>0.56){
-					$som=3;
-					$som_name = '<center>1<center/>';
-				}else if ($posi>0.44) {
-					$som=2;
-					$som_name = '<center>1<center/>';
-				}else if ($posi>0.32) {
-					$som=1;
-					$som_name = '<center>0<center/>';
-				}else{
-					$som=0;
-					$som_name = '<center>0<center/>';
-				}	
-				if($manag==0){
-				$am_label = '0';
-				}
-				if($manag==1){
-				$am_label = '0';
-				}
-				if($manag==2){
-				$am_label = '1';
-				}
-				if($manag==3){
-				$am_label = '1';
-				}
-			}
-	if (($count_e >=6) && ($count_m >=6)){
-		$cmpl_label = '1';
 	}
-	else {$cmpl_label = '0';}
-	
 	echo '<tr><td><center>'.$current_id.'</center></td>';
-		
-	/*echo '<td><center>'.$cmpl_label.'</center></td>';
-	echo '<td><center>'.$am_label.'</center></td>';
-	echo '<td><center>'.$som.'</center></td>';
-	echo '<td><center>'.$som_name.'</center></td>';*/
-		
 	for($i=0;$i<DOMAINS_NUMBER;$i++)
 		if($domain_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
 		else echo '<td><center><b>1<b/></center></td>';
-	
-	echo '<td><center>'.$manag.'</center></td>';
 	for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		if($miniscripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
 		else echo '<td><center><b>1<b/></center></td>';
 	
-	
-				
+	$sel_emotions = $pdo->query("SELECT * FROM choice_stat WHERE id=$current_id LIMIT 1");
+	while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
+		$start=$r['start'];
+		$stress=$r['end'];
+		
+		$data = $pdo->query("SELECT time FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
+		$r = $data->fetch(PDO::FETCH_BOTH);
+		$end = $r['time'];
+	}
+
+	$datetime1 = new DateTime($start);
+	$datetime2 = new DateTime($stress);
+	$datetime3 = new DateTime($end);
+
+	if(isset($id)) {
+		$interval = $datetime1->diff($datetime3);
+	}
+	else {
+		$interval = $datetime1->diff($datetime2);
+	}
+		echo '<td><center>'.array_sum($domain_row_array).'</center></td>';
+		echo '<td><center>'.array_sum($domains_category_array['pos']).'</center></td>';
+		echo '<td><center>'.array_sum($domains_category_array['neg']).'</center></td>';
+		echo '<td><center>'.$count_sc.'</center></td>';
+		echo '<td><center>'.$manag.'</center></td>';
+		echo '<td>'.$interval->format('%H:%i:%s').'</td>';
 	echo '</tr>';
 	//}
 }

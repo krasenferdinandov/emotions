@@ -9,7 +9,7 @@ echo '<form id="the_form" method="POST" action="testsbg.php" enctype="multipart/
 
 echo '<input type="hidden" name="id" value="'.$id.'">';
 //Показва съобщение за резултата с текущото ID
-echo'<center><b>'.ID.'</b>'.TIP2.'<b>'.$id.'</b><center/>';
+echo'<center><b>'.ID.'<br></b>'.TIP2.'<b>'.$id.'</b><center/>';
 echo '</br><input type="submit" value="Други тестове"/><br/>';
 $table_result = '<table class="borders"><tr><th colspan="2"><center>'.RESULTS.'<center/></th><center/><br/></tr>';
 $sum_pos=0;$count_pos=0;
@@ -62,12 +62,13 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$manag = $r['manag'];
 	
-	$data = $pdo->query("SELECT domain_id, dimension_id, en_name, bg_name, string_id, tension_id FROM emotions WHERE id = $e_id LIMIT 1");
+	$data = $pdo->query("SELECT domain_id, dimension_id, valence_id, en_name, bg_name, string_id, tension_id FROM emotions WHERE id = $e_id LIMIT 1");
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$domain_id = intval($r['domain_id']);
 	$en_name = $r['en_name'];
 	$bg_name = $r['bg_name'];
-	$dimension_id = $r['dimension_id'];
+	//$dimension_id = $r['dimension_id'];
+	$dimension_id = $r['valence_id'];
 	$e_string = $r['string_id'];
 	$e_tension = $r['tension_id'];
 	
@@ -111,7 +112,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 }
 
 //Показва резултати за предимството на "сценариите".
-$table_result.= '<tr><th colspan="2"><center><br/><b>'.CONFIRMED.'</b><center/></th><tr/>';
+$table_result.= '<tr><th colspan="2"><center><br/><b>Първоначално избрани:</b><center/></th><tr/>';
 
 $data_s = $pdo->query('SELECT miniscripts.id, miniscripts.bg_name, miniscripts.domain1_id, miniscripts.domain2_id, miniscripts.bg_name, miniscripts.bg_desc, miniscripts.en_name FROM miniscripts inner join miniscripts_stat on miniscripts.id = miniscripts_stat.miniscript_id WHERE miniscripts_stat.id='.$id.'');
 	
@@ -188,6 +189,86 @@ $table_result .= '<tr><td colspan="2" align="left" style="border-right: none; bo
 	$table_result .= '<a title="Увеличението показва колко допълнителна емоционална важност е придадена  към значението на един житейски избор, така че да придобие предимството пред другите избори в рамките на групата от емоционални очаквания, за да поддържа впечатление, личното или у другите, че тази специфика е водеща и определя обащата линия на намеренията, поведението, предпочитанията или навиците. Степента на увеличение може да надхвърли 100. Стойността на увеличение има свойството да се превръща и в сила на съпротивление, да се противопоставя на нарастване и взаимно свързване между емоции, емоционални навици и емоционални черти. Колкото по-висока е стойността, толкова повече сцени на емоции могат да бъдат свързани в обобщаващ сценарий и да осигурят по-голямо предимство и обратно - колкото по-малка е стойността, толкова по-голямо ще е емоционалното противопоставяне между сценарии които да обединяват сцени, пориви, навици в единно  намерение.">Предимство:</a> '. $magnification_m. '</a></li></br>';
 		}
 	$table_result .= '</ul></td></tr>';
+//-------------------->
+//Показва резултати за предимството на "сценариите".
+$table_result.= '<tr><th colspan="2"><center><br/><b>Повторно избрани:</b><center/></th><tr/>';
+
+$data_s = $pdo->query('SELECT miniscripts.id, miniscripts.bg_name, miniscripts.domain1_id, miniscripts.domain2_id, miniscripts.bg_name, miniscripts.bg_desc, miniscripts.en_name FROM miniscripts inner join miniscripts2_stat on miniscripts.id = miniscripts2_stat.miniscript_id WHERE miniscripts2_stat.id='.$id.'');
+	
+while($r = $data_s->fetch(PDO::FETCH_BOTH)){
+//Показва id на потвърдените miniscripts;
+//$table_result .= '<a title="'.quot($r['bg_desc']).'">'.$r['id'].$r['bg_name'].'</a>'; 
+$table_result .= '<tr><td colspan="2" align="left" style="border-right: none; border: 1px solid #c0c0c0;">* <b><a title="'.quot($r['en_name']).', '.quot($r['bg_desc']).'">'.$r['bg_name'].'</a></b>, ';
+			
+			$magnification_m = "?";
+					$density_em1 = $r['domain1_id'];
+					$density_em2 = $r['domain2_id'];
+					
+					$sel_emotions1 = $pdo->query("SELECT * FROM emotions em join emotions_stat e 
+					on em.id = e.emotion_id where e.id = " . $id . "");
+					while($ro = $sel_emotions1->fetch(PDO::FETCH_BOTH)){
+						if(isInDomain($ro['emotion_id']) == $density_em1){
+							$mas1 = $ro['emotion_id'];
+							$e_sl_1=$ro['e_slider'];
+						}
+						if(isInDomain($ro['emotion_id']) == $density_em2){
+							$mas2 = $ro['emotion_id'];
+							$e_sl_2=$ro['e_slider'];
+						}
+					}
+								
+					$string_id_1 = $string[$mas1];
+					$string_id_2 = $string[$mas2];
+					$tension_id_1 = $tension[$mas1];
+					$tension_id_2 = $tension[$mas2];
+					
+					if ($string_id_1 == 0){			
+					$density_em1 = (($e_sl_1*0.4)+$tension_id_1);
+					}
+					else if($string_id_1 == 1){
+					$density_em1 = (($e_sl_1*0.6)+$tension_id_1);
+					}
+					else if($string_id_1 == 2){
+					$density_em1 = (($e_sl_1*0.8)+$tension_id_1);
+					}
+					
+					if ($string_id_2 == 0){			
+					$density_em2 = (($e_sl_2*0.4)+$tension_id_2);
+					}
+					else if($string_id_2 == 1){
+					$density_em2 = (($e_sl_2*0.6)+$tension_id_2);
+					}
+					else if($string_id_2 == 2){
+					$density_em2 = (($e_sl_2*0.8)+$tension_id_2);
+					}
+					
+					if ($string_id_2 == 0){			
+					$density_em2 = (($e_sl_2*0.4)+$tension_id_2);
+					}
+					else if($string_id_2 == 1){
+					$density_em2 = (($e_sl_2*0.6)+$tension_id_2);
+					}
+					else if($string_id_2 == 2){
+					$density_em2 = (($e_sl_2*0.8)+$tension_id_2);
+					}	
+		
+	
+	$count_e=0;	
+			$sel_emotions = $pdo->query("Select * FROM emotions_stat WHERE id=$id");
+			while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
+				$count_e+=1;
+			}
+	$count_s=0;	
+			$sel_scripts = $pdo->query("Select * FROM miniscripts2_stat WHERE id=$id");
+			while($r = $sel_scripts->fetch(PDO::FETCH_BOTH)){
+				$count_s+=1;
+			}
+		$magnification_m = round(($count_e * ($density_em1  + $density_em2))/($count_s), 1) ;
+	
+	$table_result .= '<a title="Увеличението показва колко допълнителна емоционална важност е придадена  към значението на един житейски избор, така че да придобие предимството пред другите избори в рамките на групата от емоционални очаквания, за да поддържа впечатление, личното или у другите, че тази специфика е водеща и определя обащата линия на намеренията, поведението, предпочитанията или навиците. Степента на увеличение може да надхвърли 100. Стойността на увеличение има свойството да се превръща и в сила на съпротивление, да се противопоставя на нарастване и взаимно свързване между емоции, емоционални навици и емоционални черти. Колкото по-висока е стойността, толкова повече сцени на емоции могат да бъдат свързани в обобщаващ сценарий и да осигурят по-голямо предимство и обратно - колкото по-малка е стойността, толкова по-голямо ще е емоционалното противопоставяне между сценарии които да обединяват сцени, пориви, навици в единно  намерение.">Предимство:</a> '. $magnification_m. '</a></li></br>';
+		}
+	$table_result .= '</ul></td></tr>';
+//-------------------->
 	$table_result .= '<tr><th colspan="2"><center></br>СЪЗДАЙ СВОЯ "КАРТА НА ЧУВСТВАТА"!</br><a href="http://testrain.info/download/Flowscape.pdf" target="_blank" method="get"><input type="button" value="Виж как"/></a><center/><br/></th><tr/>';
 //-------------------->
 
@@ -204,13 +285,17 @@ $table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>Разпозна�
 //------------>Показва съотношението между положителните и отрицателните емоции според стойностите от слайдера: "AFFECT MANAGEMENT"
 if($count_pos==0) $count_pos=1;
 if($count_neg==0) $count_neg=1;
-if($count_ambi==0) $count_ambi=1;
+//if($count_ambi==0) $count_ambi=1;
+
 //За премахване на стойностите на слайдера от съотношението между + и - емоции замени "sum_pos/neg..." със "count_pos/neg..."
 $table_result.= '<tr><td style="border: 1px solid #c0c0c0;"><b>'.RATIO.'</b></td>';
 
-$score_neg=scores_level($sum_neg, $count_neg-$count_ambi);
+/*$score_neg=scores_level($sum_neg, $count_neg-$count_ambi);
 $score_pos=scores_level($sum_pos, $count_pos-$count_ambi);
-$score_ambi=scores_level($sum_ambi, $count_ambi);
+$score_ambi=scores_level($sum_ambi, $count_ambi);*/
+$score_neg=scores_level($sum_neg, $count_neg);
+$score_pos=scores_level($sum_pos, $count_pos);
+
 $score_group=$score_neg.$score_pos;
 $data = $pdo->query("SELECT bg_name,bg_desc FROM management WHERE score_group LIKE '%$score_group%'");
 $r = $data->fetch(PDO::FETCH_BOTH);
@@ -221,12 +306,14 @@ if ($r){
 	$bg_name='';
 	$bg_desc='';
 }
-$posi = percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi);
+/*$posi = percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi);
 $nega = percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi);
-$ambi = percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi);
+$ambi = percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi);*/
+$posi = percent($sum_pos, $sum_pos+$sum_neg);
+$nega = percent($sum_neg, $sum_pos+$sum_neg);
 
-$table_result.= '<td style="border: 1px solid #c0c0c0;">- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.AMBIVALENT.': '.percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi).'%</td>';
-
+/*$table_result.= '<td style="border: 1px solid #c0c0c0;">- '.POSITIVE.': '.percent($sum_pos, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.NEGATIVE.': '.percent($sum_neg, $sum_pos+$sum_neg+$sum_ambi).'%<br>- '.AMBIVALENT.': '.percent($sum_ambi, $sum_pos+$sum_neg+$sum_ambi).'%</td>';*/
+$table_result.= '<td style="border: 1px solid #c0c0c0;">- '.POSITIVE.': '.$posi.'%<br>- '.NEGATIVE.': '.$nega.'%</td>';
 //Demorest --> Показва избраните изречения за всеки "axis"
 
 $table_result.= '<tr><th colspan="2"><center><br/><b>Списък с избрани теми: </b><center/></th><tr/>';
@@ -246,7 +333,7 @@ while($r3 = $sel_states->fetch(PDO::FETCH_BOTH)){
 	$axis_name = $rsc['bg_name'];
 	$axis_desc = $rsc['bg_desc'];
 	
-	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($e_name).'"><b>* '.quot($bg_name).'</td>';
+	$table_result .= '<tr><td style="border: 1px solid #c0c0c0;"><a title="'.quot($en_name).'"><b>* '.quot($bg_name).'</td>';
 	$table_result .= '<td style="border: 1px solid #c0c0c0;">Съответствие:<b> '.$s_sl.'</b></td></tr>';
 }
 //GROS

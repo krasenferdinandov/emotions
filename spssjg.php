@@ -3,37 +3,25 @@ require "headerbg.php";
 echo '<table class="borders">';
 echo '<tr><th>Id</th>';
 $domain = array();
-/*for($i=0;$i<STATES_NUMBER_1;$i++){
-	$statis_data = $pdo->query("select d.label from statiments di 
-		join axis d on di.axis_id=d.id
-		where di.id = ". $i . "");
-		
-	$name = "WRONG";
-	while($r = $statis_data->fetch(PDO::FETCH_BOTH))
-	{
-		$name = $r["label"];
-	}
-
-	//echo '<td>'.$i.$name.'</td>';
-	echo '<td>'.$name.'</td>';
-}*/
+//------------------>
 $statement1 = $pdo->query("SELECT * FROM domains s, emotions sc WHERE sc.domain_id = s.id ");
 while($row = $statement1->fetch(PDO::FETCH_BOTH))
 {
 	$domain[$row['id']] = $row['domain_id'];
 	
 }
-for($i=0;$i<STATES_NUMBER_1;$i++){
-	$statis_data = $pdo->query("select id, bg_name, axis_id from statiments where id = ". $i . "");
-	while($r = $statis_data->fetch(PDO::FETCH_BOTH))
+for($i=0;$i<STATES_NUMBER;$i++){
+	$script_data = $pdo->query("select en_name, bg_name, axis_id from gros where id = ". $i . "");
+		
+	$name = "WTF";
+	while($r = $script_data->fetch(PDO::FETCH_BOTH))
 	{
-		$ids = $r["id"];
-		$axis = $r["axis_id"];
+		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
+		$axis = $r["axis_id"];
 	}
 
-	//echo '<td>'.$i.$name.'</td>';
-	echo '<td>i'.$ids.'_a'.$axis.'</td>';
+	echo '<td><center>i'.$i.'_a'.$axis.'</center></td>';
 }
 echo '<td><b>all_Families</b></td>';
 echo '<td><b>posi_Families</b></td>';
@@ -42,7 +30,9 @@ echo '<td><center><b>Scripts</b></center></td>';
 echo '<td><center><b>Management</b></center></td>';
 echo '<td><center><b>Time</b></center></td>';
 echo '</tr>';
-$count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
+
+$count_data = $pdo->query("SELECT id FROM gros_stat ORDER BY id");
+
 $count = 0;
 $last = -1;
 $id_array = array();
@@ -59,29 +49,40 @@ while($r = $count_data->fetch(PDO::FETCH_BOTH))
 for($k = 0; $k<$count; $k++)
 { 
 	$current_id = $id_array[$k];
-	$stati_row_array = array();
+	$scripts_row_array = array();
 	$domain_row_array = array();
-
-	for($i = 0; $i<STATES_NUMBER_1; $i++)
-	{
-		$stati_row_array[] = 0;
-	}
-$data = $pdo->query("SELECT * FROM statis_stat WHERE id = $current_id LIMIT 1");
+	
+$data = $pdo->query("SELECT * FROM gros_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 if(!isset($id)) continue;
-
-			$data = $pdo->query("SELECT state_id FROM statis_stat WHERE id = $current_id");
-			while($r = $data->fetch(PDO::FETCH_BOTH)) {
-				$s_id = $r['state_id'];
-				if($s_id!=-1) $stati_row_array[$s_id] = 1;
-			}
-			echo '<tr><td><center>'.$current_id.'</center></td>';
-			for($i=0;$i<STATES_NUMBER_1;$i++)
-				if($stati_row_array[$i] != 1)
-					echo '<td><center>0</center></td>';
-				else echo '<td><center><b>1<b/></center></td>';			
+	for($i = 0; $i<STATES_NUMBER; $i++)
+	{
+		$scripts_row_array[] = 0;
+	}
 	
+$data_s = $pdo->query("SELECT * FROM gros_stat WHERE id = $current_id");
+while($r = $data_s->fetch(PDO::FETCH_BOTH)) {
+	$si_id = $r['state_id'];
+	if($si_id!=-1) $scripts_row_array[$si_id] = 1;
+			
+}
+echo '<tr><td><center>'.$current_id.'</center></td>';
+
+for($i=0;$i<STATES_NUMBER;$i++)
+		if($scripts_row_array[$i] != 1)
+			echo '<td><center>0</center></td>';
+		else {
+			$data_t = $pdo->query("SELECT * FROM gros_stat WHERE id = " . $current_id . "");
+			while($rs = $data_t->fetch(PDO::FETCH_BOTH)) {
+			$s_id = $rs['state_id'];
+			if($s_id!=$i)continue;
+			$s_sl = $rs['g_slider'];
+			}
+			echo '<td><center><b>'.$s_sl.'<b/></center></td>';
+		}	
+		//else echo '<td><center><b>1<b/></center></td>';
+		
 	$count_em=0;
 	$domains_category_array ['pos'] = array();
 	$domains_category_array ['neg'] = array();	
@@ -114,26 +115,25 @@ if(!isset($id)) continue;
 		$manag = $r['manag'];
 	}
 	$sel_emotions = $pdo->query("SELECT * FROM choice_stat WHERE id=$current_id LIMIT 1");
-	while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
-		$start=$r['start'];
-		$stress=$r['end'];
-		
-		$data = $pdo->query("SELECT time FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
-		$r = $data->fetch(PDO::FETCH_BOTH);
-		$end = $r['time'];
-	}
+		while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
+			$start=$r['start'];
+			$stress=$r['end'];
+			
+			$data = $pdo->query("SELECT time FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
+			$r = $data->fetch(PDO::FETCH_BOTH);
+			$end = $r['time'];
+		}
 
-	$datetime1 = new DateTime($start);
-	$datetime2 = new DateTime($stress);
-	$datetime3 = new DateTime($end);
+		$datetime1 = new DateTime($start);
+		$datetime2 = new DateTime($stress);
+		$datetime3 = new DateTime($end);
 
-	if(isset($id)) {
-		$interval = $datetime1->diff($datetime3);
-	}
-	else {
-		$interval = $datetime1->diff($datetime2);
-	}
-	
+		if(isset($id)) {
+			$interval = $datetime1->diff($datetime3);
+		}
+		else {
+			$interval = $datetime1->diff($datetime2);
+		}
 	
 echo '<td><center>'.array_sum($domain_row_array).'</center></td>';
 echo '<td><center>'.array_sum($domains_category_array['pos']).'</center></td>';
@@ -143,7 +143,9 @@ echo '<td><center>'.$manag.'</center></td>';
 echo '<td>'.$interval->format('%H:%i:%s').'</td>';	
 
 echo '</tr>';
+	//}
 }
+
 echo '</table>';
 require "end.php";
 ?>

@@ -16,8 +16,6 @@ $dt->setTimestamp($timeNow);
 		$id=$row["id"];
 		$bg_name=$row["bg_name"];
 		$bg_alt=$row["bg_alt"];
-		$pls_true=$row["pls_true"];
-		$pls_alt=$row["pls_alt"];
 		$url=$row["url"];
 		if ($id_current_photo == 0) {
 			echo '<tr class="' . $id_current_photo . '"><td></td><td></td><td></td><th><center><img src="' . $url . '"></th><td></td><td></td></tr>';

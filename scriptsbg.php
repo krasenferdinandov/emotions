@@ -119,7 +119,7 @@ $manag = $id_manag;
 $table_result .= '<input type="hidden" value="'.$manag.'" name="manag"/>';
 $table_result .= '<center/></table>';
 echo $table_result;
-echo '</br><input type="submit" value="Потвърждение"/><br/>';
+echo '</br><input type="submit" value="Продължи"/><br/>';
 echo '<script src="js/collectTiming.js"></script>';
 echo '<script src="js/refreshBack.js"></script>';
 echo '<script>refreshBack("photoesbg.php")</script>';

@@ -40,7 +40,8 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 		$bg_name = $r["bg_name"];
 	}
 	//echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	echo '<td><center>F'.$i.'</center></td>';
+	echo '<td><center>F'.$i.'_'.$en_name.'</center></td>';
+	//echo '<td><center>F'.$i.'</center></td>';
 }
 //------------------>
 for($i=0;$i<THEMES_NUMBER;$i++){
@@ -52,8 +53,8 @@ for($i=0;$i<THEMES_NUMBER;$i++){
 		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
 	}
-    //echo '<td><center>T'.$i.'_'.$en_name.'</center></td>';
-	echo '<td><center>T'.$i.'</center></td>';
+    echo '<td><center>T'.$i.'_'.$en_name.'</center></td>';
+	//echo '<td><center>T'.$i.'</center></td>';
 }
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	$miniscript_data = $pdo->query("select en_name, bg_name from miniscripts where id = ". $i . "");
@@ -64,9 +65,9 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
 	}
-
+    echo '<td><center>S'.$i.', '.$en_name.'</center></td>';
 	//echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	echo '<td><center>S'.$i.'</center></td>';
+	//echo '<td><center>S'.$i.'</center></td>';
 }
 
 echo '</tr>';

@@ -15,6 +15,6 @@ for($a = 0; $a<STATES_NUMBER; $a++){
 		$pdo->exec("INSERT INTO gros_stat VALUES ($id,$a,$g_slider,'$timing');");
 	}
 }
-echo '<meta http-equiv="Refresh" content="0;exit.php?id='.$id.'" />';
+echo '<meta http-equiv="Refresh" content="0;scripts2.php?id='.$id.'" />';
 require "end.php";
 ?>

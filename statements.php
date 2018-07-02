@@ -1,6 +1,6 @@
 <?php
 require "header.php";
-echo '<form id="the_form" method="POST" action="evalue.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+echo '<form id="the_form" method="POST" action="indb4.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 if (array_key_exists('id', $_POST))
 	{
 	echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
@@ -21,7 +21,7 @@ $table = '';
 $table .= '<table>';
 echo '<center><table class="borders"><tr>';
 $table .= '</tr>';
-echo '<p><b>FIFTH STEP:</b><br/><b>Choose only these sentences, which most accuratly describe your behavior.</b><br/>';
+echo '<p><b>THE FIFHT STEP:</b><br/><b>Choose only these sentences, which most accuratly describe your behavior.</b><br/>';
 
 echo '<table class="borders">';
 $data = $pdo->query("SELECT * FROM gros");

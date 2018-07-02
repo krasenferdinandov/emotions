@@ -190,6 +190,7 @@ if(!isset($id)) continue;
 			$e_sl = array ();
 			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)) {
 					$mas = $r1['emotion_id'];
+					$duration = $r1['e_slider'];
 					if(isInDomain($mas) != $i) continue;
 					$string_id = $r1['string_id'];//$string[$mas];
 					$tension_id = $r1['tension_id'];//$tension[$mas];
@@ -213,7 +214,8 @@ if(!isset($id)) continue;
 			//echo '<td><center><b>'.round(($e_sl),0).' (' . median ($median_values).', ' . avg ($median_values) . ')<b/></center></td>';
 			//echo '<td><center><b>'.round(($e_sl),0).' (' . abs(median ($median_values) - avg ($median_values)) . ')<b/></center></td>';
 			//echo '<td><center><b>'.round(avg($e_sl),0).' == '.round(median($e_sl),0).' (' . abs(avg($e_sl) - median ($e_sl)) . ')<b/></center></td>';
-			echo '<td><center><b>'.round(avg($e_sl),0).'<b/></center></td>';
+			//echo '<td><center><b>'.round(avg($e_sl),0).'<b/></center></td>';
+			echo '<td><center><b>'.$duration.'<b/></center></td>';
 		}
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		if($miniscripts_row_array[$i] != 1)

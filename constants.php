@@ -9,7 +9,7 @@
 	define ("HOW_FAST", '<a title="It is about enduring of your own feelings or emotional conditions?">How long these chosen states are passing by?</a>');
 	define ("FASTEST", '<a title="It means that your condition is very easy to overcome and lasts very short time.">Very Quickly</a>');
 	define ("SLOWEST", '<a title="It means that your condition is difficult to overcome and lasts long time.">Very Slowly</a>');
-	define ("CHOOSE_STATES", '<b><a title="These words reflect what are the properties of celebratory, ambivalent and harmatic emotion related types of scenes.">Choose only these words, that bind to selected emotions.</b></a>');
+	define ("CHOOSE_STATES", '<b><a title="These words reflect what are the properties of celebratory, ambivalent and harmatic emotion related types of scenes.">Choose only these words that fits to selected emotions.</b></a>');
 	define ("CHOOSE_STATIS", '<b><a title="These statements will test your sound opinion about what is your actual emotional behavior.">Choose only these statements which describe your behavior accurately.</b></a>');
 	define ("CHOOSE", 'Choose one of the following tests.');
 	define ("CHOOSE_AI", '<a title="`Stress-Copying Defenses Inventory` is developed by Kylie L.Thygesen, Susan Folkman, Richard S. Lazarus, R. Plutchik, H. Kellerman and H. R. Conte. The test consists 80 statements which would reveal the proportion between three main approaches to deal with problems, conflicts and emotional restrain to reach personal satisfaction.">A Stress-Coping Style Test.</a>');
@@ -34,7 +34,8 @@
 	define ("MEANING", 'The botton "BACK" is inactive here <br/>to prevent damage on database.');
 	define ("CONTRIBUTION", '<p class="desc-res3" align="right"><a title="All members of programming team have right to change the code in order to improve or contribute to further development of testing model only with agreement of the author."><b>PHP, MySQL & JS programming: Hristo Venev, Hristo Minkov, Kristian Cuklev, Alex Tsvetanov, Dimo Chanev, Anton Denev and Valyo Yolovski.</p><small>GPL v.3 Copyrights &copy; 2015 Krasen Ferdinandov, psychologist.</b></small></a>');	
 	define ("ID", 'Thank you for the participation!');
-	define ("TIP", '<p class="desc-res3" align="right"><b><a title="In the following three rows there are three types of emotional choices which group each emotional striving in a class of subscripts - a different kind of perpetual and recurrent expectations and emotional habits. Selected emotions have an individual meaning and variety of life perspectives. When emotions are blended in pairs this could be a suggestion of various emotional orientations (scripts). They may organize your bahavior or be part of your life-style and here they are explained briefly in abstract manner. To read the content of the concepts take the cursor of the mouse close to the word and title will appear.">Read the following concepts and choose only these which fit best to selected emotions. After choosing the appropriate scripts from the list shown below, confirm your selections with the botton at the end of the table.</b></a></p>');
+	define ("TIP", '<p class="desc-res3" align="right"><b><a title="In the following three rows there are three types of emotional choices which group each emotional striving in a class of subscripts - a different kind of perpetual and recurrent expectations and emotional habits. Selected emotions have an individual meaning and variety of life perspectives. When emotions are blended in pairs this could be a suggestion of various emotional orientations (scripts). They may organize your bahavior or be part of your life-style and here they are explained briefly in abstract manner. To read the content of the concepts take the cursor of the mouse close to the word and title will appear.">Read the following concepts and choose only these which fit best to selected most common emotions. After choosing the appropriate scripts you will go to the 5th step.</b></a></p>');
+	define ("TIPS", '<p class="desc-res3" align="right"><b>Read the list of suggestions below. Consider whether the words from the previous step really fit or not to the most common emotions selected at the beginnings and mark them again. If you figure out that there are other relevant words, note them. After that click at the botton "Confirm".<b></p>');
 	define ("TIP2", 'If you want to check your results, copy this internet adress:<br><b>www.testrain.info/exit.php?id=</b>');
 	define ("TIP3", '<center><p class="desc-res3" style="text-align: center !important;">If you want to check your results, copy this adress:</p></center><b> www.testrain.info/finalbg.php?id=</b>');
 	define ("TIP4", '<p class="desc-res3" align="right">If you want to check your results, copy this adress:<br><center><b> www.testrain.info/fullbg.php?id=</b>');
@@ -56,7 +57,7 @@
 		}else{
 			header('Location: ' . $url);
 			die();
-		}    
+		} 
 	} // to headers!!!!!	
 	function validateInt($a){
 		if(!is_numeric($a)){

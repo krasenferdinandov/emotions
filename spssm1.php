@@ -1,25 +1,7 @@
 <?php
-require "headerbg.php";
+require "header.php";
 echo '<table class="borders">';
 echo '<tr><th>Id</th>';
-function median ($array_values_of_density) {
-	sort ($array_values_of_density);
-	$mid = count ($array_values_of_density) / 2;
-	if (count ($array_values_of_density) == 0) {
-		return 0;
-	}
-	else if (count ($array_values_of_density) % 2 == 0) {
-		//var_dump($array_values_of_density);
-		//echo $mid;
-		return ($array_values_of_density [$mid - 1] + $array_values_of_density [$mid]) / 2;
-	}
-	else {
-		return $array_values_of_density [$mid];
-	}
-}
-function avg ($array_values_of_density) {
-	return array_sum($array_values_of_density) / count ($array_values_of_density);
-}
 function isInDomain($emotion_search){
 	if($emotion_search >= 0 && $emotion_search <= 8)return 0;
 	if($emotion_search >= 9 && $emotion_search <= 17)return 1;
@@ -32,7 +14,6 @@ function isInDomain($emotion_search){
 	if($emotion_search >= 72 && $emotion_search <= 80)return 8;
 	if($emotion_search >= 81 && $emotion_search <= 89)return 9;
 }
-
 $string = array();
 $domain = array();
 $tension = array();
@@ -71,7 +52,7 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 	echo '<td><center>D'.$i.'_'.$en_name.'</center></td>';
 }
 //------------------>
-
+echo '<td><center><b>Management</b></center></td>';
 //------------------>
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	$miniscript_data = $pdo->query("select en_name, bg_name from miniscripts where id = ". $i . "");
@@ -86,11 +67,8 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	//echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
 	echo '<td><center>S'.$i.'_'.$en_name.'</center></td>';
 }
-echo '<td><b>Count allFamilies</b></td>';
-echo '<td><b>Count posFamilies</b></td>';
-echo '<td><b>Count negFamilies</b></td>';
-echo '<td><b>Count Scripts</b></td>';
-echo '<td><center><b>Affective Management</b></center></td>';
+//echo '<td><center><b>Emotions</b></center></td>';
+//echo '<td><center><b>Scripts</b></center></td>';
 echo '<td><center><b>Time</b></center></td>';
 echo '</tr>';
 
@@ -118,15 +96,12 @@ for($k = 0; $k<$count; $k++)
 	$domain_row_array = array();
 	$scripts_row_array = array();
 	$miniscripts_row_array = array();
-	$domains_category_array = array();
 /*$data = $pdo->query("SELECT * FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 if(!isset($id)) continue;*/
 
 $data = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id LIMIT 1");
-//$data = $pdo->query("SELECT * FROM gros_stat WHERE id = $current_id LIMIT 1");
-//$data = $pdo->query("SELECT * FROM status_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 if(!isset($id)) continue;
@@ -138,136 +113,70 @@ if(!isset($id)) continue;
 	for($i = 0; $i<DOMAINS_NUMBER; $i++)
 	{
 		$domain_row_array[] = 0;
-		$domains_category_array ['pos'][] = 0;
-		$domains_category_array ['neg'][] = 0;
 	}
 	for($i = 0; $i<MINISCRIPTS_NUMBER; $i++)
 	{
 		$miniscripts_row_array[] = 0;
 	}
 
+	$cmpl_label = "";
 	$count_em=0;	
 	$data = $pdo->query("SELECT emotion_id FROM emotions_stat WHERE id = $current_id");
-	while($r = $data->fetch(PDO::FETCH_BOTH)) {
-			
+	while($r = $data->fetch(PDO::FETCH_BOTH)) {	
 		$e_id = $r['emotion_id'];
-		if($e_id!=-1) $emotion_row_array[$e_id] = 1;
-		if($e_id != -1)$domain_row_array[$domain[$e_id]] = 1;
+		//if($e_id!=-1) $emotion_row_array[$e_id] = 1;
+		if($e_id!=-1) $emotion_row_array[$domain[$e_id]] = 1;
+		if($e_id != -1)$domain_row_array[$domain[$e_id]] = 1;	
 		$count_em+=1;
-		
-		{
-			$emotion = $pdo->query("SELECT * FROM emotions WHERE id = $e_id")->fetch(PDO::FETCH_BOTH);
-			if ($emotion['valence_id'] == 0)
-				$domains_category_array ['pos'][$domain[$e_id]] = 1;
-			else
-				$domains_category_array ['neg'][$domain[$e_id]] = 1;
-		}
 	}
-	$count_sc=0;	
+	$count_m=0;	
 	$data = $pdo->query("SELECT miniscript_id FROM miniscripts_stat WHERE id = $current_id");
 	while($r = $data->fetch(PDO::FETCH_BOTH)) {
 		$mi_id = $r['miniscript_id'];
 		if($mi_id!=-1) $miniscripts_row_array[$mi_id] = 1;
-		$count_sc+=1;	
+		$count_m+=1;	
 	}
 	
-//------------------------>
-$posi = '';
-$nega = '';
-$manag = 0;
-$sum_pos=0;$count_pos=0;
-$sum_neg=0;$count_neg=0;
-$sel_emotions = $pdo->query("SELECT * FROM emotions_stat WHERE id=$current_id");
-while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
-	$e_id=$r['emotion_id'];
-	$e_sl=$r['e_slider'];
+	$am_label = "";
+	$data_ma = $pdo->query("SELECT manag FROM id_stat WHERE id = $current_id");
+	while($r = $data_ma->fetch(PDO::FETCH_BOTH)){
+				$manag = $r['manag'];
+			}
 	
-	$data = $pdo->query("SELECT domain_id, valence_id, string_id, tension_id FROM emotions WHERE id = $e_id LIMIT 1");
-	$r = $data->fetch(PDO::FETCH_BOTH);
-	$domain_id = intval($r['domain_id']);
-	$dimension_id = $r['valence_id'];
-	$e_string = $r['string_id'];
-	$e_tension = $r['tension_id'];
-	
-		if ($e_string == 0){			
-		$density= (($e_sl*0.4)+$e_tension);
-		}
-		else if($e_string == 1){
-		$density=(($e_sl*0.6)+$e_tension);
-		}
-		else if($e_string == 2){
-		$density=(($e_sl*0.8)+$e_tension);
-		}
-		
-		if($dimension_id == 0){
-			$sum_pos+=$density;
-			$count_pos+=1;
-		}
-		if($dimension_id == 1){
-			$sum_neg+=$density;
-			$count_neg+=1;
-		}
-}		
-$score_neg=scores_level($sum_neg, $count_neg);
-$score_pos=scores_level($sum_pos, $count_pos);
-$score_group=$score_neg.$score_pos;
-
-$data = $pdo->query("SELECT id,bg_name,bg_desc FROM management WHERE score_group LIKE '%$score_group%'");
-$r = $data->fetch(PDO::FETCH_BOTH);
-$id_manag = 99;
-
-if ($r){
-	$id_manag = $r['id'];
-	$bg_name = $r['bg_name'];
-	$bg_desc = $r['bg_desc'];
-}else{
-	$bg_name='';
-	$bg_desc='';
-}
-$posi = percent($sum_pos, $sum_pos+$sum_neg);
-$nega = percent($sum_neg, $sum_pos+$sum_neg);
-//---------------------------->
 	echo '<tr><td><center>'.$current_id.'</center></td>';
+	//echo '<td><center>'.$cmpl_label.'</center></td>';
+	//echo '<td><center>'.$count_em.'</center></td>';
+	//echo '<td><center>'.$count_sc.'</center></td>';
+	
 	for($i=0;$i<DOMAINS_NUMBER;$i++)
-		if($domain_row_array[$i] != 1) {
+		if($domain_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
-			//else echo '<td><center><b>1<b/></center></td>';
-			//Показва вместо "1/0" предимството и плътността за даденото емоционално семейство.
-		}
-		else {
-			$median_values = array ();
+		//else echo '<td><center><b>1<b/></center></td>';
+	//Показва вместо "1/0" предимството и плътността за даденото емоционално семейство.
+		else{
 			$mas = "";
 			$sel_emotions = $pdo->query("SELECT * FROM emotions_stat e join emotions em on em.id = e.emotion_id WHERE e.id = " . $current_id . "");
 			$emo_count = 0;
-			//$e_sl = 100;
-			$e_sl = array ();
-			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)) {
+			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 					$mas = $r1['emotion_id'];
-					if(isInDomain($mas) != $i) continue;
-					$string_id = $r1['string_id'];//$string[$mas];
-					$tension_id = $r1['tension_id'];//$tension[$mas];
-					
+					if(floor($mas/9) != $i)continue;
+					$string_id = $string[$mas];
+					$tension_id = $tension[$mas];
+									
 					if ($string_id == 0){			
-						$e_sl[]=floatval(($r1['e_slider']*0.4)+$tension_id);
-					}
-					else if($string_id == 1){
-						$e_sl[]=floatval(($r1['e_slider']*0.6)+$tension_id);
-					}
-					else if($string_id == 2){
-						$e_sl[]=floatval(($r1['e_slider']*0.8)+$tension_id);
-					}
-					
-					//$domain_id = isInDomain($mas);
-					//$resl = $r1['e_slider'];
-					//echo "current_e_sl: $e_sl, row_s_sl: $resl; emotion_id: $mas, domain_id: $domain_id , strength: $string_id, tension: $tension_id<br>";
-					
-					//$median_values [] = intval($r1['e_slider']);
+						$e_sl=(($r1['e_slider']*0.4)+$tension_id) ."";
+						}
+						else if($string_id == 1){
+						$e_sl=(($r1['e_slider']*0.6)+$tension_id) ."";
+						}
+						else if($string_id == 2){
+						$e_sl=(($r1['e_slider']*0.8)+$tension_id) ."";
+						}
+						
 			}
-			//echo '<td><center><b>'.round(($e_sl),0).' (' . median ($median_values).', ' . avg ($median_values) . ')<b/></center></td>';
-			//echo '<td><center><b>'.round(($e_sl),0).' (' . abs(median ($median_values) - avg ($median_values)) . ')<b/></center></td>';
-			//echo '<td><center><b>'.round(avg($e_sl),0).' == '.round(median($e_sl),0).' (' . abs(avg($e_sl) - median ($e_sl)) . ')<b/></center></td>';
-			echo '<td><center><b>'.round(avg($e_sl),0).'<b/></center></td>';
+			echo '<td><center><b>'.round(($e_sl),0).'<b/></center></td>';
 		}
+	echo '<td><center>'.$manag.'</center></td>';
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		if($miniscripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
@@ -354,31 +263,28 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 			}
 			echo '<td><center><b>'.$magnification_n.'<b/></center></td>';
 		}
-	$sel_emotions = $pdo->query("SELECT * FROM choice_stat WHERE id=$current_id LIMIT 1");
-	while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
-		$start=$r['start'];
-		$stress=$r['end'];
-		
-		$data = $pdo->query("SELECT time FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
-		$r = $data->fetch(PDO::FETCH_BOTH);
-		$end = $r['time'];
-	}
+$sel_emotions = $pdo->query("SELECT * FROM choice_stat WHERE id=$current_id LIMIT 1");
+while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
+	$start=$r['start'];
+	$stress=$r['end'];
+	
+	$data = $pdo->query("SELECT time FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
+	$r = $data->fetch(PDO::FETCH_BOTH);
+	$end = $r['time'];
+}
 
-	$datetime1 = new DateTime($start);
-	$datetime2 = new DateTime($stress);
-	$datetime3 = new DateTime($end);
+$datetime1 = new DateTime($start);
+$datetime2 = new DateTime($stress);
+$datetime3 = new DateTime($end);
 
-	if(isset($id)) {
-		$interval = $datetime1->diff($datetime3);
-	}
-	else {
-		$interval = $datetime1->diff($datetime2);
-	}
-		echo '<td><center>'.array_sum($domain_row_array).'</center></td>';
-		echo '<td><center>'.array_sum($domains_category_array['pos']).'</center></td>';
-		echo '<td><center>'.array_sum($domains_category_array['neg']).'</center></td>';
-		echo '<td><center>'.$count_sc.'</center></td>';
-		echo '<td><center>'.$id_manag.'</center></td>';
+if(isset($id)) {
+	$interval = $datetime1->diff($datetime3);
+}
+else {
+	$interval = $datetime1->diff($datetime2);
+}
+		//echo '<td><center>'.$count_em.'</center></td>';
+		//echo '<td><center>'.$count_s.'</center></td>';
 		echo '<td>'.$interval->format('%H:%i:%s').'</td>';	
 	echo '</tr>';
 	//}

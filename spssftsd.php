@@ -2,24 +2,6 @@
 require "headerbg.php";
 echo '<table class="borders">';
 echo '<tr><th>Id</th>';
-function median ($array_values_of_density) {
-	sort ($array_values_of_density);
-	$mid = count ($array_values_of_density) / 2;
-	if (count ($array_values_of_density) == 0) {
-		return 0;
-	}
-	else if (count ($array_values_of_density) % 2 == 0) {
-		//var_dump($array_values_of_density);
-		//echo $mid;
-		return ($array_values_of_density [$mid - 1] + $array_values_of_density [$mid]) / 2;
-	}
-	else {
-		return $array_values_of_density [$mid];
-	}
-}
-function avg ($array_values_of_density) {
-	return array_sum($array_values_of_density) / count ($array_values_of_density);
-}
 function isInDomain($emotion_search){
 	if($emotion_search >= 0 && $emotion_search <= 8)return 0;
 	if($emotion_search >= 9 && $emotion_search <= 17)return 1;
@@ -32,7 +14,6 @@ function isInDomain($emotion_search){
 	if($emotion_search >= 72 && $emotion_search <= 80)return 8;
 	if($emotion_search >= 81 && $emotion_search <= 89)return 9;
 }
-
 $string = array();
 $domain = array();
 $tension = array();
@@ -71,8 +52,18 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 	echo '<td><center>D'.$i.'_'.$en_name.'</center></td>';
 }
 //------------------>
-
-//------------------>
+for($i=0;$i<THEMES_NUMBER;$i++){
+	$script_data = $pdo->query("select en_name, bg_name from statements where id = ". $i . "");
+		
+	$name = "WTF";
+	while($r = $script_data->fetch(PDO::FETCH_BOTH))
+	{
+		$en_name = $r["en_name"];
+		$bg_name = $r["bg_name"];
+	}
+    echo '<td><center>T'.$i.'_'.$en_name.'</center></td>';
+	//echo '<td><center>T'.$i.'</center></td>';
+}
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	$miniscript_data = $pdo->query("select en_name, bg_name from miniscripts where id = ". $i . "");
 		
@@ -82,22 +73,22 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
 	}
-
+    echo '<td><center>S'.$i.', '.$en_name.'</center></td>';
 	//echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	echo '<td><center>S'.$i.'_'.$en_name.'</center></td>';
+	//echo '<td><center>S'.$i.'</center></td>';
 }
+//------------------>
 echo '<td><b>Count allFamilies</b></td>';
 echo '<td><b>Count posFamilies</b></td>';
 echo '<td><b>Count negFamilies</b></td>';
 echo '<td><b>Count Scripts</b></td>';
 echo '<td><center><b>Affective Management</b></center></td>';
 echo '<td><center><b>Time</b></center></td>';
+//------------------>
 echo '</tr>';
 
-//..................> Печати само потвърдените
-$count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
-//..................> Печати всички
-//$count_data = $pdo->query("SELECT id FROM choice_stat ORDER BY id");
+$count_data = $pdo->query("SELECT id FROM states_stat ORDER BY id");
+
 $count = 0;
 $last = -1;
 $id_array = array();
@@ -119,41 +110,42 @@ for($k = 0; $k<$count; $k++)
 	$scripts_row_array = array();
 	$miniscripts_row_array = array();
 	$domains_category_array = array();
-/*$data = $pdo->query("SELECT * FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
-$r = $data->fetch(PDO::FETCH_BOTH);
-$id = $r['id'];
-if(!isset($id)) continue;*/
-
-$data = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id LIMIT 1");
-//$data = $pdo->query("SELECT * FROM gros_stat WHERE id = $current_id LIMIT 1");
+	
+//$count_data = $pdo->query("SELECT id FROM states_stat ORDER BY id");
+$data = $pdo->query("SELECT * FROM gros_stat WHERE id = $current_id LIMIT 1");
 //$data = $pdo->query("SELECT * FROM status_stat WHERE id = $current_id LIMIT 1");
+
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 if(!isset($id)) continue;
-//if($id>102){
 	for($i = 0; $i<EMOTIONS_NUMBER; $i++)
 	{
 		$emotion_row_array[] = 0;
 	}
+	$domains_category_array ['pos'] = array();
+	$domains_category_array ['neg'] = array();
 	for($i = 0; $i<DOMAINS_NUMBER; $i++)
 	{
 		$domain_row_array[] = 0;
 		$domains_category_array ['pos'][] = 0;
 		$domains_category_array ['neg'][] = 0;
 	}
+	for($i = 0; $i<THEMES_NUMBER; $i++)
+	{
+		$scripts_row_array[] = 0;
+	}
 	for($i = 0; $i<MINISCRIPTS_NUMBER; $i++)
 	{
 		$miniscripts_row_array[] = 0;
 	}
-
-	$count_em=0;	
+	$count_e=0;	
 	$data = $pdo->query("SELECT emotion_id FROM emotions_stat WHERE id = $current_id");
 	while($r = $data->fetch(PDO::FETCH_BOTH)) {
 			
 		$e_id = $r['emotion_id'];
 		if($e_id!=-1) $emotion_row_array[$e_id] = 1;
 		if($e_id != -1)$domain_row_array[$domain[$e_id]] = 1;
-		$count_em+=1;
+		$count_e+=1;
 		
 		{
 			$emotion = $pdo->query("SELECT * FROM emotions WHERE id = $e_id")->fetch(PDO::FETCH_BOTH);
@@ -163,14 +155,25 @@ if(!isset($id)) continue;
 				$domains_category_array ['neg'][$domain[$e_id]] = 1;
 		}
 	}
-	$count_sc=0;	
+	
+	
+	$count_s=0;	
+	$data_s = $pdo->query("SELECT * FROM states_stat WHERE id = $current_id");
+	while($r = $data_s->fetch(PDO::FETCH_BOTH)) {
+		$si_id = $r['state_id'];
+				
+		if($si_id!=-1) $scripts_row_array[$si_id] = 1;
+		$count_s+=1;
+	}
+	
+	$count_m=0;	
 	$data = $pdo->query("SELECT miniscript_id FROM miniscripts_stat WHERE id = $current_id");
 	while($r = $data->fetch(PDO::FETCH_BOTH)) {
 		$mi_id = $r['miniscript_id'];
 		if($mi_id!=-1) $miniscripts_row_array[$mi_id] = 1;
-		$count_sc+=1;	
+		$count_m+=1;
 	}
-	
+
 //------------------------>
 $posi = '';
 $nega = '';
@@ -227,47 +230,53 @@ if ($r){
 $posi = percent($sum_pos, $sum_pos+$sum_neg);
 $nega = percent($sum_neg, $sum_pos+$sum_neg);
 //---------------------------->
-	echo '<tr><td><center>'.$current_id.'</center></td>';
+
+echo '<tr><td><center>'.$current_id.'</center></td>';
 	for($i=0;$i<DOMAINS_NUMBER;$i++)
-		if($domain_row_array[$i] != 1) {
+		if($domain_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
-			//else echo '<td><center><b>1<b/></center></td>';
-			//Показва вместо "1/0" предимството и плътността за даденото емоционално семейство.
-		}
-		else {
-			$median_values = array ();
+		//else echo '<td><center><b>1<b/></center></td>';
+	//Показва вместо "1/0" предимството и плътността за даденото емоционално семейство.
+		else{
 			$mas = "";
+			$e_slider = "";
 			$sel_emotions = $pdo->query("SELECT * FROM emotions_stat e join emotions em on em.id = e.emotion_id WHERE e.id = " . $current_id . "");
 			$emo_count = 0;
-			//$e_sl = 100;
-			$e_sl = array ();
-			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)) {
+			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 					$mas = $r1['emotion_id'];
-					if(isInDomain($mas) != $i) continue;
-					$string_id = $r1['string_id'];//$string[$mas];
-					$tension_id = $r1['tension_id'];//$tension[$mas];
-					
+					$e_slider = $r1['e_slider'];
+					if(floor($mas/9) != $i)continue;
+					$string_id = $string[$mas];
+					$tension_id = $tension[$mas];
+									
 					if ($string_id == 0){			
-						$e_sl[]=floatval(($r1['e_slider']*0.4)+$tension_id);
-					}
-					else if($string_id == 1){
-						$e_sl[]=floatval(($r1['e_slider']*0.6)+$tension_id);
-					}
-					else if($string_id == 2){
-						$e_sl[]=floatval(($r1['e_slider']*0.8)+$tension_id);
-					}
-					
-					//$domain_id = isInDomain($mas);
-					//$resl = $r1['e_slider'];
-					//echo "current_e_sl: $e_sl, row_s_sl: $resl; emotion_id: $mas, domain_id: $domain_id , strength: $string_id, tension: $tension_id<br>";
-					
-					//$median_values [] = intval($r1['e_slider']);
+						$e_sl=(($r1['e_slider']*0.4)+$tension_id) ."";
+						}
+						else if($string_id == 1){
+						$e_sl=(($r1['e_slider']*0.6)+$tension_id) ."";
+						}
+						else if($string_id == 2){
+						$e_sl=(($r1['e_slider']*0.8)+$tension_id) ."";
+						}
+						
 			}
-			//echo '<td><center><b>'.round(($e_sl),0).' (' . median ($median_values).', ' . avg ($median_values) . ')<b/></center></td>';
-			//echo '<td><center><b>'.round(($e_sl),0).' (' . abs(median ($median_values) - avg ($median_values)) . ')<b/></center></td>';
-			//echo '<td><center><b>'.round(avg($e_sl),0).' == '.round(median($e_sl),0).' (' . abs(avg($e_sl) - median ($e_sl)) . ')<b/></center></td>';
-			echo '<td><center><b>'.round(avg($e_sl),0).'<b/></center></td>';
+			//echo '<td><center><b>'.round(($e_sl),0).'<b/></center></td>';
+			echo '<td><center><b>'.$e_slider.'<b/></center></td>';
 		}
+for($i=0;$i<THEMES_NUMBER;$i++)
+		if($scripts_row_array[$i] != 1)
+			echo '<td><center>0</center></td>';
+		else {
+			$data_t = $pdo->query("SELECT * FROM states_stat WHERE id = " . $current_id . "");
+			while($rs = $data_t->fetch(PDO::FETCH_BOTH)) {
+			$s_id = $rs['state_id'];
+			if($s_id!=$i)continue;
+			$s_sl = $rs['s_slider'];
+			}
+			echo '<td><center><b>'.$s_sl.'<b/></center></td>';
+		}
+		//else echo '<td><center><b>1<b/></center></td>';
+		
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		if($miniscripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
@@ -377,11 +386,11 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		echo '<td><center>'.array_sum($domain_row_array).'</center></td>';
 		echo '<td><center>'.array_sum($domains_category_array['pos']).'</center></td>';
 		echo '<td><center>'.array_sum($domains_category_array['neg']).'</center></td>';
-		echo '<td><center>'.$count_sc.'</center></td>';
+		echo '<td><center>'.$count_m.'</center></td>';
 		echo '<td><center>'.$id_manag.'</center></td>';
-		echo '<td>'.$interval->format('%H:%i:%s').'</td>';	
-	echo '</tr>';
-	//}
+		echo '<td>'.$interval->format('%H:%i:%s').'</td>';
+echo '</tr>';
+
 }
 
 echo '</table>';

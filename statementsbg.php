@@ -1,6 +1,6 @@
 <?php
 require "headerbg.php";
-echo '<form id="the_form" method="POST" action="indb4bg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+echo '<form id="the_form" method="POST" action="indb5bg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 if (array_key_exists('id', $_POST))
 	{
 	echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
@@ -21,7 +21,7 @@ $table = '';
 $table .= '<table>';
 echo '<center><table class="borders"><tr>';
 $table .= '</tr>';
-echo '<p><b>ПЕТА СТЪПКА:</b><br/><b>Избери тези изречения, които най-точно съответстват на поведението ти.</b><br/>';
+echo '<p><b>ПОСЛЕДНА СТЪПКА:</b><br/><b>Отбележи и прецени в каква степен изреченията по-долу прилягат най-точно на твоите реакции спрямо емоциите.</b><br/>';
 
 echo '<table class="borders">';
 $data = $pdo->query("SELECT * FROM gros");
@@ -36,7 +36,7 @@ while($row = $data->fetch(PDO::FETCH_BOTH)){
 	echo '<td style="display: none;" data-for="checkit' . $id . '"></td>';
 	echo '<td style="display: none;" data-label="s_slider_' . $id . '">Напълно</td></tr></table></tr>';
 }
-$table .= '<tr><td><p><input type="submit" value="'.NEXT.'"/></td></tr></table>';
+$table .= '<tr><td><p><input type="submit" value="Потвърди"/></td></tr></table>';
 echo $table;
 echo '<script src="js/add_slider.js"></script>';
 echo '<script src="js/collectTiming.js"></script>';

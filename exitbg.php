@@ -191,7 +191,7 @@ $table_result .= '<tr><td colspan="2" align="left" style="border-right: none; bo
 	$table_result .= '</ul></td></tr>';
 //-------------------->
 //Показва резултати за предимството на "сценариите".
-$table_result.= '<tr><th colspan="2"><center><br/><b>Повторно избрани:</b><center/></th><tr/>';
+$table_result.= '<tr><th colspan="2"><center><br/><b>Повторен избор:</b><center/></th><tr/>';
 
 $data_s = $pdo->query('SELECT miniscripts.id, miniscripts.bg_name, miniscripts.domain1_id, miniscripts.domain2_id, miniscripts.bg_name, miniscripts.bg_desc, miniscripts.en_name FROM miniscripts inner join miniscripts2_stat on miniscripts.id = miniscripts2_stat.miniscript_id WHERE miniscripts2_stat.id='.$id.'');
 	

@@ -30,7 +30,7 @@ if(isset($_POST['manag']) && isset($_POST['posi']) && isset($_POST['nega']) && i
 		
 	$pdo->exec("INSERT INTO id_stat VALUES ($id,$posi,$nega,$ambi,$manag)");
 }
-echo '<meta http-equiv="Refresh" content="0;statementsbg.php?id='.$id.'" />';
+echo '<meta http-equiv="Refresh" content="0;scripts2bg.php?id='.$id.'" />';
 //echo '<meta http-equiv="Refresh" content="0;exitbg.php?id='.$id.'" />';
 require "end.php";
 ?>

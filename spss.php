@@ -92,6 +92,8 @@ $id = $r['id'];
 if(!isset($id)) continue;*/
 
 $data = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id LIMIT 1");
+//$data = $pdo->query("SELECT * FROM gros_stat WHERE id = $current_id LIMIT 1");
+//$data = $pdo->query("SELECT * FROM status_stat WHERE id = $current_id LIMIT 1");
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 //if($id>102){
@@ -140,10 +142,62 @@ if(!isset($id)) continue;
 		
 		$count_sc+=1;
 	}
-	$data_ma = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id");
-	while($r = $data_ma->fetch(PDO::FETCH_BOTH)){
-				$manag = $r['manag'];
-	}
+//------------------------>
+$posi = '';
+$nega = '';
+$manag = 0;
+$sum_pos=0;$count_pos=0;
+$sum_neg=0;$count_neg=0;
+$sel_emotions = $pdo->query("SELECT * FROM emotions_stat WHERE id=$current_id");
+while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
+	$e_id=$r['emotion_id'];
+	$e_sl=$r['e_slider'];
+	
+	$data = $pdo->query("SELECT domain_id, valence_id, string_id, tension_id FROM emotions WHERE id = $e_id LIMIT 1");
+	$r = $data->fetch(PDO::FETCH_BOTH);
+	$domain_id = intval($r['domain_id']);
+	$dimension_id = $r['valence_id'];
+	$e_string = $r['string_id'];
+	$e_tension = $r['tension_id'];
+	
+		if ($e_string == 0){			
+		$density= (($e_sl*0.4)+$e_tension);
+		}
+		else if($e_string == 1){
+		$density=(($e_sl*0.6)+$e_tension);
+		}
+		else if($e_string == 2){
+		$density=(($e_sl*0.8)+$e_tension);
+		}
+		
+		if($dimension_id == 0){
+			$sum_pos+=$density;
+			$count_pos+=1;
+		}
+		if($dimension_id == 1){
+			$sum_neg+=$density;
+			$count_neg+=1;
+		}
+}		
+$score_neg=scores_level($sum_neg, $count_neg);
+$score_pos=scores_level($sum_pos, $count_pos);
+$score_group=$score_neg.$score_pos;
+
+$data = $pdo->query("SELECT id,bg_name,bg_desc FROM management WHERE score_group LIKE '%$score_group%'");
+$r = $data->fetch(PDO::FETCH_BOTH);
+$id_manag = 99;
+
+if ($r){
+	$id_manag = $r['id'];
+	$bg_name = $r['bg_name'];
+	$bg_desc = $r['bg_desc'];
+}else{
+	$bg_name='';
+	$bg_desc='';
+}
+$posi = percent($sum_pos, $sum_pos+$sum_neg);
+$nega = percent($sum_neg, $sum_pos+$sum_neg);
+//---------------------------->
 	echo '<tr><td><center>'.$current_id.'</center></td>';
 	for($i=0;$i<DOMAINS_NUMBER;$i++)
 		if($domain_row_array[$i] != 1)
@@ -178,7 +232,7 @@ if(!isset($id)) continue;
 		echo '<td><center>'.array_sum($domains_category_array['pos']).'</center></td>';
 		echo '<td><center>'.array_sum($domains_category_array['neg']).'</center></td>';
 		echo '<td><center>'.$count_sc.'</center></td>';
-		echo '<td><center>'.$manag.'</center></td>';
+		echo '<td><center>'.$id_manag.'</center></td>';
 		echo '<td>'.$interval->format('%H:%i:%s').'</td>';
 	echo '</tr>';
 	//}

@@ -4,27 +4,60 @@ echo '<table class="borders">';
 echo '<th>Id</th>';
 //echo '<tr><td><center>Time</center></td>';
 
+function isInDomain($emotion_search){
+	if($emotion_search >= 0 && $emotion_search <= 8)return 0;
+	if($emotion_search >= 9 && $emotion_search <= 17)return 1;
+	if($emotion_search >= 18 && $emotion_search <= 26)return 2;
+	if($emotion_search >= 27 && $emotion_search <= 35)return 3;
+	if($emotion_search >= 36 && $emotion_search <= 44)return 4;
+	if($emotion_search >= 45 && $emotion_search <= 53)return 5;
+	if($emotion_search >= 54 && $emotion_search <= 62)return 6;
+	if($emotion_search >= 63 && $emotion_search <= 71)return 7;
+	if($emotion_search >= 72 && $emotion_search <= 80)return 8;
+	if($emotion_search >= 81 && $emotion_search <= 89)return 9;
+}
+$string = array();
+$domain = "";
+$tension = array();
+$emotions = array();
+
+$label = $pdo->query("SELECT id, en_name, bg_name FROM emotions");
+while($row = $label->fetch(PDO::FETCH_BOTH))
+{
+	$bg_name = $row['en_name'];
+	$emotions[$row['id']] ='<a title="'.quot($row['bg_name']).'">'. $bg_name.'</a>';
+}
+
+$statement = $pdo->query("SELECT id, string_id, tension_id FROM emotions");
+while($row = $statement->fetch(PDO::FETCH_BOTH))
+{
+	$string[$row['id']] = $row['string_id'];
+	$tension[$row['id']] = $row['tension_id'];	
+}
+
 for($i=0;$i<EMOTIONS_NUMBER;$i++){
-	$emotions_data = $pdo->query("select bg_name, domain_id from emotions where id = ". $i . "");
+	$emotions_data = $pdo->query("select bg_name, en_name, domain_id from emotions where id = ". $i . "");
 	$name = "WRONG";
 	while($r = $emotions_data->fetch(PDO::FETCH_BOTH))
 	{
 		$name = $r["bg_name"];
+		$en_name = $r["en_name"];
 		$domain = $r["domain_id"];
 		
 	}
-	echo '<td>D'.$domain.',E'.$i.','.$name.'</td>';
+	echo '<td>D'.$domain.'_E'.$i.'_'.$name.'</td>';
 }
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
-	$miniscript_data = $pdo->query("select bg_name from miniscripts where id = ". $i . "");
+	$miniscript_data = $pdo->query("select bg_name, en_name from miniscripts where id = ". $i . "");
 		
 	$name = "WTF";
 	while($r = $miniscript_data->fetch(PDO::FETCH_BOTH))
 	{
 		$name = $r["bg_name"];
+		$en_name = $r["en_name"];
 	}
 
-	echo '<td>S'.$i.','.$name.'</td>';
+	echo '<td>S'.$i.'_'.$name.'</td>';
 }
 echo '</tr>';
 //..................> Печати всички

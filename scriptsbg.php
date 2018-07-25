@@ -7,7 +7,7 @@ if (array_key_exists('id', $_GET))
 		$id = $_GET['id'];
 		validateInt($id);
 		//echo '<br>ID: ' . $id;
-	} 
+	}
 	else
 	{
 		redirect ('photoesbg.php');
@@ -30,11 +30,11 @@ $sel_emotions = $pdo->query("SELECT * FROM emotions_stat WHERE id=$id");
 while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 	$e_id=$r['emotion_id'];
 	$e_sl=$r['e_slider'];
-	
+
 	$data = $pdo->query("SELECT manag FROM id_stat WHERE id = $id LIMIT 1");
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$manag = $r['manag'];
-	
+
 	$data = $pdo->query("SELECT domain_id, dimension_id, bg_name, en_name, string_id, tension_id FROM emotions WHERE id = $e_id LIMIT 1");
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$domain_id = intval($r['domain_id']);
@@ -43,8 +43,8 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 	$dimension_id = $r['dimension_id'];
 	$e_string = $r['string_id'];
 	$e_tension = $r['tension_id'];
-	
-		if ($e_string == 0){			
+
+		if ($e_string == 0){
 		$density= (($e_sl*0.4)+$e_tension);
 		}
 		else if($e_string == 1){
@@ -57,7 +57,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$domain_name = $r['bg_name'];
 	$script_id = intval($r['script_id']);
-	
+
 	$data = $pdo->query("SELECT bg_name, bg_desc FROM scripts WHERE id=$script_id");
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$script_name = $r['bg_name'];
@@ -78,7 +78,7 @@ while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
 //Показва резултати за Miniscripts
 	$miniscript_condition.=' OR domainX_id='.$domain_id;
 }
-$table_result.= '<tr><th colspan="2"><p><center>ЧЕТВЪРТА СТЪПКА: <br><center/>'.TIP.'</th><tr/>';
+$table_result.= '<tr><th colspan="2"><p><center>ПЕТА СТЪПКА: <br><center/>'.TIP.'</th><tr/>';
 
 $data = $pdo->query('SELECT id,bg_name,bg_desc,domain1_id,domain2_id FROM miniscripts WHERE ( '.str_replace('X', '1', $miniscript_condition).' ) AND ( '.str_replace('X', '2', $miniscript_condition).' );');
 while($r = $data->fetch(PDO::FETCH_BOTH)){
@@ -121,8 +121,8 @@ $table_result .= '<center/></table>';
 echo $table_result;
 echo '</br><input type="submit" value="Продължи"/><br/>';
 echo '<script src="js/collectTiming.js"></script>';
-echo '<script src="js/refreshBack.js"></script>';
-echo '<script>refreshBack("photoesbg.php")</script>';
+//echo '<script src="js/refreshBack.js"></script>';
+//echo '<script>refreshBack("photoesbg.php")</script>';
 require('js/showText.js');
 require "end.php";
 ?>

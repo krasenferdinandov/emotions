@@ -1,20 +1,20 @@
 <?php
 require "header.php";
 require "js/toggle.js";
-echo '<form id="the_form" method="POST" action="indb5.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+echo '<form id="the_form" method="POST" action="indb4.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 if (array_key_exists('id', $_GET))
 	{
 		$id = $_GET['id'];
 		validateInt($id);
 		//echo '<br>ID: ' . $id;
-	} 
+	}
 	else
 	{
 		redirect ('photoes.php');
 	}
 echo '<input type="hidden" name="id" value="'.$id.'">';
 $table_result = '<center><table class="borders"><tr><th colspan="2"></th></tr>';
-$table_result.= '<tr><th colspan="2"><p><center>THE LAST STEP: <br><center/>'.TIPS.'</th><tr/>';
+$table_result.= '<tr><th colspan="2"><p><center>THE SIXTH STEP: <br><center/>'.TIPS.'</th><tr/>';
 $data = $pdo->query('SELECT * FROM miniscripts');
 while($r = $data->fetch(PDO::FETCH_BOTH)){
 		$m=$r['id'];
@@ -24,9 +24,9 @@ $table_result .= '<label for="script_'.$m.'">'.$r['en_name'].'<p id='.$m.' class
 }
 $table_result .= '<center/></table>';
 echo $table_result;
-echo '</br><input type="submit" value="Confirm"/><br/>';
+echo '</br><input type="submit" value="Next"/><br/>';
 echo '<script src="js/collectTiming.js"></script>';
-echo '<script src="js/refreshBack.js"></script>';
-echo '<script>refreshBack("photoes.php")</script>';
+//echo '<script src="js/refreshBack.js"></script>';
+//echo '<script>refreshBack("photoes.php")</script>';
 require "end.php";
 ?>

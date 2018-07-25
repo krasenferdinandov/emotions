@@ -4,17 +4,21 @@ require_once "constantsbg.php";
 require_once "db_pass.php";
 
 echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
-$id = $_POST['id'];
 //echo '<br>ID: ' . $_POST['id'];
-for($a = 0; $a<STATES_NUMBER; $a++){
-	if(isset($_POST['state_'.$a])){
-		$g_slider = intval($_POST['s_slider_'.$a]);
-		validateInt($g_slider);
-		$timing = $_POST['time-state_' . $a];
-		//echo $a . ' -> ' . $timing . '<br/>';
-		$pdo->exec("INSERT INTO gros_stat VALUES ($id,$a,$g_slider,'$timing');");
+
+$id = $_POST['id'];
+
+$data1 = $pdo->query("SELECT id FROM miniscripts");
+$row = $data1->fetch(PDO::FETCH_BOTH);
+$m = $row['id'];
+
+for($i = 0; $i<MINISCRIPTS_NUMBER; $i++){
+	if(isset($_POST['miniscript'.$i])) {
+		$timing = $_POST['time-miniscript' . $i];
+		$pdo->exec("INSERT INTO miniscripts2_stat VALUES ($id,$i,'$timing')");
 	}
 }
-echo '<meta http-equiv="Refresh" content="0;scripts2bg.php?id='.$id.'" />';
+echo '<meta http-equiv="Refresh" content="0;statementsbg.php?id='.$id.'" />';
+//echo '<meta http-equiv="Refresh" content="0;exitbg.php?id='.$id.'" />';
 require "end.php";
 ?>

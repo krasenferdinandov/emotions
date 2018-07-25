@@ -4,7 +4,7 @@ require "headerbg.php";
 $timeNow = time();
 $dt = new DateTime();
 $dt->setTimestamp($timeNow);
-	echo '<form id="the_form" method="POST" action="indb1bg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+	echo '<form id="the_form" method="POST" action="indb0bg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 	echo '<input type="hidden" id="startTime" name="timeStarted" value="'.$dt->format("Y-m-d H:i:s").'">';
 	echo '<center><table class="borders"><tr>';
 	echo '<b>ПЪРВА СТЪПКА:<br>Определи емоцията на снимката.<b/>';

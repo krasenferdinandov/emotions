@@ -1,16 +1,18 @@
 <?php
 require "header.php";
 echo '<form id="the_form" method="POST" action="indb2.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
-if (array_key_exists('id', $_POST))
+if (array_key_exists('id', $_GET))
 	{
-		echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
-		//echo '<br>ID: ' . $_POST['id'];
+		$id = $_GET['id'];
+		validateInt($id);
+		//echo '<br>ID: ' . $id;
 	} 
+echo '<input type="hidden" name="id" value="'.$id.'">';
 $table = '';
 $table .= '<table>';
 echo '<center>';
 $table .= '</tr>';
-echo '<p><b>THIRTH STEP:</b><br/>'.CHOOSE_STATES . '<br/>';
+echo '<p><b>FOURTH STEP:</b><br/>'.CHOOSE_STATES . '<br/>';
 echo '<center style="position: absolute; left: 40%; text-align: left;">';
 
 for($i = 0; $i<DOMAINS_NUMBER; $i++)

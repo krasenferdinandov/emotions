@@ -26,7 +26,7 @@ for($i=0;$i<PHOTOES_NUMBER;$i++){
 	echo '<td><center>P'.$i.', '.$e_name.''.$b_name.'</center></td>';
 }
 echo '</tr>';
-$count_data = $pdo->query("SELECT id FROM photoes_stat ORDER BY id");
+$count_data = $pdo->query("SELECT id FROM gros_stat ORDER BY id");
 $count = 0;
 $last = -1;
 $id_array = array();
@@ -57,11 +57,13 @@ for($k = 0; $k<$count; $k++)
 	echo '<tr><td><center>'.$current_id.'</center></td>';
 
 	for($i=0;$i<PHOTOES_NUMBER;$i++)
+		
 		if($photoes_row_array[$i] != "1")
 			echo '<td><center>0</center></td>';
 		else {
 			echo '<td><center><b>'.$photoes_row_array[$i].'<b/></center></td>';
 		}
+		
 	for($i=0;$i<PHOTOES_NUMBER;$i++)
 		if($photoes_row_array[$i] != "0")
 			echo '<td><center>0</center></td>';

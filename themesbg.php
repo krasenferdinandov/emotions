@@ -1,23 +1,25 @@
 <?php
 require "headerbg.php";
 echo '<form id="the_form" method="POST" action="indb2bg.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
-if (array_key_exists('id', $_POST))
+if (array_key_exists('id', $_GET))
 	{
-		echo '<input type="hidden" name="id" value="'.$_POST['id'].'">';
-		//echo '<br>ID: ' . $_POST['id'];
+		$id = $_GET['id'];
+		validateInt($id);
+		//echo '<br>ID: ' . $id;
 	} 
+echo '<input type="hidden" name="id" value="'.$id.'">';
 $table = '';
 $table .= '<table>';
 echo '<center>';
 $table .= '</tr>';
-echo '<p><b>ТРЕТА СТЪПКА:</b><br/>'.CHOOSE_STATES . '</center>';
+echo '<p><b>ЧЕТВЪРТА СТЪПКА:</b><br/>'.CHOOSE_STATES . '</center>';
 echo '<center style="position: absolute; left: 40%; text-align: left;">';
 
 for($i = 0; $i<DOMAINS_NUMBER; $i++)
 	{
 		if(!isset($_POST['time-' . $i])) continue;
 		$timing = $_POST['time-' . $i];
-		//echo $i . '->' . $timing . '<br/>';
+		echo $i . '->' . $timing . '<br/>';
 		echo '<input type="hidden" value="'.$timing.'" name="domaintiming_'.$i.'"/>';
 	}
 	

@@ -4,7 +4,7 @@ require "header.php";
 $timeNow = time();
 $dt = new DateTime();
 $dt->setTimestamp($timeNow);
-	echo '<form id="the_form" method="POST" action="indb1.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
+	echo '<form id="the_form" method="POST" action="indb0.php" enctype="multipart/form-data" onSubmit="return checkboxesOkay(this);">';
 	echo '<input type="hidden" id="startTime" name="timeStarted" value="'.$dt->format("Y-m-d H:i:s").'">';
 	echo '<center><table class="borders"><tr>';
 	echo '<b><center>FIRST STEP:<br>Guess the emotion on the face.<center/><b/>';

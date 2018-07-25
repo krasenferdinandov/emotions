@@ -72,7 +72,7 @@ echo '<tr><td><center>'.$current_id.'</center></td>';
 for($i=0;$i<STATES_NUMBER;$i++)
 		if($scripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
-		/*else {
+		else {
 			$data_t = $pdo->query("SELECT * FROM gros_stat WHERE id = " . $current_id . "");
 			while($rs = $data_t->fetch(PDO::FETCH_BOTH)) {
 			$s_id = $rs['state_id'];
@@ -80,8 +80,8 @@ for($i=0;$i<STATES_NUMBER;$i++)
 			$s_sl = $rs['g_slider'];
 			}
 			echo '<td><center><b>'.$s_sl.'<b/></center></td>';
-		}*/
-		else echo '<td><center><b>1<b/></center></td>';
+		}
+		//else echo '<td><center><b>1<b/></center></td>';
 		
 	$count_em=0;
 	$domains_category_array ['pos'] = array();

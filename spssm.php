@@ -91,7 +91,7 @@ echo '<td><b>Count posFamilies</b></td>';
 echo '<td><b>Count negFamilies</b></td>';
 echo '<td><b>Count Scripts</b></td>';
 echo '<td><center><b>Affective Management</b></center></td>';
-echo '<td><center><b>Time</b></center></td>';
+//echo '<td><center><b>Time</b></center></td>';
 echo '</tr>';
 
 //..................> Печати само потвърдените
@@ -379,7 +379,7 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		echo '<td><center>'.array_sum($domains_category_array['neg']).'</center></td>';
 		echo '<td><center>'.$count_sc.'</center></td>';
 		echo '<td><center>'.$id_manag.'</center></td>';
-		echo '<td>'.$interval->format('%H:%i:%s').'</td>';	
+		//echo '<td>'.$interval->format('%H:%i:%s').'</td>';	
 	echo '</tr>';
 	//}
 }

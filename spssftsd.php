@@ -2,6 +2,24 @@
 require "headerbg.php";
 echo '<table class="borders">';
 echo '<tr><th>Id</th>';
+function median ($array_values_of_density) {
+	sort ($array_values_of_density);
+	$mid = count ($array_values_of_density) / 2;
+	if (count ($array_values_of_density) == 0) {
+		return 0;
+	}
+	else if (count ($array_values_of_density) % 2 == 0) {
+		//var_dump($array_values_of_density);
+		//echo $mid;
+		return ($array_values_of_density [$mid - 1] + $array_values_of_density [$mid]) / 2;
+	}
+	else {
+		return $array_values_of_density [$mid];
+	}
+}
+function avg ($array_values_of_density) {
+	return array_sum($array_values_of_density) / count ($array_values_of_density);
+}
 function isInDomain($emotion_search){
 	if($emotion_search >= 0 && $emotion_search <= 8)return 0;
 	if($emotion_search >= 9 && $emotion_search <= 17)return 1;
@@ -78,12 +96,8 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 	//echo '<td><center>S'.$i.'</center></td>';
 }
 //------------------>
-echo '<td><b>Count allFamilies</b></td>';
-echo '<td><b>Count posFamilies</b></td>';
-echo '<td><b>Count negFamilies</b></td>';
-echo '<td><b>Count Scripts</b></td>';
-echo '<td><center><b>Affective Management</b></center></td>';
-echo '<td><center><b>Time</b></center></td>';
+//echo '<td><center><b>Suppression</b></center></td>';
+//echo '<td><center><b>Reapraisal</b></center></td>';
 //------------------>
 echo '</tr>';
 
@@ -174,94 +188,49 @@ if(!isset($id)) continue;
 		$count_m+=1;
 	}
 
-//------------------------>
-$posi = '';
-$nega = '';
-$manag = 0;
-$sum_pos=0;$count_pos=0;
-$sum_neg=0;$count_neg=0;
-$sel_emotions = $pdo->query("SELECT * FROM emotions_stat WHERE id=$current_id");
-while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
-	$e_id=$r['emotion_id'];
-	$e_sl=$r['e_slider'];
-	
-	$data = $pdo->query("SELECT domain_id, valence_id, string_id, tension_id FROM emotions WHERE id = $e_id LIMIT 1");
-	$r = $data->fetch(PDO::FETCH_BOTH);
-	$domain_id = intval($r['domain_id']);
-	$dimension_id = $r['valence_id'];
-	$e_string = $r['string_id'];
-	$e_tension = $r['tension_id'];
-	
-		if ($e_string == 0){			
-		$density= (($e_sl*0.4)+$e_tension);
-		}
-		else if($e_string == 1){
-		$density=(($e_sl*0.6)+$e_tension);
-		}
-		else if($e_string == 2){
-		$density=(($e_sl*0.8)+$e_tension);
-		}
-		
-		if($dimension_id == 0){
-			$sum_pos+=$density;
-			$count_pos+=1;
-		}
-		if($dimension_id == 1){
-			$sum_neg+=$density;
-			$count_neg+=1;
-		}
-}		
-$score_neg=scores_level($sum_neg, $count_neg);
-$score_pos=scores_level($sum_pos, $count_pos);
-$score_group=$score_neg.$score_pos;
-
-$data = $pdo->query("SELECT id,bg_name,bg_desc FROM management WHERE score_group LIKE '%$score_group%'");
-$r = $data->fetch(PDO::FETCH_BOTH);
-$id_manag = 99;
-
-if ($r){
-	$id_manag = $r['id'];
-	$bg_name = $r['bg_name'];
-	$bg_desc = $r['bg_desc'];
-}else{
-	$bg_name='';
-	$bg_desc='';
-}
-$posi = percent($sum_pos, $sum_pos+$sum_neg);
-$nega = percent($sum_neg, $sum_pos+$sum_neg);
-//---------------------------->
-
 echo '<tr><td><center>'.$current_id.'</center></td>';
 	for($i=0;$i<DOMAINS_NUMBER;$i++)
-		if($domain_row_array[$i] != 1)
+		if($domain_row_array[$i] != 1) {
 			echo '<td><center>0</center></td>';
-		//else echo '<td><center><b>1<b/></center></td>';
-	//Показва вместо "1/0" предимството и плътността за даденото емоционално семейство.
-		else{
+			//else echo '<td><center><b>1<b/></center></td>';
+			//Показва вместо "1/0" предимството и плътността за даденото емоционално семейство.
+		}
+		else {
+			$median_values = array ();
 			$mas = "";
-			$e_slider = "";
 			$sel_emotions = $pdo->query("SELECT * FROM emotions_stat e join emotions em on em.id = e.emotion_id WHERE e.id = " . $current_id . "");
 			$emo_count = 0;
-			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)){
+			
+			//$e_sl = 100;
+			$e_sl = array ();
+			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)) {
 					$mas = $r1['emotion_id'];
-					$e_slider = $r1['e_slider'];
-					if(floor($mas/9) != $i)continue;
-					$string_id = $string[$mas];
-					$tension_id = $tension[$mas];
-									
-					if ($string_id == 0){			
-						$e_sl=(($r1['e_slider']*0.4)+$tension_id) ."";
-						}
-						else if($string_id == 1){
-						$e_sl=(($r1['e_slider']*0.6)+$tension_id) ."";
-						}
-						else if($string_id == 2){
-						$e_sl=(($r1['e_slider']*0.8)+$tension_id) ."";
-						}
-						
+					if(isInDomain($mas) != $i) continue;
+					$string_id = $r1['string_id'];//$string[$mas];
+					$tension_id = $r1['tension_id'];//$tension[$mas];
+					$duration = $r1['e_slider'];
+					
+					/*if ($string_id == 0){			
+						$e_sl[]=floatval(($r1['e_slider']*0.4)+$tension_id);
+					}
+					else if($string_id == 1){
+						$e_sl[]=floatval(($r1['e_slider']*0.6)+$tension_id);
+					}
+					else if($string_id == 2){
+						$e_sl[]=floatval(($r1['e_slider']*0.8)+$tension_id);
+					}*/
+					
+					//$domain_id = isInDomain($mas);
+					//$resl = $r1['e_slider'];
+					//echo "current_e_sl: $e_sl, row_s_sl: $resl; emotion_id: $mas, domain_id: $domain_id , strength: $string_id, tension: $tension_id<br>";
+					
+					//$median_values [] = intval($r1['e_slider']);
 			}
-			//echo '<td><center><b>'.round(($e_sl),0).'<b/></center></td>';
-			echo '<td><center><b>'.$e_slider.'<b/></center></td>';
+			//echo '<td><center><b>'.round(($e_sl),0).' (' . median ($median_values).', ' . avg ($median_values) . ')<b/></center></td>';
+			//echo '<td><center><b>'.round(($e_sl),0).' (' . abs(median ($median_values) - avg ($median_values)) . ')<b/></center></td>';
+			//echo '<td><center><b>'.round(avg($e_sl),0).' == '.round(median($e_sl),0).' (' . abs(avg($e_sl) - median ($e_sl)) . ')<b/></center></td>';
+			//echo '<td><center><b>'.round(avg($e_sl),0).'<b/></center></td>';
+			echo '<td><center><b>'.$duration.'<b/></center></td>';
 		}
 for($i=0;$i<THEMES_NUMBER;$i++)
 		if($scripts_row_array[$i] != 1)
@@ -363,33 +332,30 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 			}
 			echo '<td><center><b>'.$magnification_n.'<b/></center></td>';
 		}
-	$sel_emotions = $pdo->query("SELECT * FROM choice_stat WHERE id=$current_id LIMIT 1");
-	while($r = $sel_emotions->fetch(PDO::FETCH_BOTH)){
-		$start=$r['start'];
-		$stress=$r['end'];
-		
-		$data = $pdo->query("SELECT time FROM miniscripts_stat WHERE id = $current_id LIMIT 1");
-		$r = $data->fetch(PDO::FETCH_BOTH);
-		$end = $r['time'];
-	}
+//---------------------------->
+$sum_sup=0;
+$sum_reap=0;
+$selection = $pdo->query("SELECT * FROM gros_stat WHERE id=$current_id");
+while($r = $selection->fetch(PDO::FETCH_BOTH)){
+	$g_id=$r['state_id'];
+	$g_sl=$r['g_slider'];
+	
+	$data = $pdo->query("SELECT axis_id FROM gros WHERE id = $g_id LIMIT 1");
+	$r = $data->fetch(PDO::FETCH_BOTH);
+	$axis_id = $r['axis_id'];
+			
+		if($axis_id == 19){
+			$sum_sup+=$g_sl;
+		}
+		if($axis_id == 20){
+			$sum_reap+=$g_sl;
+		}
+}		
 
-	$datetime1 = new DateTime($start);
-	$datetime2 = new DateTime($stress);
-	$datetime3 = new DateTime($end);
-
-	if(isset($id)) {
-		$interval = $datetime1->diff($datetime3);
-	}
-	else {
-		$interval = $datetime1->diff($datetime2);
-	}
-		echo '<td><center>'.array_sum($domain_row_array).'</center></td>';
-		echo '<td><center>'.array_sum($domains_category_array['pos']).'</center></td>';
-		echo '<td><center>'.array_sum($domains_category_array['neg']).'</center></td>';
-		echo '<td><center>'.$count_m.'</center></td>';
-		echo '<td><center>'.$id_manag.'</center></td>';
-		echo '<td>'.$interval->format('%H:%i:%s').'</td>';
-echo '</tr>';
+//---------------------------->
+		//echo '<td><center>'.$sum_sup.'</center></td>';
+		//echo '<td><center>'.$sum_reap.'</center></td>';
+		echo '</tr>';
 
 }
 

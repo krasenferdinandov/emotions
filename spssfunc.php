@@ -40,7 +40,7 @@ for($i=0;$i<DOMAINS_NUMBER;$i++){
 		$bg_name = $r["bg_name"];
 	}
 	//echo '<td><center>D'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
-	echo '<td><center>F'.$i.'_'.$en_name.'</center></td>';
+	//echo '<td><center>F'.$i.'_'.$en_name.'</center></td>';
 	//echo '<td><center>F'.$i.'</center></td>';
 }
 //------------------>
@@ -53,7 +53,7 @@ for($i=0;$i<THEMES_NUMBER;$i++){
 		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
 	}
-    echo '<td><center>T'.$i.'_'.$en_name.'</center></td>';
+    //echo '<td><center>T'.$i.'_'.$en_name.'</center></td>';
 	//echo '<td><center>T'.$i.'</center></td>';
 }
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
@@ -65,11 +65,11 @@ for($i=0;$i<MINISCRIPTS_NUMBER;$i++){
 		$en_name = $r["en_name"];
 		$bg_name = $r["bg_name"];
 	}
-    echo '<td><center>S'.$i.', '.$en_name.'</center></td>';
+	//echo '<td><center>S'.$i.', '.$en_name.'</center></td>';
 	//echo '<td><center>S'.$i.', '.$en_name.', '.$bg_name.'</center></td>';
 	//echo '<td><center>S'.$i.'</center></td>';
 }
-/*echo '<td><center><b>Брой разпознати</b></center></td>';
+echo '<td><center><b>Брой разпознати</b></center></td>';
 echo '<td><center><b>Брой семейства</b></center></td>';
 echo '<td><center><b>Брой положителни</b></center></td>';
 echo '<td><center><b>Брой отрицателни</b></center></td>';
@@ -79,7 +79,7 @@ echo '<td><center><b>Потискане</b></center></td>';
 echo '<td><center><b>Преоценка</b></center></td>';
 echo '<td><center><b>Афективно управление</b></center></td>';
 echo '<td><b>Начало</b></td>';
-echo '<td><b>Край</b></td>';*/
+echo '<td><b>Край</b></td>';
 echo '</tr>';
 
 $count_data = $pdo->query("SELECT id FROM states_stat ORDER BY id");
@@ -219,28 +219,19 @@ $nega = percent($sum_neg, $sum_pos+$sum_neg);
 //---------------------------->
 echo '<tr><td><center>'.$current_id.'</center></td>';
 
-for($i=0;$i<DOMAINS_NUMBER;$i++)
+/*for($i=0;$i<DOMAINS_NUMBER;$i++)
 		if($domain_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
 		else echo '<td><center><b>1<b/></center></td>';
 for($i=0;$i<THEMES_NUMBER;$i++)
 		if($scripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
-		/*else {
-			$data_t = $pdo->query("SELECT * FROM states_stat WHERE id = " . $current_id . "");
-			while($rs = $data_t->fetch(PDO::FETCH_BOTH)) {
-			$s_id = $rs['state_id'];
-			if($s_id!=$i)continue;
-			$s_sl = $rs['s_slider'];
-			}
-			echo '<td><center><b>'.$s_sl.'<b/></center></td>';
-		}*/
 		else echo '<td><center><b>1<b/></center></td>';
 		
 for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		if($miniscripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
-		else echo '<td><center><b>1<b/></center></td>';
+		else echo '<td><center><b>1<b/></center></td>';*/
 //---------------------------->
 $data = $pdo->query("SELECT emotion_id FROM emotions_stat WHERE id = $current_id");
 	while($r = $data->fetch(PDO::FETCH_BOTH)) {
@@ -304,15 +295,17 @@ while($r = $selection->fetch(PDO::FETCH_BOTH)){
 	$r = $data->fetch(PDO::FETCH_BOTH);
 	$axis_id = $r['axis_id'];
 			
-		if($axis_id == 20){
+		if($axis_id == 19){
 			$sum_sup+=$g_sl;
 		}
-		if($axis_id == 19){
+		if($axis_id == 20){
 			$sum_reap+=$g_sl;
 		}
 }		
+
 //---------------------------->
-/*echo '<td><center>'.$count_p.'</center></td>';
+//echo '<td>'.$count_e.'</td>';
+echo '<td><center>'.$count_p.'</center></td>';
 echo '<td><center>'.array_sum($domain_row_array).'</center></td>';
 echo '<td><center>'.array_sum($domains_category_array['pos']).'</center></td>';
 echo '<td><center>'.array_sum($domains_category_array['neg']).'</center></td>';
@@ -322,7 +315,7 @@ echo '<td><center>'.$sum_sup.'</center></td>';
 echo '<td><center>'.$sum_reap.'</center></td>';
 echo '<td><center>'.$id_manag.'</center></td>';
 echo '<td><center>'.$start.'</center></td>';
-echo '<td><center>'.$end.'</center></td>';*/
+echo '<td><center>'.$end.'</center></td>';
 echo '</tr>';
 
 }

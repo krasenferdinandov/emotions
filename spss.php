@@ -59,13 +59,13 @@ echo '<td><b>Count posFamilies</b></td>';
 echo '<td><b>Count negFamilies</b></td>';
 echo '<td><b>Count Scripts</b></td>';
 echo '<td><center><b>Affective Management</b></center></td>';
-echo '<td><center><b>Time</b></center></td>';
+//echo '<td><center><b>Time</b></center></td>';
 //------------------>
 echo '</tr>';
 //..................> Печати само потвърдените
-$count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
+//$count_data = $pdo->query("SELECT id FROM id_stat ORDER BY id");
 //..................> Печати всички
-//$count_data = $pdo->query("SELECT id FROM choice_stat ORDER BY id");
+$count_data = $pdo->query("SELECT id FROM choice_stat ORDER BY id");
 $count = 0;
 $last = -1;
 $id_array = array();
@@ -90,7 +90,7 @@ for($k = 0; $k<$count; $k++)
 $r = $data->fetch(PDO::FETCH_BOTH);
 $id = $r['id'];
 if(!isset($id)) continue;*/
-
+//$data = $pdo->query("SELECT * FROM emotions_stat WHERE id = $current_id LIMIT 1");
 $data = $pdo->query("SELECT * FROM id_stat WHERE id = $current_id LIMIT 1");
 //$data = $pdo->query("SELECT * FROM gros_stat WHERE id = $current_id LIMIT 1");
 //$data = $pdo->query("SELECT * FROM status_stat WHERE id = $current_id LIMIT 1");
@@ -203,6 +203,33 @@ $nega = percent($sum_neg, $sum_pos+$sum_neg);
 		if($domain_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
 		else echo '<td><center><b>1<b/></center></td>';
+	/*Показва вместо "1/0" предимството и плътността за даденото емоционално семейство.
+		else{
+			$mas = "";
+			$e_slider = "";
+			$sel_emotions = $pdo->query("SELECT * FROM emotions_stat e join emotions em on em.id = e.emotion_id WHERE e.id = " . $current_id . "");
+			$emo_count = 0;
+			while($r1 = $sel_emotions->fetch(PDO::FETCH_BOTH)){
+					$mas = $r1['emotion_id'];
+					$e_slider = $r1['e_slider'];
+					if(floor($mas/9) != $i)continue;
+					$string_id = $string[$mas];
+					$tension_id = $tension[$mas];
+									
+					if ($string_id == 0){			
+						$e_sl=(($r1['e_slider']*0.4)+$tension_id) ."";
+						}
+						else if($string_id == 1){
+						$e_sl=(($r1['e_slider']*0.6)+$tension_id) ."";
+						}
+						else if($string_id == 2){
+						$e_sl=(($r1['e_slider']*0.8)+$tension_id) ."";
+						}
+						
+			}
+			//echo '<td><center><b>'.round(($e_sl),0).'<b/></center></td>';
+			echo '<td><center><b>'.$e_slider.'<b/></center></td>';
+		}*/
 	for($i=0;$i<MINISCRIPTS_NUMBER;$i++)
 		if($miniscripts_row_array[$i] != 1)
 			echo '<td><center>0</center></td>';
@@ -233,7 +260,7 @@ $nega = percent($sum_neg, $sum_pos+$sum_neg);
 		echo '<td><center>'.array_sum($domains_category_array['neg']).'</center></td>';
 		echo '<td><center>'.$count_sc.'</center></td>';
 		echo '<td><center>'.$id_manag.'</center></td>';
-		echo '<td>'.$interval->format('%H:%i:%s').'</td>';
+		//echo '<td>'.$interval->format('%H:%i:%s').'</td>';
 	echo '</tr>';
 	//}
 }

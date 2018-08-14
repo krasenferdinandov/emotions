@@ -198,7 +198,7 @@ $data_s = $pdo->query('SELECT miniscripts.id, miniscripts.bg_name, miniscripts.d
 while($r = $data_s->fetch(PDO::FETCH_BOTH)){
 //Показва id на потвърдените miniscripts;
 //$table_result .= '<a title="'.quot($r['bg_desc']).'">'.$r['id'].$r['bg_name'].'</a>'; 
-$table_result .= '<tr><td colspan="2" align="left" style="border-right: none; border: 1px solid #c0c0c0;">* <b><a title="'.quot($r['bg_name']).', '.quot($r['en_desc']).'">'.$r['en_name'].'</a></b>, ';
+$table_result .= '<tr><td colspan="2" align="left" style="border-right: none; border: 1px solid #c0c0c0;">* <b><a title="'.quot($r['bg_name']).', '.quot($r['en_desc']).'">'.$r['en_name'].'</a></b>';
 			
 			$magnification_m = "?";
 					$density_em1 = $r['domain1_id'];
